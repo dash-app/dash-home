@@ -1,0 +1,169 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Dash-Home API",
+        "contact": {},
+        "license": {
+            "name": "MIT License",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/v1/agent": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "agent"
+                ],
+                "summary": "Get Agent entry",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Agent"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/room": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "room"
+                ],
+                "summary": "Get Room entry",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.Room"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "remote": {
+                                            "$ref": "#/definitions/aircon.Entry"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/healthz": {
+            "get": {
+                "summary": "Check API Response for Health Check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "aircon.Entry": {
+            "type": "object",
+            "properties": {
+                "fan": {
+                    "type": "string"
+                },
+                "horizontal_vane": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "string"
+                },
+                "operation": {
+                    "type": "boolean"
+                },
+                "temp": {
+                    "type": "object"
+                },
+                "vertical_vane": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Agent": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "Address - Agent Address (ex. `localhost:8081`)",
+                    "type": "string",
+                    "example": "localhost:8081"
+                },
+                "id": {
+                    "description": "ID - Agent ID",
+                    "type": "string"
+                },
+                "online": {
+                    "description": "Online - Check online",
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.Room": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "ID - Room ID",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name - Room name (ex: `john's room`)",
+                    "type": "string",
+                    "example": "john's room"
+                },
+                "owner": {
+                    "description": "Owner - Room owner (ex: `john doe`)",
+                    "type": "string",
+                    "example": "john doe"
+                },
+                "remote": {
+                    "description": "Remote - test remote",
+                    "type": "object",
+                    "$ref": "#/definitions/aircon.Entry"
+                },
+                "status": {
+                    "description": "Status - Room Status",
+                    "type": "object",
+                    "$ref": "#/definitions/models.RoomStatus"
+                }
+            }
+        },
+        "models.RoomStatus": {
+            "type": "object",
+            "properties": {
+                "humid": {
+                    "description": "Humid - Humidity (percent)",
+                    "type": "number",
+                    "example": 50.3
+                },
+                "pressure": {
+                    "description": "Pressure - Pressure (hpa)",
+                    "type": "number",
+                    "example": 1009.4
+                },
+                "temp": {
+                    "description": "Temp - Temperature (celsius)",
+                    "type": "number",
+                    "example": 27.5
+                }
+            }
+        }
+    }
+}

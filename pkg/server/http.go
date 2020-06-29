@@ -12,6 +12,11 @@ type httpServer struct {
 }
 
 // NewHTTPServer - Start HTTP Server
+// @title Dash-Home API
+// @version 1.0
+// @name Dash-Home
+// @license.name MIT License
+// @license.url https://opensource.org/licenses/MIT
 func NewHTTPServer() *gin.Engine {
 	h := httpServer{}
 
@@ -21,9 +26,16 @@ func NewHTTPServer() *gin.Engine {
 
 	r.GET("/healthz", h.getHealthz)
 
+	r.GET("/api/v1/room", h.getRoom)
+	r.GET("/api/v1/agent", h.getAgent)
+
 	return r
 }
 
+// Health Check
+// @Summary Check API Response for Health Check
+// @Router /healthz [get]
+// @Success 200 {string} OK
 func (h *httpServer) getHealthz(c *gin.Context) {
 	c.String(http.StatusOK, "OK")
 }
