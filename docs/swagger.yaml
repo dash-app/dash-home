@@ -1,19 +1,4 @@
 definitions:
-  aircon.Entry:
-    properties:
-      fan:
-        type: string
-      horizontal_vane:
-        type: string
-      mode:
-        type: string
-      operation:
-        type: boolean
-      temp:
-        type: object
-      vertical_vane:
-        type: string
-    type: object
   models.Agent:
     properties:
       address:
@@ -40,10 +25,6 @@ definitions:
         description: 'Owner - Room owner (ex: `john doe`)'
         example: john doe
         type: string
-      remote:
-        $ref: '#/definitions/aircon.Entry'
-        description: Remote - test remote
-        type: object
       status:
         $ref: '#/definitions/models.RoomStatus'
         description: Status - Room Status
@@ -92,12 +73,7 @@ paths:
         "200":
           description: OK
           schema:
-            allOf:
-            - $ref: '#/definitions/models.Room'
-            - properties:
-                remote:
-                  $ref: '#/definitions/aircon.Entry'
-              type: object
+            $ref: '#/definitions/models.Room'
       summary: Get Room entry
       tags:
       - room

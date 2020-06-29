@@ -42,19 +42,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.Room"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "remote": {
-                                            "$ref": "#/definitions/aircon.Entry"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/models.Room"
                         }
                     }
                 }
@@ -75,29 +63,6 @@
         }
     },
     "definitions": {
-        "aircon.Entry": {
-            "type": "object",
-            "properties": {
-                "fan": {
-                    "type": "string"
-                },
-                "horizontal_vane": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "string"
-                },
-                "operation": {
-                    "type": "boolean"
-                },
-                "temp": {
-                    "type": "object"
-                },
-                "vertical_vane": {
-                    "type": "string"
-                }
-            }
-        },
         "models.Agent": {
             "type": "object",
             "properties": {
@@ -132,11 +97,6 @@
                     "description": "Owner - Room owner (ex: `john doe`)",
                     "type": "string",
                     "example": "john doe"
-                },
-                "remote": {
-                    "description": "Remote - test remote",
-                    "type": "object",
-                    "$ref": "#/definitions/aircon.Entry"
                 },
                 "status": {
                     "description": "Status - Room Status",
