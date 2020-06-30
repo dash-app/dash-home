@@ -41,7 +41,38 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Agent"
+                            "$ref": "#/definitions/storage.Agent"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "agent"
+                ],
+                "summary": "Add Agent entry",
+                "parameters": [
+                    {
+                        "description": "Add new agent",
+                        "name": "entry",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateAgentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/storage.Agent"
                         }
                     }
                 }
@@ -81,24 +112,6 @@ var doc = `{
         }
     },
     "definitions": {
-        "models.Agent": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "description": "Address - Agent Address (ex. ` + "`" + `localhost:8081` + "`" + `)",
-                    "type": "string",
-                    "example": "localhost:8081"
-                },
-                "id": {
-                    "description": "ID - Agent ID",
-                    "type": "string"
-                },
-                "online": {
-                    "description": "Online - Check online",
-                    "type": "boolean"
-                }
-            }
-        },
         "models.Room": {
             "type": "object",
             "properties": {
@@ -140,6 +153,38 @@ var doc = `{
                     "description": "Temp - Temperature (celsius)",
                     "type": "number",
                     "example": 27.5
+                }
+            }
+        },
+        "models.UpdateAgentRequest": {
+            "type": "object",
+            "required": [
+                "address"
+            ],
+            "properties": {
+                "address": {
+                    "description": "Address - Agent Address (ex. ` + "`" + `localhost:8081` + "`" + `)",
+                    "type": "string",
+                    "example": "localhost:8081"
+                }
+            }
+        },
+        "storage.Agent": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "Address - Agent Address (ex. ` + "`" + `localhost:8081` + "`" + `)",
+                    "type": "string",
+                    "example": "localhost:8081"
+                },
+                "id": {
+                    "description": "ID - Agent ID",
+                    "type": "string",
+                    "default": "\u003cUNIQUE_ID\u003e"
+                },
+                "online": {
+                    "description": "Online - Check online",
+                    "type": "boolean"
                 }
             }
         }

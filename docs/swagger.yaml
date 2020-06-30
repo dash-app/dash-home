@@ -1,17 +1,4 @@
 definitions:
-  models.Agent:
-    properties:
-      address:
-        description: Address - Agent Address (ex. `localhost:8081`)
-        example: localhost:8081
-        type: string
-      id:
-        description: ID - Agent ID
-        type: string
-      online:
-        description: Online - Check online
-        type: boolean
-    type: object
   models.Room:
     properties:
       id:
@@ -45,6 +32,29 @@ definitions:
         example: 27.5
         type: number
     type: object
+  models.UpdateAgentRequest:
+    properties:
+      address:
+        description: Address - Agent Address (ex. `localhost:8081`)
+        example: localhost:8081
+        type: string
+    required:
+    - address
+    type: object
+  storage.Agent:
+    properties:
+      address:
+        description: Address - Agent Address (ex. `localhost:8081`)
+        example: localhost:8081
+        type: string
+      id:
+        default: <UNIQUE_ID>
+        description: ID - Agent ID
+        type: string
+      online:
+        description: Online - Check online
+        type: boolean
+    type: object
 info:
   contact: {}
   license:
@@ -61,8 +71,28 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Agent'
+            $ref: '#/definitions/storage.Agent'
       summary: Get Agent entry
+      tags:
+      - agent
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Add new agent
+        in: body
+        name: entry
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateAgentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/storage.Agent'
+      summary: Add Agent entry
       tags:
       - agent
   /api/v1/room:
