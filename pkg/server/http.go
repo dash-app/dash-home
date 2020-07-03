@@ -4,11 +4,13 @@ import (
 	"net/http"
 
 	"github.com/dash-app/dash-home/internal/logger"
+	"github.com/dash-app/dash-home/pkg/storage"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 type httpServer struct {
+	storage *storage.Storage
 }
 
 // NewHTTPServer - Start HTTP Server
@@ -17,8 +19,10 @@ type httpServer struct {
 // @name Dash-Home
 // @license.name MIT License
 // @license.url https://opensource.org/licenses/MIT
-func NewHTTPServer() *gin.Engine {
-	h := httpServer{}
+func NewHTTPServer(storage *storage.Storage) *gin.Engine {
+	h := httpServer{
+		storage: storage,
+	}
 
 	r := gin.Default()
 	r.Use(cors.Default())
