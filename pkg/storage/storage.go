@@ -10,7 +10,7 @@ type Storage struct {
 	Path string
 
 	// Store
-	agent *AgentStore
+	*AgentStore
 }
 
 func New(path string) (*Storage, error) {
@@ -29,11 +29,7 @@ func New(path string) (*Storage, error) {
 	}
 
 	return &Storage{
-		Path:  path,
-		agent: agent,
+		Path:       path,
+		AgentStore: agent,
 	}, nil
-}
-
-func (s *Storage) GetAgent() {
-
 }

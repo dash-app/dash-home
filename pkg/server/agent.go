@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +14,12 @@ import (
 // @Success 200 {object} storage.Agent
 // @Produce json
 func (h *httpServer) getAgent(c *gin.Context) {
-	c.String(http.StatusNotImplemented, "Not Implemented Yet")
+	agent, err := h.agent.Get()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, agent)
 }
 
 // Add Agent
@@ -25,7 +31,22 @@ func (h *httpServer) getAgent(c *gin.Context) {
 // @Accept json
 // @Produce json
 func (h *httpServer) postAgent(c *gin.Context) {
-	// TODO: Add
+	var entry map[string]string
+
+	if err := c.BindJSON(&entry); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if address := entry["address"]; address != "" {
+		if r, err := h.agent.Create(address); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		} else {
+			c.JSON(http.StatusOK, r)
+		}
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": errors.New("address is not provided").Error()})
+	}
 }
 
 func (h *httpServer) test(c *gin.Context) {
