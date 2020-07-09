@@ -1,4 +1,22 @@
 definitions:
+  agent.Ambient:
+    properties:
+      humid:
+        description: Humid - Humidity (percent)
+        example: 50.3
+        type: number
+      last_fetch:
+        description: LastFetch - Fetched date
+        type: string
+      pressure:
+        description: Pressure - Pressure (hpa)
+        example: 1009.4
+        type: number
+      temp:
+        description: Temp - Temperature (celsius)
+        example: 27.5
+        type: number
+    type: object
   models.Room:
     properties:
       id:
@@ -12,30 +30,10 @@ definitions:
         description: 'Owner - Room owner (ex: `john doe`)'
         example: john doe
         type: string
-      status:
-        $ref: '#/definitions/models.RoomStatus'
-        description: Status - Room Status
-        type: object
     type: object
-  models.RoomStatus:
-    properties:
-      humid:
-        description: Humid - Humidity (percent)
-        example: 50.3
-        type: number
-      pressure:
-        description: Pressure - Pressure (hpa)
-        example: 1009.4
-        type: number
-      temp:
-        description: Temp - Temperature (celsius)
-        example: 27.5
-        type: number
-    type: object
-  models.UpdateAgentRequest:
+  server.UpdateAgentRequest:
     properties:
       address:
-        description: Address - Agent Address (ex. `localhost:8081`)
         example: localhost:8081
         type: string
     required:
@@ -54,6 +52,8 @@ definitions:
       online:
         description: Online - Check online
         type: boolean
+    required:
+    - address
     type: object
 info:
   contact: {}
@@ -84,7 +84,7 @@ paths:
         name: entry
         required: true
         schema:
-          $ref: '#/definitions/models.UpdateAgentRequest'
+          $ref: '#/definitions/server.UpdateAgentRequest'
       produces:
       - application/json
       responses:
@@ -93,6 +93,18 @@ paths:
           schema:
             $ref: '#/definitions/storage.Agent'
       summary: Add Agent entry
+      tags:
+      - agent
+  /api/v1/agent/sensors:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/agent.Ambient'
+      summary: Get Sensors status form agent
       tags:
       - agent
   /api/v1/room:
