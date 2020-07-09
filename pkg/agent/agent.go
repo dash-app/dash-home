@@ -29,6 +29,9 @@ type Agent interface {
 	Create(string) (*storage.Agent, error)
 	InitPoll()
 	Poll(context.Context) error
+
+	// Sensors
+	GetAmbient() (*Ambient, error)
 }
 
 type agentService struct {
@@ -137,4 +140,12 @@ func (as *agentService) Poll(c context.Context) error {
 	}
 
 	return nil
+}
+
+func (as *agentService) GetAmbient() (*Ambient, error) {
+	if as.ambient == nil {
+		return nil, errors.New("ambient not fetched")
+	}
+
+	return as.ambient, nil
 }

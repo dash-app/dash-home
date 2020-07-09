@@ -64,7 +64,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateAgentRequest"
+                            "$ref": "#/definitions/server.UpdateAgentRequest"
                         }
                     }
                 ],
@@ -73,6 +73,25 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/storage.Agent"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/agent/sensors": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "agent"
+                ],
+                "summary": "Get Sensors status form agent",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/agent.Ambient"
                         }
                     }
                 }
@@ -112,6 +131,30 @@ var doc = `{
         }
     },
     "definitions": {
+        "agent.Ambient": {
+            "type": "object",
+            "properties": {
+                "humid": {
+                    "description": "Humid - Humidity (percent)",
+                    "type": "number",
+                    "example": 50.3
+                },
+                "last_fetch": {
+                    "description": "LastFetch - Fetched date",
+                    "type": "string"
+                },
+                "pressure": {
+                    "description": "Pressure - Pressure (hpa)",
+                    "type": "number",
+                    "example": 1009.4
+                },
+                "temp": {
+                    "description": "Temp - Temperature (celsius)",
+                    "type": "number",
+                    "example": 27.5
+                }
+            }
+        },
         "models.Room": {
             "type": "object",
             "properties": {
@@ -128,42 +171,16 @@ var doc = `{
                     "description": "Owner - Room owner (ex: ` + "`" + `john doe` + "`" + `)",
                     "type": "string",
                     "example": "john doe"
-                },
-                "status": {
-                    "description": "Status - Room Status",
-                    "type": "object",
-                    "$ref": "#/definitions/models.RoomStatus"
                 }
             }
         },
-        "models.RoomStatus": {
-            "type": "object",
-            "properties": {
-                "humid": {
-                    "description": "Humid - Humidity (percent)",
-                    "type": "number",
-                    "example": 50.3
-                },
-                "pressure": {
-                    "description": "Pressure - Pressure (hpa)",
-                    "type": "number",
-                    "example": 1009.4
-                },
-                "temp": {
-                    "description": "Temp - Temperature (celsius)",
-                    "type": "number",
-                    "example": 27.5
-                }
-            }
-        },
-        "models.UpdateAgentRequest": {
+        "server.UpdateAgentRequest": {
             "type": "object",
             "required": [
                 "address"
             ],
             "properties": {
                 "address": {
-                    "description": "Address - Agent Address (ex. ` + "`" + `localhost:8081` + "`" + `)",
                     "type": "string",
                     "example": "localhost:8081"
                 }
@@ -171,6 +188,9 @@ var doc = `{
         },
         "storage.Agent": {
             "type": "object",
+            "required": [
+                "address"
+            ],
             "properties": {
                 "address": {
                     "description": "Address - Agent Address (ex. ` + "`" + `localhost:8081` + "`" + `)",

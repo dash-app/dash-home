@@ -40,6 +40,7 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 	// Agent
 	r.GET("/api/v1/agent", h.getAgent)
 	r.POST("/api/v1/agent", h.postAgent)
+	r.GET("/api/v1/agent/sensors", h.getAgentSensors)
 
 	return r
 }

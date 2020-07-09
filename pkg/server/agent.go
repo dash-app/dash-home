@@ -7,6 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// UpdateAgentRequest - Update Agent Request
+type UpdateAgentRequest struct {
+	Address string `json:"address" validate:"required" example:"localhost:8081"`
+}
+
 // Get Agent
 // @Summary Get Agent entry
 // @Router /api/v1/agent [get]
@@ -26,7 +31,7 @@ func (h *httpServer) getAgent(c *gin.Context) {
 // @Summary Add Agent entry
 // @Router /api/v1/agent [post]
 // @tags agent
-// @Param entry body models.UpdateAgentRequest true "Add new agent"
+// @Param entry body UpdateAgentRequest true "Add new agent"
 // @Success 200 {object} storage.Agent
 // @Accept json
 // @Produce json
@@ -49,6 +54,16 @@ func (h *httpServer) postAgent(c *gin.Context) {
 	}
 }
 
-func (h *httpServer) test(c *gin.Context) {
-
+// Get Sensors from agent
+// @Summary Get Sensors status form agent
+// @Router /api/v1/agent/sensors [get]
+// @tags agent
+// @Success 200 {object} agent.Ambient
+// @Produce json
+func (h *httpServer) getAgentSensors(c *gin.Context) {
+	r, err := h.agent.GetAmbient()
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+	}
+	c.JSON(http.StatusOK, r)
 }

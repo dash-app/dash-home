@@ -14,5 +14,5 @@ type Ambient struct {
 	Pressure float32 `json:"pressure" example:"1009.4"`
 
 	// LastFetch - Fetched date
-	LastFetch time.Time `json:"last_fetch"`
+	LastFetch time.Time `json:"last_fetch" example:"2020-01-01 01:02:03 UTC"`
 }
