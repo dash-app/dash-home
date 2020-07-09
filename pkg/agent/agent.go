@@ -1,6 +1,7 @@
 package agent
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -9,7 +10,13 @@ import (
 	"time"
 
 	"github.com/dash-app/dash-home/pkg/storage"
+	"github.com/k0kubun/pp"
 	"github.com/sirupsen/logrus"
+)
+
+const (
+	// PollingPeriod - Polling period seconds for fetch to agent
+	PollingPeriod = 5
 )
 
 // Subset - Agent subset
@@ -21,8 +28,7 @@ type Agent interface {
 	Get() (*storage.Agent, error)
 	Create(string) (*storage.Agent, error)
 	InitPoll()
-	Poll() error
-	Sensors()
+	Poll(context.Context) error
 }
 
 type agentService struct {
@@ -57,18 +63,17 @@ func (as *agentService) Create(address string) (*storage.Agent, error) {
 func (as *agentService) InitPoll() {
 	// NOTE: Must be use context
 
-	// Start Poll Task
-	ticker := time.NewTicker(3 * time.Second)
-	quit := make(chan struct{})
 	go func() {
+		ticker := time.NewTicker(PollingPeriod * time.Second)
+		quit := make(chan struct{})
 		for {
 			select {
 			case <-ticker.C:
-				// TODO: ping
-				if err := as.Poll(); err != nil {
+				ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+				if err := as.Poll(ctx); err != nil {
 					logrus.WithError(err).Errorf("[Poll]")
 				}
-
+				cancel()
 			case <-quit:
 				ticker.Stop()
 				return
@@ -78,7 +83,9 @@ func (as *agentService) InitPoll() {
 }
 
 // TODO: Add polling task
-func (as *agentService) Poll() error {
+func (as *agentService) Poll(c context.Context) error {
+	ctx, cancel := context.WithCancel(c)
+	defer cancel()
 	if as.store.Agent == nil {
 		return errors.New("agent not found")
 	}
@@ -94,24 +101,40 @@ func (as *agentService) Poll() error {
 	}
 	req.Header.Set("Content-Type", "application/json")
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
+	tr := &http.Transport{}
+	client := &http.Client{Transport: tr}
+	errCh := make(chan error, 1)
+
+	go func() {
+		resp, err := client.Do(req)
+		if err != nil {
+			errCh <- err
+			return
+		}
+		defer resp.Body.Close()
+		b, _ := ioutil.ReadAll(resp.Body)
+		var entry *Ambient
+		if err := json.Unmarshal(b, &entry); err != nil {
+			errCh <- err
+			return
+		}
+		entry.LastFetch = time.Now().UTC()
+		as.ambient = entry
+		logrus.Debugf("[Poll] Fetched: %v", pp.Sprint(entry))
+		errCh <- nil
+	}()
+
+	select {
+	case err := <-errCh:
+		if err != nil {
+			return err
+		}
+
+	case <-ctx.Done():
+		tr.CancelRequest(req)
+		<-errCh
+		return ctx.Err()
 	}
-	defer resp.Body.Close()
-	b, _ := ioutil.ReadAll(resp.Body)
-	var entry *Ambient
-	if err := json.Unmarshal(b, &entry); err != nil {
-		return err
-	}
-	entry.LastFetch = time.Now()
-	as.ambient = entry
 
 	return nil
-}
-
-func (as *agentService) Sensors() {
-	// TODO
-
 }
