@@ -63,7 +63,7 @@ func (h *httpServer) postAgent(c *gin.Context) {
 func (h *httpServer) getAgentSensors(c *gin.Context) {
 	r, err := h.agent.GetAmbient()
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 	c.JSON(http.StatusOK, r)
 }
