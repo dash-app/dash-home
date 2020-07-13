@@ -5,6 +5,7 @@ import (
 
 	"github.com/dash-app/dash-home/internal/logger"
 	"github.com/dash-app/dash-home/pkg/agent"
+	"github.com/dash-app/dash-home/pkg/room"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -12,10 +13,12 @@ import (
 // Subset - HTTP Subset
 type Subset struct {
 	Agent agent.Agent
+	Room  room.Room
 }
 
 type httpServer struct {
 	agent agent.Agent
+	room  room.Room
 }
 
 // NewHTTPServer - Start HTTP Server
@@ -27,6 +30,7 @@ type httpServer struct {
 func NewHTTPServer(subset *Subset) *gin.Engine {
 	h := httpServer{
 		agent: subset.Agent,
+		room:  subset.Room,
 	}
 
 	r := gin.Default()
@@ -35,12 +39,14 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 
 	r.GET("/healthz", h.getHealthz)
 
-	r.GET("/api/v1/room", h.getRoom)
-
 	// Agent
 	r.GET("/api/v1/agent", h.getAgent)
 	r.POST("/api/v1/agent", h.postAgent)
 	r.GET("/api/v1/agent/sensors", h.getAgentSensors)
+
+	// Room
+	r.GET("/api/v1/room", h.getRoom)
+	r.POST("/api/v1/room", h.postRoom)
 
 	return r
 }

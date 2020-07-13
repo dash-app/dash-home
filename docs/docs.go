@@ -114,6 +114,37 @@ var doc = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "room"
+                ],
+                "summary": "Craete Room entry",
+                "parameters": [
+                    {
+                        "description": "Create new room",
+                        "name": "entry",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/server.CreateRoomRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/storage.Room"
+                        }
+                    }
+                }
             }
         },
         "/healthz": {
@@ -141,7 +172,8 @@ var doc = `{
                 },
                 "last_fetch": {
                     "description": "LastFetch - Fetched date",
-                    "type": "string"
+                    "type": "string",
+                    "example": "2020-01-01 01:02:03 UTC"
                 },
                 "pressure": {
                     "description": "Pressure - Pressure (hpa)",
@@ -158,6 +190,11 @@ var doc = `{
         "models.Room": {
             "type": "object",
             "properties": {
+                "agent_id": {
+                    "description": "AgentID - Agent ID (UUID)",
+                    "type": "string",
+                    "example": "16e88664-bf38-11ea-afc8-acde48001122"
+                },
                 "id": {
                     "description": "ID - Room ID",
                     "type": "string"
@@ -171,6 +208,15 @@ var doc = `{
                     "description": "Owner - Room owner (ex: ` + "`" + `john doe` + "`" + `)",
                     "type": "string",
                     "example": "john doe"
+                }
+            }
+        },
+        "server.CreateRoomRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "john's room"
                 }
             }
         },
@@ -205,6 +251,27 @@ var doc = `{
                 "online": {
                     "description": "Online - Check online",
                     "type": "boolean"
+                }
+            }
+        },
+        "storage.Room": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "ID - Room ID",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name - Room name (ex: ` + "`" + `john's room` + "`" + `)",
+                    "type": "string",
+                    "example": "john's room"
+                },
+                "remotes": {
+                    "description": "Remotes - Remote IDs",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         }

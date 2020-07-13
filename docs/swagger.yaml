@@ -7,6 +7,7 @@ definitions:
         type: number
       last_fetch:
         description: LastFetch - Fetched date
+        example: 2020-01-01 01:02:03 UTC
         type: string
       pressure:
         description: Pressure - Pressure (hpa)
@@ -19,6 +20,10 @@ definitions:
     type: object
   models.Room:
     properties:
+      agent_id:
+        description: AgentID - Agent ID (UUID)
+        example: 16e88664-bf38-11ea-afc8-acde48001122
+        type: string
       id:
         description: ID - Room ID
         type: string
@@ -29,6 +34,12 @@ definitions:
       owner:
         description: 'Owner - Room owner (ex: `john doe`)'
         example: john doe
+        type: string
+    type: object
+  server.CreateRoomRequest:
+    properties:
+      name:
+        example: john's room
         type: string
     type: object
   server.UpdateAgentRequest:
@@ -54,6 +65,21 @@ definitions:
         type: boolean
     required:
     - address
+    type: object
+  storage.Room:
+    properties:
+      id:
+        description: ID - Room ID
+        type: string
+      name:
+        description: 'Name - Room name (ex: `john''s room`)'
+        example: john's room
+        type: string
+      remotes:
+        description: Remotes - Remote IDs
+        items:
+          type: string
+        type: array
     type: object
 info:
   contact: {}
@@ -117,6 +143,26 @@ paths:
           schema:
             $ref: '#/definitions/models.Room'
       summary: Get Room entry
+      tags:
+      - room
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create new room
+        in: body
+        name: entry
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateRoomRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/storage.Room'
+      summary: Craete Room entry
       tags:
       - room
   /healthz:

@@ -11,6 +11,7 @@ type Storage struct {
 
 	// Store
 	*AgentStore
+	*RoomStore
 }
 
 func New(path string) (*Storage, error) {
@@ -28,8 +29,14 @@ func New(path string) (*Storage, error) {
 		return nil, err
 	}
 
+	room, err := NewRoomStore(path)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Storage{
 		Path:       path,
 		AgentStore: agent,
+		RoomStore:  room,
 	}, nil
 }
