@@ -16,7 +16,7 @@ import (
 
 const (
 	// PollingPeriod - Polling period seconds for fetch to agent
-	PollingPeriod = 50
+	PollingPeriod = 5000
 )
 
 // Subset - Agent subset
@@ -67,12 +67,20 @@ func (as *agentService) InitPoll() {
 	// NOTE: Must be use context
 
 	go func() {
+		// First Polling
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		if err := as.Poll(ctx); err != nil {
+			logrus.WithError(err).Errorf("[Poll]")
+		}
+		cancel()
+
+		// Loop Polling
 		ticker := time.NewTicker(PollingPeriod * time.Millisecond)
 		quit := make(chan struct{})
 		for {
 			select {
 			case <-ticker.C:
-				ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+				ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 				if err := as.Poll(ctx); err != nil {
 					logrus.WithError(err).Errorf("[Poll]")
 				}
