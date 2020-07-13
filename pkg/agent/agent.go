@@ -16,7 +16,7 @@ import (
 
 const (
 	// PollingPeriod - Polling period seconds for fetch to agent
-	PollingPeriod = 5
+	PollingPeriod = 50
 )
 
 // Subset - Agent subset
@@ -67,7 +67,7 @@ func (as *agentService) InitPoll() {
 	// NOTE: Must be use context
 
 	go func() {
-		ticker := time.NewTicker(PollingPeriod * time.Second)
+		ticker := time.NewTicker(PollingPeriod * time.Millisecond)
 		quit := make(chan struct{})
 		for {
 			select {
@@ -104,8 +104,7 @@ func (as *agentService) Poll(c context.Context) error {
 	}
 	req.Header.Set("Content-Type", "application/json")
 
-	tr := &http.Transport{}
-	client := &http.Client{Transport: tr}
+	client := http.DefaultClient
 	errCh := make(chan error, 1)
 
 	go func() {
@@ -134,7 +133,7 @@ func (as *agentService) Poll(c context.Context) error {
 		}
 
 	case <-ctx.Done():
-		tr.CancelRequest(req)
+		client.CloseIdleConnections()
 		<-errCh
 		return ctx.Err()
 	}
