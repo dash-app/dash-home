@@ -18,29 +18,20 @@ definitions:
         example: 27.5
         type: number
     type: object
-  models.Room:
-    properties:
-      agent_id:
-        description: AgentID - Agent ID (UUID)
-        example: 16e88664-bf38-11ea-afc8-acde48001122
-        type: string
-      id:
-        description: ID - Room ID
-        type: string
-      name:
-        description: 'Name - Room name (ex: `john''s room`)'
-        example: john's room
-        type: string
-      owner:
-        description: 'Owner - Room owner (ex: `john doe`)'
-        example: john doe
-        type: string
-    type: object
   server.CreateRoomRequest:
     properties:
       name:
         example: john's room
         type: string
+    type: object
+  server.RoomResponse:
+    properties:
+      ambient:
+        $ref: '#/definitions/agent.Ambient'
+        type: object
+      room:
+        $ref: '#/definitions/storage.Room'
+        type: object
     type: object
   server.UpdateAgentRequest:
     properties:
@@ -141,7 +132,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Room'
+            $ref: '#/definitions/server.RoomResponse'
       summary: Get Room entry
       tags:
       - room

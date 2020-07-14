@@ -4,6 +4,8 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/dash-app/dash-home/pkg/agent"
+	"github.com/dash-app/dash-home/pkg/storage"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,11 +14,17 @@ type CreateRoomRequest struct {
 	Name string `json:"name" example:"john's room"`
 }
 
+// RoomResponse - Room Response (Get, Post)
+type RoomResponse struct {
+	Room    *storage.Room  `json:"room"`
+	Ambient *agent.Ambient `json:"ambient"`
+}
+
 // Get Room
 // @Summary Get Room entry
 // @Router /api/v1/room [get]
 // @tags room
-// @Success 200 {object} models.Room
+// @Success 200 {object} RoomResponse
 // @Produce json
 func (h *httpServer) getRoom(c *gin.Context) {
 	room, err := h.room.Get()
@@ -24,7 +32,16 @@ func (h *httpServer) getRoom(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, room)
+	c.JSON(http.StatusOK, &RoomResponse{
+		Room: room,
+		Ambient: func() *agent.Ambient {
+			r, err := h.agent.GetAmbient()
+			if err != nil {
+				return nil
+			}
+			return r
+		}(),
+	})
 }
 
 // Create Room

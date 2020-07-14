@@ -110,7 +110,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Room"
+                            "$ref": "#/definitions/server.RoomResponse"
                         }
                     }
                 }
@@ -187,36 +187,25 @@ var doc = `{
                 }
             }
         },
-        "models.Room": {
-            "type": "object",
-            "properties": {
-                "agent_id": {
-                    "description": "AgentID - Agent ID (UUID)",
-                    "type": "string",
-                    "example": "16e88664-bf38-11ea-afc8-acde48001122"
-                },
-                "id": {
-                    "description": "ID - Room ID",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "Name - Room name (ex: ` + "`" + `john's room` + "`" + `)",
-                    "type": "string",
-                    "example": "john's room"
-                },
-                "owner": {
-                    "description": "Owner - Room owner (ex: ` + "`" + `john doe` + "`" + `)",
-                    "type": "string",
-                    "example": "john doe"
-                }
-            }
-        },
         "server.CreateRoomRequest": {
             "type": "object",
             "properties": {
                 "name": {
                     "type": "string",
                     "example": "john's room"
+                }
+            }
+        },
+        "server.RoomResponse": {
+            "type": "object",
+            "properties": {
+                "ambient": {
+                    "type": "object",
+                    "$ref": "#/definitions/agent.Ambient"
+                },
+                "room": {
+                    "type": "object",
+                    "$ref": "#/definitions/storage.Room"
                 }
             }
         },
