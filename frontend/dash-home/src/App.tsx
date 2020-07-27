@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import Home from './templates/Home';
 import Settings from './templates/Settings';
 import About from './templates/About';
+import Sandbox from './templates/Sandbox';
 
 // Custom themes
 import { Container } from 'react-bootstrap';
@@ -23,7 +24,7 @@ import Navigation from './components/navbar/Navigation';
 const App: React.FC = () => {
   // Initialize Icons
   library.add(fab, fas, far);
-  
+
   return (
     <Router>
       <Navigation />
@@ -32,6 +33,9 @@ const App: React.FC = () => {
           <Route exact path="/" component={Home} />
           <Route path="/settings" component={Settings} />
           <Route path="/about" component={About} />
+
+          {/* Sandbox Page (Remove before Release!) */}
+          <Route path="/sandbox" component={Sandbox} />
         </Contents>
       </Container>
     </Router>
