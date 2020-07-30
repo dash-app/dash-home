@@ -30,6 +30,20 @@ type RemoteController struct {
 type CreateControllerResponse struct {
 }
 
+// Controller - Controller response
+type Controller struct {
+}
+
+// Get Controllers
+// @Summary Get controllers
+// @Router /api/v1/controllers [get]
+// @tags controller
+// @Success 200 {object} []Controllers
+// @Produce json
+func (h *httpServer) getControllers(c *gin.Context) {
+	return
+}
+
 // Create Controller
 // @Summary Add new controller
 // @Router /api/v1/controllers [post]
@@ -38,7 +52,7 @@ type CreateControllerResponse struct {
 // @Success 200 {object} CreateControllerResponse
 // @Accept json
 // @Produce json
-func (h *httpServer) postController(c *gin.Context) {
+func (h *httpServer) postControllers(c *gin.Context) {
 	var req *SetControllerRequest
 
 	if err := c.BindJSON(&req); err != nil {
