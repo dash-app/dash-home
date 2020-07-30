@@ -30,8 +30,8 @@ type RemoteController struct {
 type CreateControllerResponse struct {
 }
 
-// Controller - Controller response
-type Controller struct {
+// ControllerResponse - Controller response
+type ControllerResponse struct {
 }
 
 // Get Controllers
