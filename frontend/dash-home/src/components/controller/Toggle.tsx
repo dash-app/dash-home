@@ -7,22 +7,37 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import styled from 'styled-components';
 
 interface Props {
-    title?: string,
     description?: string,
+    value: boolean,
     icon?: IconProp,
     btnText?: string,
-    onClick?: ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void)
 }
-interface State { }
+
+interface State {
+    value: boolean,
+}
 
 class Toggle extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props)
+        this.state = {
+            value: this.props.value,
+        }
+    }
+
+    onToggleEvent = () => {
+        this.setState({
+            value: !this.state.value,
+        })
+    }
+
     render() {
         return (
             <Container fluid>
                 <Row>
                     <Col>
                         <h1>
-                            <Span>{this.props.title}</Span>
+                            <Span>{this.state.value ? "ON" : "OFF"}</Span>
                         </h1>
                     </Col>
                 </Row>
@@ -39,7 +54,8 @@ class Toggle extends React.Component<Props, State> {
                                 <Button
                                     variant="primary"
                                     type="button"
-                                    onClick={this.props.onClick}
+                                    onClick={this.onToggleEvent}
+                                    size="lg"
                                 >
                                     {this.props.icon &&
                                         <Icon icon={this.props.icon} />

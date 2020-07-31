@@ -5,6 +5,7 @@ import Name from '../components/test/Name';
 import styled from 'styled-components';
 
 import Toggle from '../components/controller/Toggle';
+import Range from '../components/controller/Range';
 
 interface Props { }
 interface State { }
@@ -16,24 +17,10 @@ class Sandbox extends React.Component<Props, State> {
         <h1>Sandboxx</h1>
         <Row xs={2} md={4} lg={6}>
           <Col>
-            <Toggle />
+            <Toggle description="Operation" value={false} icon={["fas", "power-off"]}/>
           </Col>
           <Col>
-            <Toggle title="TEST" />
-          </Col>
-          <Col>
-            <Toggle title="TEST" description="hoge" />
-          </Col>
-          <Col>
-            <Toggle title="TEST" description="hoge" btnText="something"/>
-          </Col>
-          <Col>
-            <Toggle title="TEST" description="hoge" icon={["fas", "power-off"]}/>
-          </Col>
-          <Col>
-            <Toggle title="TEST" description="hoge" btnText="Power" icon={["fas", "power-off"]} onClick={() => {
-
-            }}/>
+            <Range description="TEMP" value={20} step={0.5} from={16.0} to={31.0} suffix="℃" />
           </Col>
         </Row>
       </div>
