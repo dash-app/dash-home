@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import Toggle from '../components/controller/Toggle';
 import Range from '../components/controller/Range';
+import List from '../components/controller/List';
 
 interface Props { }
 interface State { }
@@ -22,6 +23,7 @@ class Sandbox extends React.Component<Props, State> {
           <Col>
             <Range description="TEMP" value={20} step={0.5} from={16.0} to={31.0} suffix="℃" />
           </Col>
+          <Col><List description="List" values={["auto","1","2","3","4","5"]}/></Col>
         </Row>
       </div>
     );
