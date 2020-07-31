@@ -2,10 +2,9 @@ package controller
 
 import "github.com/dash-app/remote-go/aircon"
 
-type Aircon struct {
-	State *aircon.State
-}
+// Aircon - Implmenet for state handler
+type Aircon aircon.State
 
+// TODO: Add Convert & Send Func
 func (ac *Aircon) TODO() {
-
 }
