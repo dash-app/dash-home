@@ -12,6 +12,7 @@ import Home from './templates/Home';
 import Settings from './templates/Settings';
 import About from './templates/About';
 import Sandbox from './templates/Sandbox';
+import DemoAircon from './templates/DemoAircon';
 
 // Custom themes
 import { Container } from 'react-bootstrap';
@@ -36,6 +37,10 @@ const App: React.FC = () => {
 
           {/* Sandbox Page (Remove before Release!) */}
           <Route path="/sandbox" component={Sandbox} />
+
+          {/* Component demo (AIRCON) */}
+          <Route path="/demo/aircon" component={DemoAircon} />
+
         </Contents>
       </Container>
     </Router>
