@@ -12,6 +12,12 @@ interface Props {
 interface State {
     status?: string,
     values: string[],
+    variant?: string,
+}
+
+function setvariant() {
+    var btn = <Button/>
+    
 }
 
 class List extends React.Component<Props, State> {
@@ -19,7 +25,8 @@ class List extends React.Component<Props, State> {
     constructor(props: Props){
         super(props)
         this.state = {
-            values : this.props.values,
+            values: this.props.values,
+            status: this.props.status,
         }
     }
 
@@ -27,6 +34,9 @@ class List extends React.Component<Props, State> {
         this.setState({
             status: e
         })
+        styled(Button)`
+        
+        `
     }
 
     render() {
@@ -57,7 +67,7 @@ class List extends React.Component<Props, State> {
                                         type="button"
                                         size="lg"
                                         key={e}
-                                        variant={e === this.props.status ? "primary" : "secondary"}
+                                        variant={e === this.state.status ? "primary" : "secondary"}
                                         onClick={() => this.onClick(e)}
                                     >
                                         {e}
