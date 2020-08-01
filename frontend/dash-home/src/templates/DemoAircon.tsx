@@ -25,30 +25,36 @@ class DemoAircon extends React.Component<Props, State> {
 
     render() {
         return (
-            <Container fluid>
+            <div>
                 <h1>demo // aircon</h1>
                 <BaseCard>
                     <Card.Body>
                         <Card.Title>
                             <Icon icon={["fas", "fan"]} style={{color: "#0088FF"}}/>
                         </Card.Title>
-                        <Row xs={2} md={4} lg={6}>
-                            <Col>
+                        <Row>
+                            <Contents>
                                 <Toggle description="運転" value={false} icon={["fas", "power-off"]} />
-                            </Col>
-                            <Col>
+                            </Contents>
+                            <Contents>
                                 <Range description="温度" value={20} step={0.5} from={16.0} to={31.0} suffix="℃" />
-                            </Col>
-                            <Col>
+                            </Contents>
+                            <Contents>
                                 <List description="モード" values={["cool", "dry", "heat"]} status={"cool"} />
-                            </Col>
-                            <Col>
-                                <List description="風量" values={["auto", "1", "2", "3", "4", "5"]} status={"auto"} />
-                            </Col>
+                            </Contents>
+                            <Contents>
+                                <List drop={true} description="風量" values={["auto", "1", "2", "3", "4", "5"]} status={"auto"} />
+                            </Contents>
+                            <Contents>
+                                <List drop={true} description="風向上下" values={["auto", "swing", "1", "2", "3", "4", "5"]} status={"auto"} />
+                            </Contents>
+                            <Contents>
+                                <List drop={true} description="風向左右" values={["left", "mid_left", "center", "mid_right", "right", "swing"]} status={"center"} />
+                            </Contents>
                         </Row>
                     </Card.Body>
                 </BaseCard>
-            </Container>
+            </div>
         )
     }
 }
@@ -63,5 +69,9 @@ const Icon = styled(FontAwesomeIcon)`
     margin-left: 4px;
     margin-right: 4px;
 `
-
+const Contents = styled(Col)`
+    padding-top: 12px;
+    padding-bottom: 12px;
+    min-width: auto;
+`
 export default DemoAircon;

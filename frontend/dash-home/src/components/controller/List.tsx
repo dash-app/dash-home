@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, ButtonGroup, Col, Container, Row } from 'react-bootstrap';
+import { Button, ButtonGroup, Col, Container, Dropdown, DropdownButton, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ interface Props {
     description?: string,
     values: string[],
     status?: string,
+    drop?: boolean,
 }
 interface State {
     status?: string,
@@ -16,7 +17,7 @@ interface State {
 
 class List extends React.Component<Props, State> {
 
-    constructor(props: Props){
+    constructor(props: Props) {
         super(props)
         this.state = {
             values: this.props.values,
@@ -31,6 +32,7 @@ class List extends React.Component<Props, State> {
     }
 
     render() {
+        console.log(this.props)
         return (
             <Container fluid>
                 <Row>
@@ -50,7 +52,22 @@ class List extends React.Component<Props, State> {
                     </Col>
                 </Row>
                 <Row>
-                    <Col>
+                    <Col className="d-block d-sm-none">
+                        <DropdownButton title={this.state.status} size="lg" drop="right">
+                            {this.props.values.map((e) => {
+                                return (
+                                    <Dropdown.Item
+                                        key={e}
+                                        onClick={() => this.onClick(e)}
+                                        active={e === this.state.status}
+                                    >
+                                        {e}
+                                    </Dropdown.Item>
+                                )
+                            })}
+                        </DropdownButton>
+                    </Col>
+                    <SlideContents className="d-none d-sm-inline-flex">
                         <ButtonGroup>
                             {this.props.values.map((e) => {
                                 return (
@@ -66,12 +83,16 @@ class List extends React.Component<Props, State> {
                                 )
                             })}
                         </ButtonGroup>
-                    </Col>
+                    </SlideContents>
                 </Row>
             </Container>
         )
     }
 }
+
+const SlideContents = styled(Col)`
+    overflow-x: auto;
+`
 
 const Span = styled.span`
     display: inline-block;
