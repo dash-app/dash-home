@@ -25,18 +25,6 @@ class Shot extends React.Component<Props, State> {
         }
     }
 
-    oncheange = () => {
-        this.setState({
-            variant: "primary"
-        })
-    }
-
-    ondefault = () => {
-        this.setState({
-            variant: "outline-secondary"
-        })
-    }
-
     onclick = () => {
         alert(this.props.value)
     }
@@ -54,12 +42,10 @@ class Shot extends React.Component<Props, State> {
                 <Row>
                     <Col>
                         <Button
-                            variant = {this.state.variant}
+                            variant = "primary"
                             type="button"
                             size="lg"
                             onClick = {() => this.onclick()}
-                            onMouseOver = {() => this.oncheange()}
-                            onMouseOut = {() => this.ondefault()}
                         >
                             {this.props.text}
                         </Button>
