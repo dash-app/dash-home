@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button, ButtonGroup, Col, Container, Dropdown, DropdownButton, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { H1, P } from '../atoms/Core';
 
 import styled from 'styled-components';
 
@@ -37,18 +38,18 @@ class List extends React.Component<Props, State> {
             <Container fluid>
                 <Row>
                     <Col>
-                        <h1>
+                        <H1>
                             <Span>
                                 {this.state.status}
                             </Span>
-                        </h1>
+                        </H1>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <p>
+                        <P>
                             <Span>{this.props.description}</Span>
-                        </p>
+                        </P>
                     </Col>
                 </Row>
                 <Row>

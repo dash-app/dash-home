@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Alert, Button, Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { H1, P } from '../atoms/Core';
 
 import styled from 'styled-components';
 
@@ -34,9 +35,9 @@ class Shot extends React.Component<Props, State> {
             <Container fluid>
                 <Row>
                     <Col>
-                        <h1>
+                        <H1>
                             <Span>{this.props.description}</Span>
-                        </h1>
+                        </H1>
                     </Col>
                 </Row>
                 <Row>

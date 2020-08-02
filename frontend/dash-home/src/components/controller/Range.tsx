@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button, ButtonGroup, Col, Container, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { H1, P } from '../atoms/Core';
 
 import styled from 'styled-components';
 
@@ -42,19 +43,19 @@ class Range extends React.Component<Props, State> {
             <Container fluid>
                 <Row>
                     <Col>
-                        <h1>
+                        <H1>
                             <Span>
                                 {this.state.value.toFixed(1)}
                                 {this.props.suffix!}
                             </Span>
-                        </h1>
+                        </H1>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <p>
+                        <P>
                             <Span>{this.props.description}</Span>
-                        </p>
+                        </P>
                     </Col>
                 </Row>
                 <Row>
@@ -63,18 +64,18 @@ class Range extends React.Component<Props, State> {
                             <Button
                                 variant="primary"
                                 type="button"
+                                size="lg"
                                 onClick={this.onDecrementEvent}
                                 disabled={this.state.value <= this.props.from}
-                                size="lg"
                             >
                                 <Icon icon={["fas", "chevron-down"]} />
                             </Button>
                             <Button
                                 variant="primary"
                                 type="button"
+                                size="lg"
                                 onClick={this.onIncrementEvent}
                                 disabled={this.state.value >= this.props.to}
-                                size="lg"
                             >
                                 <Icon icon={["fas", "chevron-up"]} />
                             </Button>

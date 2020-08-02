@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-
+import { H1, P } from '../atoms/Core';
 
 import styled from 'styled-components';
 
@@ -36,16 +36,16 @@ class Toggle extends React.Component<Props, State> {
             <Container fluid>
                 <Row>
                     <Col>
-                        <h1>
+                        <H1>
                             <Span>{this.state.value ? "ON" : "OFF"}</Span>
-                        </h1>
+                        </H1>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <p>
+                        <P>
                             <Span>{this.props.description}</Span>
-                        </p>
+                        </P>
                     </Col>
                 </Row>
                 <Row>
@@ -54,8 +54,8 @@ class Toggle extends React.Component<Props, State> {
                                 <Button
                                     variant="primary"
                                     type="button"
-                                    onClick={this.onToggleEvent}
                                     size="lg"
+                                    onClick={this.onToggleEvent}
                                 >
                                     {this.props.icon &&
                                         <Icon icon={this.props.icon} />
