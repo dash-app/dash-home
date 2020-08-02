@@ -5,6 +5,7 @@ import (
 
 	"github.com/dash-app/dash-home/internal/logger"
 	"github.com/dash-app/dash-home/pkg/agent"
+	"github.com/dash-app/dash-home/pkg/controller"
 	"github.com/dash-app/dash-home/pkg/room"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -12,13 +13,15 @@ import (
 
 // Subset - HTTP Subset
 type Subset struct {
-	Agent agent.Agent
-	Room  room.Room
+	Agent      agent.Agent
+	Room       room.Room
+	Controller *controller.Controller
 }
 
 type httpServer struct {
-	agent agent.Agent
-	room  room.Room
+	agent      agent.Agent
+	room       room.Room
+	controller *controller.Controller
 }
 
 // NewHTTPServer - Start HTTP Server
@@ -29,8 +32,9 @@ type httpServer struct {
 // @license.url https://opensource.org/licenses/MIT
 func NewHTTPServer(subset *Subset) *gin.Engine {
 	h := httpServer{
-		agent: subset.Agent,
-		room:  subset.Room,
+		agent:      subset.Agent,
+		room:       subset.Room,
+		controller: subset.Controller,
 	}
 
 	r := gin.Default()

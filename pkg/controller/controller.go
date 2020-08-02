@@ -1,18 +1,18 @@
 package controller
 
-type Controller interface {
+type Controller struct {
+	Storage *Storage
 }
 
-type controllerService struct {
-	// Store?
-}
+func New(basePath string) (*Controller, error) {
+	store, err := NewStorage(basePath)
+	if err != nil {
+		return nil, err
+	}
 
-// Remote - Declare Remote controller
-type Remote struct {
-	Vendor string `json:"vendor"`
-	Model  string `json:"model"`
-}
+	c := &Controller{
+		Storage: store,
+	}
 
-func New() Controller {
-	return &controllerService{}
+	return c, nil
 }

@@ -4,16 +4,15 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/k0kubun/pp"
 )
 
 // SetControllerRequest - Create / Update controller request
 type SetControllerRequest struct {
 	//Aircon *aircon.Controller
 	Name string `json:"name" validate:"required" example:"Bedroom Airconditioner"`
-	Kind string `json:"kind" validate:"required" eaxmple:"REMOTE"`
-
-	// Controllers (nill will be ignore)
+	Kind string `json:"kind" validate:"required" eaxmple:"AIRCON"`
+	Type string `json:"type" validate:"required" example:"REMOTE"`
+	// Controllers (nil will be ignore)
 	Remote *RemoteController `json:"remote,omitempty"`
 
 	// TODO: Add Switchbot Controller
@@ -41,7 +40,7 @@ type ControllerResponse struct {
 // @Success 200 {object} []Controllers
 // @Produce json
 func (h *httpServer) getControllers(c *gin.Context) {
-	return
+	c.JSON(http.StatusOK, h.controller.Storage.GetAll())
 }
 
 // Create Controller
@@ -60,6 +59,15 @@ func (h *httpServer) postControllers(c *gin.Context) {
 		return
 	}
 
-	// TODO: Get Controller from name
-	pp.Println(req)
+	switch req.Type {
+	case "REMOTE":
+		r, err := h.controller.Storage.CreateRemote(req.Name, req.Kind, req.Remote.Vendor, req.Remote.Model)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, r)
+	default:
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid type requested"})
+	}
 }
