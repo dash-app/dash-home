@@ -27,7 +27,7 @@ class Navigation extends React.Component<Props, State> {
             <BarCol>
               <Title>
                 <FontAwesomeIcon icon={["fas", "home"]} />
-                <span style={{ margin: "0.5em" }}>太郎さんのおうち / 寝室</span>
+                  <span style={{ margin: "0.5em" }}>寝室</span>
               </Title>
               <RoomStatus>
                 <StatusBox>
@@ -36,7 +36,7 @@ class Navigation extends React.Component<Props, State> {
                 </StatusBox>
                 <StatusBox>
                   <FontAwesomeIcon icon={["fas", "tint"]} />
-                  <StatusText>70%</StatusText>
+                  <StatusText>40%</StatusText>
                 </StatusBox>
               </RoomStatus>
             </BarCol>
