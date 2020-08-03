@@ -56,7 +56,9 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 	r.GET("/api/v1/controllers", h.getControllers)
 	r.POST("/api/v1/controllers", h.postControllers)
 
+	// Controllers -> ByID (individual)
 	r.GET("/api/v1/controllers/:id", h.getControllerByID)
+	r.POST("/api/v1/controllers/:id", h.postControllerByID)
 
 	return r
 }
