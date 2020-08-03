@@ -6,6 +6,7 @@ import (
 
 	"github.com/dash-app/dash-home/pkg/storage"
 	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 )
 
 type Storage struct {
@@ -24,12 +25,13 @@ type Entry struct {
 
 func NewStorage(basePath string) (*Storage, error) {
 	store := &Storage{
-		Path: basePath + "/" + "controllers.json",
+		Path:    basePath + "/" + "controllers.json",
+		Entries: make(map[string]*Entry),
 	}
 	if _, err := os.Stat(store.Path); os.IsNotExist(err) {
-		store.Entries = make(map[string]*Entry)
 		return store, store.Save()
 	} else if err == nil {
+		logrus.Infof("Loading....")
 		if err := store.Load(); err != nil {
 			return nil, err
 		}
@@ -40,11 +42,11 @@ func NewStorage(basePath string) (*Storage, error) {
 }
 
 func (s *Storage) Load() error {
-	return storage.Load(s.Path, s.Entries)
+	return storage.Load(s.Path, &s.Entries)
 }
 
 func (s *Storage) Save() error {
-	return storage.Save(s.Path, s.Entries)
+	return storage.Save(s.Path, &s.Entries)
 }
 
 // GetAll - Get all controllers

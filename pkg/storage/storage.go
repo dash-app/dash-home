@@ -53,7 +53,7 @@ func Load(path string, entry interface{}) error {
 	if err != nil {
 		return err
 	}
-	if err := json.Unmarshal(b, &entry); err != nil {
+	if err := json.Unmarshal(b, entry); err != nil {
 		return err
 	}
 	return nil

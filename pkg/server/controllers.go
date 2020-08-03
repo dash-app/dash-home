@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -70,4 +71,18 @@ func (h *httpServer) postControllers(c *gin.Context) {
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid type requested"})
 	}
+}
+
+func (h *httpServer) getControllerByID(c *gin.Context) {
+	id := c.Param("id")
+	r, err := h.controller.Storage.GetByID(id)
+	if err != nil {
+		if err == errors.New("not found") {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+		return
+	}
+	c.JSON(http.StatusOK, r)
 }
