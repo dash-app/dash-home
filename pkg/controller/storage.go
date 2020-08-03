@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/dash-app/dash-home/pkg/storage"
+	"github.com/dash-app/remote-go/aircon"
 	"github.com/google/uuid"
-	"github.com/sirupsen/logrus"
 )
 
 type Storage struct {
@@ -15,12 +15,12 @@ type Storage struct {
 }
 
 type Entry struct {
-	ID     string  `json:"id,omitempty"`
-	Name   string  `json:"name"`
-	Kind   string  `json:"kind"`
-	Type   string  `json:"type"`
-	Remote *Remote `json:"remote"`
-	Aircon *Aircon `json:"aircon,omitempty"`
+	ID     string        `json:"id,omitempty"`
+	Name   string        `json:"name"`
+	Kind   string        `json:"kind"`
+	Type   string        `json:"type"`
+	Remote *Remote       `json:"remote"`
+	Aircon *aircon.State `json:"aircon,omitempty"`
 }
 
 func NewStorage(basePath string) (*Storage, error) {
@@ -31,7 +31,6 @@ func NewStorage(basePath string) (*Storage, error) {
 	if _, err := os.Stat(store.Path); os.IsNotExist(err) {
 		return store, store.Save()
 	} else if err == nil {
-		logrus.Infof("Loading....")
 		if err := store.Load(); err != nil {
 			return nil, err
 		}
@@ -81,7 +80,7 @@ func (s *Storage) CreateRemote(name, kind, vendor, model string) (*Entry, error)
 	}
 
 	id, _ := uuid.NewUUID()
-	s.Entries[id.String()] = &Entry{
+	entry := &Entry{
 		ID:   id.String(),
 		Name: name,
 		Kind: kind,
@@ -92,7 +91,20 @@ func (s *Storage) CreateRemote(name, kind, vendor, model string) (*Entry, error)
 		},
 	}
 
-	// TODO: Put default state for aircon etc.
+	switch entry.Kind {
+	case "AIRCON":
+		r, err := entry.Remote.GetAircon()
+		if err != nil {
+			return nil, err
+		}
+		if state, err := r.DefaultState(); err == nil {
+			entry.Aircon = state
+		} else {
+			return nil, err
+		}
+	}
 
-	return s.Entries[id.String()], s.Save()
+	// TODO: Put default state for aircon etc.
+	s.Entries[id.String()] = entry
+	return entry, s.Save()
 }
