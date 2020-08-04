@@ -34,6 +34,25 @@ func (e *Entry) SendAsRemote(payload []byte) error {
 		if err := json.Unmarshal(payload, &ac); err != nil {
 			return fmt.Errorf("failed recognize type: %s", reflect.TypeOf(payload))
 		}
+
+		// Get AC Provider
+		a, err := e.Remote.GetAircon()
+		if err != nil {
+			return err
+		}
+
+		// Validate
+		if err := ac.Validate(a.Remote.Template()); err != nil {
+			return err
+		}
+
+		// Send
+		// TODO: Implement here
+
+		// Update
+		if _, err := e.Aircon.UpdateFromEntry(ac, a.Remote.Template()); err != nil {
+			return err
+		}
 	}
 
 	return nil
