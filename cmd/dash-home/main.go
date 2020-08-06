@@ -51,7 +51,7 @@ func main() {
 		Store: storage.RoomStore,
 	})
 
-	controller, err := controller.New(path)
+	controller, err := controller.New(path, agent)
 	if err != nil {
 		panic(err)
 	}

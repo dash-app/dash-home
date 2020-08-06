@@ -89,21 +89,6 @@ func (h *httpServer) getControllerByID(c *gin.Context) {
 
 func (h *httpServer) postControllerByID(c *gin.Context) {
 	id := c.Param("id")
-	entry, err := h.controller.Storage.GetByID(id)
-	if err != nil {
-		if err == errors.New("not found") {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		}
-		return
-	}
-
-	if entry.Type != "REMOTE" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "type does not REMOTE"})
-		return
-	}
-
 	raw, err := c.GetRawData()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -111,9 +96,14 @@ func (h *httpServer) postControllerByID(c *gin.Context) {
 	}
 
 	// Try Scan & Generate & Send
-	if err := entry.SendAsRemote(raw); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := h.controller.HandleRawEntry(id, raw, func(r interface{}) {
+		// Return updated result with callback func
+		c.JSON(http.StatusOK, r)
+	}); err != nil {
+		if err == errors.New("not found") {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
 	}
-	c.JSON(http.StatusOK, entry.Aircon.ToEntry())
 }
