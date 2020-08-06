@@ -37,6 +37,7 @@ type Agent interface {
 type agentService struct {
 	store   *storage.AgentStore
 	ambient *Ambient
+	pigent  *Pigent
 }
 
 func New(subset *Subset) Agent {
