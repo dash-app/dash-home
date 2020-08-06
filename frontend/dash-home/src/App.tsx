@@ -48,8 +48,6 @@ const App: React.FC = () => {
 }
 
 const Contents = styled.div`
-  padding-left: 4em;
-  padding-right: 4em;
 `
 
 export default App;

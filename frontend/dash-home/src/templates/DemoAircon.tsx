@@ -25,7 +25,7 @@ class DemoAircon extends React.Component<Props, State> {
 
     render() {
         return (
-            <div>
+            <Container fluid="lg">
                 <h1>demo // aircon</h1>
                 <BaseCard>
                     <Card.Body>
@@ -54,7 +54,7 @@ class DemoAircon extends React.Component<Props, State> {
                         </Row>
                     </Card.Body>
                 </BaseCard>
-            </div>
+            </Container>
         )
     }
 }
