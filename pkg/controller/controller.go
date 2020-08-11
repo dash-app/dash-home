@@ -1,13 +1,16 @@
 package controller
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"reflect"
+	"time"
 
 	"github.com/dash-app/dash-home/pkg/agent"
 	"github.com/dash-app/remote-go/aircon"
+	"github.com/sirupsen/logrus"
 )
 
 type Controller struct {
@@ -29,17 +32,10 @@ func New(basePath string, agent agent.Agent) (*Controller, error) {
 	return c, nil
 }
 
-func (c *Controller) HandleWithCallback(id string, fun func(e interface{})) error {
-	entry, err := c.Storage.GetByID(id)
-	if err != nil {
-		return err
-	}
-
-	fun(entry)
-	return nil
-}
-
 func (c *Controller) HandleRawEntry(id string, payload []byte, callback func(e interface{})) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	// NOTE: payload must be match target entry.
 	// such as: aircon.Entry (remote-go)
 	entry, err := c.Storage.GetByID(id)
@@ -67,13 +63,16 @@ func (c *Controller) HandleRawEntry(id string, payload []byte, callback func(e i
 		}
 
 		// Generate
-		//code, err := acRemote.Remote.Generate(ac)
-		//if err != nil {
-		//	return err
-		//}
+		code, err := acRemote.Remote.Generate(ac)
+		if err != nil {
+			return err
+		}
 
 		// Send
-		// TODO: Implement here
+		if err := c.Agent.SendIR(ctx, code); err != nil {
+			logrus.WithError(err).Errorf("[Send] Failed Send IR")
+			return err
+		}
 
 		// Update
 		updated, err := entry.Aircon.UpdateFromEntry(ac, acRemote.Remote.Template())
