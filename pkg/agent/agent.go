@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/dash-app/dash-home/pkg/storage"
+	"github.com/dash-app/remote-go/hex"
 	"github.com/k0kubun/pp"
 	"github.com/sirupsen/logrus"
 )
@@ -32,6 +33,9 @@ type Agent interface {
 
 	// Sensors
 	GetAmbient() (*Ambient, error)
+
+	// Remote
+	SendIR(context.Context, []*hex.HexCode) error
 }
 
 type agentService struct {
