@@ -35,11 +35,13 @@ func NewAgentStore(basePath string) (*AgentStore, error) {
 	}
 
 	if _, err := os.Stat(store.Path); os.IsNotExist(err) {
-		// TODO: Generate default settings?
-		// Create File
-		//if err := store.Save(); err != nil {
-		//	return nil, err
-		//}
+		// Create default agent
+		if _, err := store.Create("localhost:8081"); err != nil {
+			return nil, err
+		}
+		if err := store.save(); err != nil {
+			return nil, err
+		}
 	} else if err == nil {
 		// Load
 		if err := store.load(); err != nil {
