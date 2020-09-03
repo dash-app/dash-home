@@ -1,49 +1,59 @@
-import * as React from 'react';
+import React from 'react';
 // import Board from './components/basements/Board';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Provider, useSelector } from 'react-redux';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import styled from 'styled-components';
+import { Helmet } from "react-helmet";
+
+// Redux Store
+import store from './store';
 
 // Routing Template
 import Home from './templates/Home';
 import Settings from './templates/Settings';
 import About from './templates/About';
+import Controller from './templates/Controller';
 import Sandbox from './templates/Sandbox';
 import DemoAircon from './templates/DemoAircon';
 
 // Custom themes
-import { Container } from 'react-bootstrap';
 import './themes/bootstrap.min.css';
 import './themes/ui.css';
-
-// UI Components./components/navbar/Navigation
-import Navigation from './components/navbar/Navigation';
 
 const App: React.FC = () => {
   // Initialize Icons
   library.add(fab, fas, far);
 
+  const color = useSelector<any, string>((state) => state.themes.name) === "CHEEKY_WHITE" ?
+    { backgroundColor: "#FFFFFF" } :
+    { backgroundColor: "#111115" }
+
   return (
-    <Router>
-      <Navigation />
-      <Container fluid>
+    <Provider store={store}>
+      <Router>
+        <Helmet>
+          <style>{`body { background-color: ${color}; }`}</style>
+        </Helmet>
         <Contents>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" render={() => <Home ctrl={""} />} />
           <Route path="/settings" component={Settings} />
           <Route path="/about" component={About} />
+
+          {/* Controllers */}
+          <Route path="/controllers/:id" component={Controller} />
 
           {/* Sandbox Page (Remove before Release!) */}
           <Route path="/sandbox" component={Sandbox} />
 
           {/* Component demo (AIRCON) */}
           <Route path="/demo/aircon" component={DemoAircon} />
-
         </Contents>
-      </Container>
-    </Router>
+      </Router>
+    </Provider>
   );
 }
 

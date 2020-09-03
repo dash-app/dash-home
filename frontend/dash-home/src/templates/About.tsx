@@ -1,15 +1,22 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { H1, P } from '../components/atoms/Core';
+import Basement from '../components/basements/Basement';
+import { Button } from '../components/atoms/Themed';
 
-interface Props {}
-interface State {}
+interface Props { }
+interface State { }
 
 class About extends React.Component<Props, State> {
   render() {
     return (
-      <div>
-        <h1>Dash-Home</h1>
-        <p>This application made for all peoples.</p>
-      </div>
+      <Basement>
+        <H1>Dash-Home</H1>
+        <P>This application made for all peoples.</P>
+        <Link to="/">
+          <Button>Back</Button>
+        </Link>
+      </Basement>
     );
   }
 };

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Button, ButtonGroup, Col, Container, Dropdown, DropdownButton, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ButtonGroup, Col, Container, Dropdown, DropdownButton, Row } from 'react-bootstrap';
 import { H1, P } from '../atoms/Core';
 
 import styled from 'styled-components';
+import { Button } from '../atoms/Themed';
 
 interface Props {
     description?: string,
@@ -73,10 +73,10 @@ class List extends React.Component<Props, State> {
                             {this.props.values.map((e) => {
                                 return (
                                     <Button
-                                        type="button"
+                                        type="radio"
                                         size="lg"
                                         key={e}
-                                        variant={e === this.state.status ? "primary" : "secondary"}
+                                        selected={e === this.state.status}
                                         onClick={() => this.onClick(e)}
                                     >
                                         {e}
@@ -92,16 +92,11 @@ class List extends React.Component<Props, State> {
 }
 
 const SlideContents = styled(Col)`
-    overflow-x: auto;
+    // overflow-x: auto;
 `
 
 const Span = styled.span`
     display: inline-block;
 `
 
-const Icon = styled(FontAwesomeIcon)`
-    font-size: 1rem;
-    margin-left: 4px;
-    margin-right: 4px;
-`
 export default List

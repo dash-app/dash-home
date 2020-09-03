@@ -93,11 +93,11 @@ func (s *Storage) CreateRemote(name, kind, vendor, model string) (*Entry, error)
 
 	switch entry.Kind {
 	case "AIRCON":
-		r, err := entry.Remote.GetAircon()
+		remote, err := entry.Remote.GetAircon()
 		if err != nil {
 			return nil, err
 		}
-		if state, err := r.DefaultState(); err == nil {
+		if state, err := aircon.DefaultState(remote.Remote.Template()); err == nil {
 			entry.Aircon = state
 		} else {
 			return nil, err

@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Button, Col, Container, ListGroup, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { H1, P } from '../atoms/Core';
 
 import styled from 'styled-components';
+import { Button } from '../atoms/Themed';
 
 interface Props {
     description?: string,
@@ -52,7 +53,6 @@ class Toggle extends React.Component<Props, State> {
                     <Col>
                             {(this.props.icon || this.props.btnText) &&
                                 <Button
-                                    variant="primary"
                                     type="button"
                                     size="lg"
                                     onClick={this.onToggleEvent}

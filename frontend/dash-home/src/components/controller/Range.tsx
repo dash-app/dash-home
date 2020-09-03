@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Button, ButtonGroup, Col, Container, Row } from 'react-bootstrap';
+import { ButtonGroup, Col, Container, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { H1, P } from '../atoms/Core';
 
 import styled from 'styled-components';
+import { Button } from '../atoms/Themed';
 
 interface Props {
     description?: string,
@@ -62,7 +63,6 @@ class Range extends React.Component<Props, State> {
                     <Col>
                         <ButtonGroup>
                             <Button
-                                variant="primary"
                                 type="button"
                                 size="lg"
                                 onClick={this.onDecrementEvent}
@@ -71,7 +71,6 @@ class Range extends React.Component<Props, State> {
                                 <Icon icon={["fas", "chevron-down"]} />
                             </Button>
                             <Button
-                                variant="primary"
                                 type="button"
                                 size="lg"
                                 onClick={this.onIncrementEvent}

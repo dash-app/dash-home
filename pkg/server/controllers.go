@@ -107,3 +107,20 @@ func (h *httpServer) postControllerByID(c *gin.Context) {
 		}
 	}
 }
+
+func (h *httpServer) getControllerTemplateByID(c *gin.Context) {
+	id := c.Param("id")
+	r, err := h.controller.Storage.GetByID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	t, err := r.Remote.GetTemplate(r.Kind)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, t)
+}

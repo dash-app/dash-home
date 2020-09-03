@@ -1,4 +1,4 @@
-import { Nav, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -76,13 +76,6 @@ const Title = styled(Card.Title)`
 const Description = styled(Card.Subtitle)`
   color: #000000;
   font-size: 2em;
-  font-family: "M PLUS 1p";
-  font-weight: 300;
-`
-
-const TapHere = styled.p`
-  font-size: 1.5em;
-  text-align: center;
   font-family: "M PLUS 1p";
   font-weight: 300;
 `
