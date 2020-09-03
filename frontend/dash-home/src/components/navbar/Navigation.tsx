@@ -55,12 +55,12 @@ class Navigation extends React.Component<Props, State> {
 
 const CustomNavbar = styled(Navbar)`
   border: none;
-  // background-color: initial !important;
+  background-color: initial !important;
 `
 
 const BarCol = styled(Col)`
-  // padding-left: 4em;
-  // padding-right: 4em;
+  padding-left: 4em;
+  padding-right: 4em;
 `
 
 const Title = styled(Navbar.Brand)`

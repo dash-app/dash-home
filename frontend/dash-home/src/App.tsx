@@ -28,15 +28,17 @@ const App: React.FC = () => {
   // Initialize Icons
   library.add(fab, fas, far);
 
-  const color = useSelector<any, string>((state) => state.themes.name) === "CHEEKY_WHITE" ?
-    { backgroundColor: "#FFFFFF" } :
-    { backgroundColor: "#111115" }
-
   return (
     <Provider store={store}>
       <Router>
         <Helmet>
-          <style>{`body { background-color: ${color}; }`}</style>
+          <style>
+            {
+              `body { background-color: ${
+              useSelector<any, string>((state) => state.themes.name) === "CHEEKY_WHITE" ? "#FFFFFF" : "#111115"
+              }; }`
+            }
+          </style>
         </Helmet>
         <Contents>
           <Route exact path="/" render={() => <Home ctrl={""} />} />
