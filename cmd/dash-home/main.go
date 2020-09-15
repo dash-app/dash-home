@@ -59,7 +59,7 @@ func main() {
 	// Initialize HTTP Server...
 	httpPort := os.Getenv("HTTP_PORT")
 	if len(httpPort) == 0 {
-		httpPort = "8080"
+		httpPort = "13105"
 	}
 	if err := startHTTPServer(httpPort, agent, room, controller); err != nil {
 		panic(err)
