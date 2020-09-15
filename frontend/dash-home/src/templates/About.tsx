@@ -4,10 +4,7 @@ import { H1, P } from '../components/atoms/Core';
 import Basement from '../components/basements/Basement';
 import { Button } from '../components/atoms/Themed';
 
-interface Props { }
-interface State { }
-
-class About extends React.Component<Props, State> {
+class About extends React.Component {
   render() {
     return (
       <Basement>
@@ -19,6 +16,6 @@ class About extends React.Component<Props, State> {
       </Basement>
     );
   }
-};
+}
 
 export default About;

@@ -7,40 +7,29 @@ import { Container } from '../atoms/Themed';
 import { Div } from '../atoms/Core';
 import { connect } from 'react-redux';
 import { ThemeAction } from '../../reducers/themes/type';
+import ThemeContext from '../themes/Theme';
 
 interface Props {
   children: React.ReactNode,
-  theme: string
 }
+
 interface State { }
 
-const mapStateToProps = (store: { themes: ThemeAction }) => {
-  return {
-    theme: store.themes.name,
-  }
-}
-
-const mapDispatchToProps = (dispatch: Dispatch, Props: Props) => ({
-})
-
 class Basement extends React.Component<Props, State> {
-  static defaultProps: { theme: string; };
-  
   render() {
-    console.log(this.props);
     return (
-      <Div>
-        <Navigation theme={this.props.theme} roomName={"room"} />
-        <Container fluid>
-          {this.props.children}
-        </Container>
-      </Div>
+      <ThemeContext.Consumer>
+        {(theme) => (
+          <Div>
+            <Navigation theme={theme} roomName={"room"} />
+            <Container fluid>
+              {this.props.children}
+            </Container>
+          </Div>
+        )}
+      </ThemeContext.Consumer>
     )
   }
 }
 
-Basement.defaultProps = {
-  theme: "CHEEKY_WHITE"
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Basement);
+export default Basement;

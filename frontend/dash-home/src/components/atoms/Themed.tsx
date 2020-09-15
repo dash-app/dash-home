@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 
 import {
     Button as BaseButton,
     Container as BaseContainer
 } from 'react-bootstrap';
+import ThemeContext from '../themes/Theme';
 
 // Button
 const Button = (props: any) => {
-    const theme = useSelector<any, string>((state) => state.themes.name)
+    const theme = React.useContext(ThemeContext)
     // provided current (for Button Group)
     if (props.type === "radio") {
         return (
@@ -42,7 +42,7 @@ const Container = (props: any) => {
     return (
         <BaseContainer
             style={
-                useSelector<any, string>((state) => state.themes.name) === "CHEEKY_WHITE" ?
+                React.useContext(ThemeContext) === "CHEEKY_WHITE" ?
                     { backgroundColor: "#FFFFFF" } :
                     { backgroundColor: "#111115" }
             }
