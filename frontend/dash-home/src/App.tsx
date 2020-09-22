@@ -9,12 +9,13 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { Helmet } from "react-helmet";
 
 // Routing Template
-import Home from './templates/Home';
-import Settings from './templates/Settings';
-import About from './templates/About';
-import Controller from './templates/Controller';
-import Sandbox from './templates/Sandbox';
-import DemoAircon from './templates/DemoAircon';
+import Home from './pages/Home';
+import Settings from './pages/Settings';
+import About from './pages/About';
+import Controllers from './pages/Controllers';
+import Controller from './pages/Controller';
+import Sandbox from './pages/Sandbox';
+import DemoAircon from './pages/DemoAircon';
 
 // Custom themes
 import ThemeContext from './components/themes/Theme';
@@ -42,6 +43,7 @@ const App: React.FC = () => {
         <Route path="/about" component={About} />
 
         {/* Controllers */}
+        <Route exact path="/controllers" component={Controllers} />
         <Route path="/controllers/:id" component={Controller} />
 
         {/* Sandbox Page (Remove before Release!) */}

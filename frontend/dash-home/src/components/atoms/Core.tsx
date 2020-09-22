@@ -53,9 +53,23 @@ const Div = (props: any) => {
     )
 }
 
+const Span = (props: any) => {
+    return (
+        <span
+            style={{
+                fontFamily: "M PLUS 1p",
+                fontWeight: 400,
+                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
+            }} {...props}>
+            {props.children}
+        </span>
+    )
+}
+
 export {
     H1,
     H2,
     P,
-    Div
+    Div,
+    Span
 };

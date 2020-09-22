@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
     Button as BaseButton,
-    Container as BaseContainer
+    Container as BaseContainer,
+    Spinner as BaseSpinner
 } from 'react-bootstrap';
 import ThemeContext from '../themes/Theme';
 
@@ -53,7 +55,37 @@ const Container = (props: any) => {
     )
 }
 
+const Icon = (props: any) => {
+    return (
+        <FontAwesomeIcon
+            style={{
+                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFF"
+            }}
+            {...props}
+        >
+            {props.children}
+        </FontAwesomeIcon>
+    )
+}
+
+const Spinner = (props: any) => {
+    return (
+        <BaseSpinner
+            style={{
+                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFF",
+                border: "0.15em solid currentColor",
+                borderRightColor: "transparent"
+            }}
+            {...props}
+        >
+            {props.children}
+        </BaseSpinner>
+    )
+}
+
 export {
     Button,
-    Container
+    Container,
+    Icon,
+    Spinner
 };

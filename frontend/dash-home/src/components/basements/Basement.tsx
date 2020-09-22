@@ -2,11 +2,8 @@ import * as React from 'react';
 
 // Navbar
 import Navigation from '../navbar/Navigation';
-import { Dispatch } from 'redux';
 import { Container } from '../atoms/Themed';
 import { Div } from '../atoms/Core';
-import { connect } from 'react-redux';
-import { ThemeAction } from '../../reducers/themes/type';
 import ThemeContext from '../themes/Theme';
 
 interface Props {

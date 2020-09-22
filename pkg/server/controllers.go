@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/dash-app/remote-go/aircon"
 	"github.com/gin-gonic/gin"
 )
 
@@ -88,23 +89,27 @@ func (h *httpServer) getControllerByID(c *gin.Context) {
 }
 
 func (h *httpServer) postControllerByID(c *gin.Context) {
+	// id := c.Param("id")
+	// TODO: Update controller name, vendor etc.
+}
+
+func (h *httpServer) postAirconByID(c *gin.Context) {
+	var req *aircon.Entry
 	id := c.Param("id")
-	raw, err := c.GetRawData()
-	if err != nil {
+	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Try Scan & Generate & Send
-	if err := h.controller.HandleRawEntry(id, raw, func(r interface{}) {
-		// Return updated result with callback func
-		c.JSON(http.StatusOK, r)
-	}); err != nil {
+	// Try Push
+	if r, err := h.controller.PushAircon(id, req); err != nil {
 		if err == errors.New("not found") {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
+	} else {
+		c.JSON(http.StatusOK, r)
 	}
 }
 
