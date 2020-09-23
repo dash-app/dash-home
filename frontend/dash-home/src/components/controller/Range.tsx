@@ -14,6 +14,7 @@ interface Props {
     to: number,
     prefix?: string,
     suffix?: string,
+    onClick?: any,
 }
 interface State {
     value: number,
@@ -31,12 +32,18 @@ class Range extends React.Component<Props, State> {
         this.setState({
             value: this.state.value + this.props.step,
         })
+        if (this.props.onClick) {
+            this.props.onClick(this.state.value + this.props.step);
+        }
     }
 
     onDecrementEvent = () => {
         this.setState({
             value: this.state.value - this.props.step,
         })
+        if (this.props.onClick) {
+            this.props.onClick(this.state.value - this.props.step);
+        }
     }
 
     render() {

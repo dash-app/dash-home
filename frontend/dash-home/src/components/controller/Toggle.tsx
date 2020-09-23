@@ -12,6 +12,7 @@ interface Props {
     value: boolean,
     icon?: IconProp,
     btnText?: string,
+    onClick?: any,
 }
 
 interface State {
@@ -30,6 +31,9 @@ class Toggle extends React.Component<Props, State> {
         this.setState({
             value: !this.state.value,
         })
+        if (this.props.onClick) {
+            this.props.onClick(!this.state.value);
+        }
     }
 
     render() {

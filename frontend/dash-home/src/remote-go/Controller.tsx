@@ -31,8 +31,8 @@ export interface Aircon {
   temp: any,
   humid: string,
   fan: string,
-  horizontalVane: string,
-  verticalVane: string,
+  horizontal_vane: string,
+  vertical_vane: string,
 }
 
 export interface AirconState {
@@ -45,8 +45,8 @@ export interface AirconModes {
   temp: any,
   humid: string,
   fan: string,
-  horizontalVane: string,
-  verticalVane: string,
+  horizontal_vane: string,
+  vertical_vane: string,
 }
 
 export function fetchController(id: string, setResult: React.Dispatch<React.SetStateAction<ControllerResult | undefined>>) {

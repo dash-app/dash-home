@@ -2,30 +2,19 @@ import * as React from 'react';
 import Basement from '../components/basements/Basement';
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-import httpClient from '../httpClient';
 import { Div, Span } from '../components/atoms/Core';
-import { Alert, Card, Col, Row } from 'react-bootstrap';
+import { Alert, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 import { Button, Spinner } from '../components/atoms/Themed';
-import { API_ADDRESS } from '../config';
-import Shot from '../components/controller/Shot';
-import { AirconCard } from '../components/cards/CardBase';
-import Toggle from '../components/controller/Toggle';
 
 import AirconPanel from '../aircon/Aircon';
 
-import { Template, AirconModes, fetchTemplate, TemplateResult } from '../remote-go/Template';
+import { fetchTemplate, TemplateResult } from '../remote-go/Template';
 import { fetchController, ControllerResult } from '../remote-go/Controller';
 import { useEffect, useState } from 'react';
 
 interface Props extends RouteComponentProps<{ id: string }> { }
-
-interface State {
-}
-
-interface PanelProps {
-}
 
 const Controller: React.FC<Props> = props => {
   const id = props.match.params.id;
@@ -39,7 +28,6 @@ const Controller: React.FC<Props> = props => {
 
   return (
     <Basement>
-      <TestBoard t={"test"} onClick={(n: any) => {console.log(`fire!: ${n}`)}}/>
       {/* Loading Message */}
       {templateResult?.error == null &&
         templateResult == null &&
@@ -91,11 +79,6 @@ const Controller: React.FC<Props> = props => {
   )
 }
 
-const Contents = styled(Col)`
-  padding-top: 12px;
-  padding-bottom: 12px;
-  min-width: auto;
-`
 
 const CustomIcon = styled(FontAwesomeIcon)`
   margin-right: 4px;

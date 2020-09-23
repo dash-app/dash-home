@@ -52,8 +52,8 @@ export interface AirconModes {
   temp?: Action,
   humid?: Action,
   fan?: Action,
-  horizontalVane?: Action,
-  verticalVane?: Action,
+  horizontal_vane?: Action,
+  vertical_vane?: Action,
 }
 
 // ---
@@ -66,9 +66,12 @@ export function fetchTemplate(id: string, setResult: React.Dispatch<React.SetSta
   axios.request<Template>({
     url: `${API_ADDRESS}/api/v1/controllers/${id}/template`,
   })
-    .then(response => setResult({
-      template: response.data,
-    }))
+    .then(response => {
+      console.log(response.data);
+      setResult({
+        template: response.data,
+      })
+    })
     .catch(error => {
       console.error(`*** Fetch error:`)
       console.error(error)

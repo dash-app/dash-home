@@ -10,6 +10,7 @@ interface Props {
     values: string[],
     status?: string,
     drop?: boolean,
+    onClick?: any,
 }
 interface State {
     status?: string,
@@ -30,10 +31,12 @@ class List extends React.Component<Props, State> {
         this.setState({
             status: e
         })
+        if (this.props.onClick) {
+            this.props.onClick(e);
+        }
     }
 
     render() {
-        console.log(this.props)
         return (
             <Container fluid>
                 <Row>
