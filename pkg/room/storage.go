@@ -1,4 +1,4 @@
-package storage
+package room
 
 import (
 	"encoding/json"
@@ -9,16 +9,14 @@ import (
 	"github.com/google/uuid"
 )
 
-const ROOM_FILE = "room.json"
-
-// RoomStore - Store definition of Room
-type RoomStore struct {
+// Storage - Store definition of Room
+type Storage struct {
 	Path string
-	Room *Room
+	Room *Entry
 }
 
-// Room - Store of Room
-type Room struct {
+// Entry - Store of Room
+type Entry struct {
 	// ID - Room ID
 	ID string `json:"id"`
 
@@ -26,11 +24,10 @@ type Room struct {
 	Name string `json:"name" example:"john's room"`
 }
 
-func NewRoomStore(basePath string) (*RoomStore, error) {
-	store := &RoomStore{
-		Path: basePath + "/" + ROOM_FILE,
+func NewStorage(basePath string) (*Storage, error) {
+	store := &Storage{
+		Path: basePath + "/" + "room.json",
 	}
-
 	if _, err := os.Stat(store.Path); os.IsNotExist(err) {
 		// TODO: Generate default settings?
 		// Create File
@@ -39,7 +36,7 @@ func NewRoomStore(basePath string) (*RoomStore, error) {
 		//}
 	} else if err == nil {
 		// Load
-		if err := store.load(); err != nil {
+		if err := store.Load(); err != nil {
 			return nil, err
 		}
 	} else {
@@ -49,12 +46,12 @@ func NewRoomStore(basePath string) (*RoomStore, error) {
 	return store, nil
 }
 
-func (rs *RoomStore) Create(name string) (*Room, error) {
-	if rs.Room != nil {
+func (s *Storage) Create(name string) (*Entry, error) {
+	if s.Room != nil {
 		return nil, errors.New("room already exists")
 	}
 
-	rs.Room = &Room{
+	s.Room = &Entry{
 		ID: func() string {
 			r, _ := uuid.NewUUID()
 			return r.String()
@@ -62,36 +59,36 @@ func (rs *RoomStore) Create(name string) (*Room, error) {
 		Name: name,
 	}
 
-	return rs.Room, rs.save()
+	return s.Room, s.Save()
 }
 
-func (rs *RoomStore) Get() (*Room, error) {
-	if rs.Room == nil {
+func (s *Storage) Get() (*Entry, error) {
+	if s.Room == nil {
 		return nil, errors.New("room not found")
 	}
 
-	return rs.Room, nil
+	return s.Room, nil
 }
 
-func (rs *RoomStore) load() error {
-	b, err := ioutil.ReadFile(rs.Path)
+func (s *Storage) Load() error {
+	b, err := ioutil.ReadFile(s.Path)
 	if err != nil {
 		return err
 	}
-	if err := json.Unmarshal(b, &rs.Room); err != nil {
+	if err := json.Unmarshal(b, &s.Room); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (rs *RoomStore) save() error {
-	b, err := json.Marshal(rs.Room)
+func (s *Storage) Save() error {
+	b, err := json.Marshal(s.Room)
 	if err != nil {
 		return err
 	}
 
 	// Do Save
-	if err := ioutil.WriteFile(rs.Path, b, os.ModePerm); err != nil {
+	if err := ioutil.WriteFile(s.Path, b, os.ModePerm); err != nil {
 		return err
 	}
 

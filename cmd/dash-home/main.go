@@ -12,7 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func startHTTPServer(port string, agent agent.Agent, room room.Room, controller *controller.Controller) error {
+func startHTTPServer(port string, agent agent.Agent, room *room.RoomService, controller *controller.Controller) error {
 	logrus.Infof("[HTTP] HTTP Listening on %s...", port)
 	return server.NewHTTPServer(&server.Subset{
 		Agent:      agent,
@@ -47,10 +47,13 @@ func main() {
 	})
 	agent.InitPoll()
 
-	room := room.New(&room.Subset{
-		Store: storage.RoomStore,
-	})
+	// Room
+	room, err := room.New(path, agent)
+	if err != nil {
+		panic(err)
+	}
 
+	// Controller
 	controller, err := controller.New(path, agent)
 	if err != nil {
 		panic(err)
