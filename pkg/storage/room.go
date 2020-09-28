@@ -24,9 +24,6 @@ type Room struct {
 
 	// Name - Room name (ex: `john's room`)
 	Name string `json:"name" example:"john's room"`
-
-	// Remotes - Remote IDs
-	Remotes []string `json:"remotes"`
 }
 
 func NewRoomStore(basePath string) (*RoomStore, error) {
