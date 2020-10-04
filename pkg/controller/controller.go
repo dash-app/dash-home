@@ -73,6 +73,12 @@ func (c *Controller) PushAircon(id string, ac *aircon.Entry) (*aircon.Entry, err
 			return nil, err
 		}
 
+		// Insert
+		entry.Aircon = updated
+		if err := c.Storage.Save(); err != nil {
+			return nil, err
+		}
+
 		return updated.ToEntry(), nil
 	default:
 		return nil, errors.New("unsupported type provided")
