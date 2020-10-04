@@ -1,5 +1,5 @@
+import axios from "axios";
 import { API_ADDRESS } from "../config";
-import axios from "../httpClient";
 
 // Template
 export interface Template {
@@ -67,7 +67,7 @@ export function fetchTemplate(id: string, setResult: React.Dispatch<React.SetSta
     url: `${API_ADDRESS}/api/v1/controllers/${id}/template`,
   })
     .then(response => {
-      console.log(response.data);
+      console.debug(response.data);
       setResult({
         template: response.data,
       })

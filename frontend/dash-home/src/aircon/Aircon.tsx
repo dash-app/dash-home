@@ -3,133 +3,190 @@ import { Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import { AirconCard } from '../components/cards/CardBase';
 import List from '../components/controller/List';
-import Toggle from '../components/controller/Toggle';
-import Range from '../components/controller/Range';
-import { Aircon, AirconModes, AirconState } from '../remote-go/Controller';
-import { Action, AirconModes as TplAirconModes, Template } from '../remote-go/Template';
-import { useEffect, useState } from 'react';
+import { Aircon, AirconState, sendAircon } from '../remote-go/Controller';
+import { AirconModes as TplAirconModes, Template } from '../remote-go/Template';
+import { useCallback, useEffect, useState } from 'react';
+import { HR } from '../components/atoms/Themed';
+import { SummonByTpl } from '../components/controller/Template';
 
 interface Props {
-  aircon: AirconState,
+  id: string,
+  name: string,
+  initialState: AirconState,
   template: Template,
-}
-
-interface SummonProps {
-  onChange?: any,
-  description: string,
-  value: any,
-  action: Action,
-  // setter?: React.Dispatch<React.SetStateAction<any>>,
-  setter?: any,
-}
-
-function SummonByTpl(props: SummonProps) {
-  switch (props.action.type) {
-    case "LIST":
-      return (
-        <List description={props.description} values={props.action.list} status={props.value} onClick={props.setter && ((e: any) => {
-          props.setter(e);
-        })}/>
-      )
-      break;
-    case "RANGE":
-      return (
-        <Range
-          description={props.description}
-          value={props.value}
-          step={props.action.range.step}
-          from={props.action.range.from}
-          to={props.action.range.to}
-          suffix={props.action.range.suffix ? props.action.range.suffix : ""}
-          onClick={props.setter && ((e: any) => {
-            props.setter(e);
-          })}
-        />
-      )
-      break;
-
-    case "TOGGLE":
-      return (
-        <Toggle description={props.description} value={props.value} icon={["fas", "power-off"]} onClick={props.setter && ((e: any) => {
-          props.setter(e);
-        })}/>
-      )
-      break;
-    // case "SHOT":
-    //   break;
-    // case "MULTIPLE":
-    //   break;
-    default:
-      return (<p>** Unknown **</p>)
-  }
 }
 
 const AirconPanel: React.FC<Props> = props => {
   let modesTpl: Map<string, TplAirconModes> = new Map<string, TplAirconModes>(Object.entries(props.template.aircon!.modes));
-  let modesEntry: Map<string, AirconModes> = new Map<string, AirconModes>(Object.entries(props.aircon.modes));
 
-  console.log(modesTpl);
+  // Task - later
+  const useTask = () => {
+    const [taskId, setTaskId] = useState(-1);
+    const callTimer = (f: any, time: number) => {
+      const t = setTimeout(() => {
+        f();
+      }, time);
 
-  // TODO: このままでは下記returnしているところが毎回全部再描画されて重いので良い感じにする
-  const [operation, setOperation] = useState(props.aircon.operation);
-  const [mode, setMode] = useState(props.aircon.mode);
-  const [temp, setTemp] = useState(props.aircon.modes[props.aircon.mode].temp);
-  const [humid, setHumid] = useState(props.aircon.modes[props.aircon.mode].humid);
-  const [fan, setFan] = useState(props.aircon.modes[props.aircon.mode].fan);
-  const [horizontalVane, setHorizontalVane] = useState(props.aircon.modes[props.aircon.mode].horizontal_vane);
-  const [verticalVane, setVerticalVane] = useState(props.aircon.modes[props.aircon.mode].vertical_vane);
+      console.debug(`:: Task: ${t}`);
+      setTaskId(t);
+    }
 
-  useEffect(() => {
-    console.log(`Updated: ${operation} ${mode} ${temp} ${humid} ${fan} ${horizontalVane} ${verticalVane}`);
-  })
+    const clearTimer = useCallback((taskId) => {
+      console.debug(`:: Task > Clean: ${taskId}`);
+      clearTimeout(taskId);
+    }, []);
+
+    useEffect(() => {
+      return () => {
+        clearTimer(taskId);
+      }
+    }, [taskId, clearTimer])
+
+    return callTimer;
+  }
+
+  const useSendingIcon = () => {
+    const [taskId, setTaskId] = useState<number>(-1);
+    const [sending, updateSending] = useState(false);
+
+    const clearTimer = useCallback((taskId) => {
+      clearTimeout(taskId);
+    }, []);
+
+    useEffect(() => {
+      const t = setTimeout(() => {
+        updateSending(false)
+      }, 500);
+      setTaskId(t);
+      return () => {
+        clearTimer(taskId);
+      }
+    }, [sending, clearTimer]);
+
+    const setSending = () => {
+      updateSending(true);
+    }
+
+    return { sending, setSending };
+  }
+
+  const { sending, setSending } = useSendingIcon();
+
+  const callTimer = useTask();
+  const [aircon, setAircon] = useState(props.initialState);
+  const update = (state: AirconState, after?: any) => {
+    setAircon(state);
+    callTimer(() => {
+      sendAircon(props.id, stateToEntry(state), () => {
+        console.debug(stateToEntry(state));
+        setSending();
+        if (after) {
+          after();
+        }
+      });
+    }, 500);
+  }
+
+  const stateToEntry = (state: AirconState): Aircon => {
+    return {
+      operation: state.operation,
+      mode: state.mode,
+      ...state.modes[state.mode]
+    }
+  }
 
   return (
-    <AirconCard mode={props.aircon.mode}>
+    <AirconCard name={props.name} mode={aircon.mode} send={sending}>
       <Row>
         {/* Operation */}
         <Contents>
-          <SummonByTpl description="operation" value={operation} setter={setOperation} action={props.template.aircon?.operation!} />
+          <SummonByTpl
+            description="operation"
+            value={aircon.operation}
+            setter={(e: any) => aircon.operation = e}
+            sender={(after: any) => update({ ...aircon }, after)}
+            action={props.template.aircon?.operation!}
+          />
         </Contents>
 
         {/* Mode */}
         <Contents>
-          <List description="mode" values={[...Array.from(modesTpl.keys())]} status={mode} onClick={(e: any) => {
-            setMode(e);
-          }}/>
+          <List description="mode" values={[...Array.from(modesTpl.keys())]} status={aircon.mode} onClick={(e: any) => {
+            aircon.mode = e;
+            update({ ...aircon });
+          }} />
         </Contents>
+      </Row>
 
+      <Row>
         {/* Temp */}
-        {modesTpl.get(props.aircon.mode)?.temp &&
+        {modesTpl.get(aircon.mode)?.temp &&
           <Contents>
-            <SummonByTpl description="temp" value={temp} setter={setTemp} action={modesTpl.get(props.aircon.mode)?.temp!} />
+            <HR />
+            <SummonByTpl
+              description="temp"
+              value={aircon.modes[aircon.mode].temp}
+              setter={(e: any) => aircon.modes[aircon.mode].temp = e}
+              sender={(after: any) => update({ ...aircon }, after)}
+              action={modesTpl.get(aircon.mode)?.temp!}
+            />
           </Contents>
         }
 
         {/* Humid */}
-        {modesTpl.get(props.aircon.mode)?.humid &&
+        {modesTpl.get(aircon.mode)?.humid &&
           <Contents>
-            <SummonByTpl description="humid" value={humid} setter={setHumid} action={modesTpl.get(props.aircon.mode)?.humid!} />
+            <HR />
+            <SummonByTpl
+              description="humid"
+              value={aircon.modes[aircon.mode].humid}
+              setter={(e: any) => aircon.modes[aircon.mode].humid = e}
+              sender={(after: any) => update({ ...aircon }, after)}
+              action={modesTpl.get(aircon.mode)?.humid!}
+            />
           </Contents>
         }
-
+      </Row>
+      <Row>
         {/* Fan */}
-        {modesTpl.get(props.aircon.mode)?.fan &&
+        {modesTpl.get(aircon.mode)?.fan &&
           <Contents>
-            <SummonByTpl description="fan" value={fan} setter={setFan} action={modesTpl.get(props.aircon.mode)?.fan!} />
+            <HR />
+            <SummonByTpl
+              description="fan"
+              value={aircon.modes[aircon.mode].fan}
+              setter={(e: any) => aircon.modes[aircon.mode].fan = e}
+              sender={(after: any) => update({ ...aircon }, after)}
+              action={modesTpl.get(aircon.mode)?.fan!}
+            />
           </Contents>
         }
-
+      </Row>
+      <Row>
         {/* Horizontal Vane */}
-        {modesTpl.get(props.aircon.mode)?.horizontal_vane &&
+        {modesTpl.get(aircon.mode)?.horizontal_vane &&
           <Contents>
-            <SummonByTpl description="horizontal_vane" value={horizontalVane} setter={setHorizontalVane} action={modesTpl.get(props.aircon.mode)?.horizontal_vane!} />
+            <HR />
+            <SummonByTpl
+              description="horizontal_vane"
+              value={aircon.modes[aircon.mode].horizontal_vane}
+              setter={(e: any) => aircon.modes[aircon.mode].horizontal_vane = e}
+              sender={(after: any) => update({ ...aircon }, after)}
+              action={modesTpl.get(aircon.mode)?.horizontal_vane!}
+            />
           </Contents>
         }
-
         {/* Vertical Vane */}
-        {modesTpl.get(props.aircon.mode)?.vertical_vane &&
+        {modesTpl.get(aircon.mode)?.vertical_vane &&
           <Contents>
-            <SummonByTpl description="vertical_vane" value={verticalVane} setter={setVerticalVane} action={modesTpl.get(props.aircon.mode)?.vertical_vane!} />
+            <HR />
+            <SummonByTpl
+              description="vertical_vane"
+              value={aircon.modes[aircon.mode].vertical_vane}
+              setter={(e: any) => aircon.modes[aircon.mode].vertical_vane = e}
+              sender={(after: any) => update({ ...aircon }, after)}
+              action={modesTpl.get(aircon.mode)?.vertical_vane!}
+            />
           </Contents>
         }
       </Row>

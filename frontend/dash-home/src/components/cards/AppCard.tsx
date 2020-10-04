@@ -21,7 +21,7 @@ class AppCard extends React.Component<Props, State> {
   }
 
   card() {
-    console.log(this.props.type);
+    console.debug(this.props.type);
     switch (this.props.type) {
       case "AIRCON":
         return (
@@ -67,10 +67,10 @@ const CardContent = styled.div`
 
 // TODO: テーマに対応させる
 const Title = styled(Card.Title)`
-    color: #000000;
-    font-size: 6em;
-    font-family: "M PLUS 1p";
-    font-weight: 300;
+  color: #000000;
+  font-size: 6em;
+  font-family: "M PLUS 1p";
+  font-weight: 300;
 `
 
 const Description = styled(Card.Subtitle)`

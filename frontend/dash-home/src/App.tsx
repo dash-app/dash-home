@@ -19,6 +19,7 @@ import DemoAircon from './pages/DemoAircon';
 
 // Custom themes
 import ThemeContext from './components/themes/Theme';
+import { RoomProvider } from './components/basements/RoomProvider';
 import './themes/bootstrap.min.css';
 import './themes/ui.css';
 
@@ -30,7 +31,7 @@ const App: React.FC = () => {
 
   return (
     <ThemeContext.Provider value={theme}>
-      <Router>
+      <RoomProvider>
         <Helmet>
           <style>
             {
@@ -38,20 +39,22 @@ const App: React.FC = () => {
             }
           </style>
         </Helmet>
-        <Route exact path="/" render={() => <Home ctrl={""} />} />
-        <Route path="/settings" component={Settings} />
-        <Route path="/about" component={About} />
+        <Router>
+          <Route exact path="/" render={() => <Home ctrl={""} />} />
+          <Route path="/settings" component={Settings} />
+          <Route path="/about" component={About} />
 
-        {/* Controllers */}
-        <Route exact path="/controllers" component={Controllers} />
-        <Route path="/controllers/:id" component={Controller} />
+          {/* Controllers */}
+          <Route exact path="/controllers" component={Controllers} />
+          <Route path="/controllers/:id" component={Controller} />
 
-        {/* Sandbox Page (Remove before Release!) */}
-        <Route path="/sandbox" component={Sandbox} />
+          {/* Sandbox Page (Remove before Release!) */}
+          <Route path="/sandbox" component={Sandbox} />
 
-        {/* Component demo (AIRCON) */}
-        <Route path="/demo/aircon" component={DemoAircon} />
-      </Router>
+          {/* Component demo (AIRCON) */}
+          <Route path="/demo/aircon" component={DemoAircon} />
+        </Router>
+      </RoomProvider>
     </ThemeContext.Provider>
   );
 }

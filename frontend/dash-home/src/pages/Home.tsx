@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 import AppCard from '../components/cards/AppCard';
-import Basement from '../components/basements/Basement';
 import { Button } from '../components/atoms/Themed';
 
 interface Props {
@@ -12,9 +11,9 @@ interface State { }
 
 class Home extends React.Component<Props, State> {
   render() {
-    console.log(this.props.ctrl)
+    console.debug(this.props.ctrl)
     return (
-      <Basement>
+      <div>
         {/* Cards.... */}
         <Row>
           <Col lg="3">
@@ -37,7 +36,7 @@ class Home extends React.Component<Props, State> {
             <AppCard type="UNKNOWN" />
           </Col>
         </Row>
-      </Basement>
+      </div>
     );
   }
 };

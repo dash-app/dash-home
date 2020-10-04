@@ -83,9 +83,21 @@ const Spinner = (props: any) => {
     )
 }
 
+const HR = (props: any) => {
+    return (
+        <hr 
+            style={{
+                borderColor: "#8080803A"
+            }}
+            {...props}
+        />
+    )
+}
+
 export {
     Button,
     Container,
     Icon,
-    Spinner
+    Spinner,
+    HR,
 };

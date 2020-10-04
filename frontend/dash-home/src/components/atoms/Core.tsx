@@ -29,6 +29,21 @@ const H2 = (props: any) => {
     )
 }
 
+const H3 = (props: any) => {
+    return (
+        <h3
+            {...props}
+            style={{
+                fontSize: "2rem",
+                fontFamily: "M PLUS 1p",
+                fontWeight: 400,
+                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
+            }}>
+            {props.children}
+        </h3>
+    )
+}
+
 const P = (props: any) => {
     return (
         <p
@@ -56,11 +71,13 @@ const Div = (props: any) => {
 const Span = (props: any) => {
     return (
         <span
+            {...props}
             style={{
                 fontFamily: "M PLUS 1p",
                 fontWeight: 400,
-                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
-            }} {...props}>
+                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF",
+                ...props.style
+            }}>
             {props.children}
         </span>
     )
@@ -69,6 +86,7 @@ const Span = (props: any) => {
 export {
     H1,
     H2,
+    H3,
     P,
     Div,
     Span

@@ -1,29 +1,28 @@
 import * as React from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import { H1 } from '../atoms/Core';
+import { H1, P } from '../atoms/Core';
 
 import styled from 'styled-components';
 
 interface Props {
     description?: string,
-    value?: string,
-    text?: string,
+    default: string,
+    onClick?: any,
+    value: string,
 }
 
-interface State {
-    value?: string,
-}
-
-class Shot extends React.Component<Props, State> {
+class Shot extends React.Component<Props> {
     constructor(props: Props) {
         super(props)
         this.state = {
-            value: this.props.value,
+            currentValue: props.value,
         }
     }
 
-    onclick = () => {
-        alert(this.props.value)
+    onClick = () => {
+        if (this.props.onClick) {
+            this.props.onClick(this.props.value);
+        }
     }
 
     render() {
@@ -32,8 +31,18 @@ class Shot extends React.Component<Props, State> {
                 <Row>
                     <Col>
                         <H1>
-                            <Span>{this.props.description}</Span>
+                            <Span>{this.props.default}</Span>
                         </H1>
+                        <H1>
+                            <Span>{this.props.value}</Span>
+                        </H1>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <P>
+                            <Span>{this.props.description}</Span>
+                        </P>
                     </Col>
                 </Row>
                 <Row>
@@ -41,9 +50,9 @@ class Shot extends React.Component<Props, State> {
                         <Button
                             type="button"
                             size="lg"
-                            onClick={() => this.onclick()}
+                            onClick={() => this.onClick()}
                         >
-                            {this.props.text}
+                            {this.props.default}
                         </Button>
                     </Col>
                 </Row>

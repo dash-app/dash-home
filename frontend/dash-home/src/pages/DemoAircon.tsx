@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import Toggle from '../components/controller/Toggle';
 import Range from '../components/controller/Range';
 import List from '../components/controller/List';
-import Basement from '../components/basements/Basement';
 import { Container } from '../components/atoms/Themed';
 
 interface Props { }
@@ -26,7 +25,7 @@ class DemoAircon extends React.Component<Props, State> {
 
     render() {
         return (
-            <Basement>
+            <div>
                 <Container fluid="lg">
                     <BaseCard>
                         <Card.Body>
@@ -56,7 +55,7 @@ class DemoAircon extends React.Component<Props, State> {
                         </Card.Body>
                     </BaseCard>
                 </Container>
-            </Basement>
+            </div>
         )
     }
 }

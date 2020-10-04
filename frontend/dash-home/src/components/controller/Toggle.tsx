@@ -55,18 +55,16 @@ class Toggle extends React.Component<Props, State> {
                 </Row>
                 <Row>
                     <Col>
-                            {(this.props.icon || this.props.btnText) &&
-                                <Button
-                                    type="button"
-                                    size="lg"
-                                    onClick={this.onToggleEvent}
-                                >
-                                    {this.props.icon &&
-                                        <Icon icon={this.props.icon} />
-                                    }
-                                    {this.props.btnText}
-                                </Button>
-                            }
+                        {(this.props.icon || this.props.btnText) &&
+                            <Button
+                                type="button"
+                                size="lg"
+                                onClick={this.onToggleEvent}
+                            >
+                                {this.props.icon && <Icon icon={this.props.icon} />}
+                                {this.props.btnText}
+                            </Button>
+                        }
                     </Col>
                 </Row>
             </Container>

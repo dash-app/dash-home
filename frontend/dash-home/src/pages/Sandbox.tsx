@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import Basement from '../components/basements/Basement';
-
 import Toggle from '../components/controller/Toggle';
 import Range from '../components/controller/Range';
 import List from '../components/controller/List';
@@ -15,7 +13,7 @@ interface State { }
 class Sandbox extends React.Component<Props, State> {
   render() {
     return (
-      <Basement>
+      <div>
         <H1>Sandboxx</H1>
         <Row xs={2} md={4} lg={6}>
           <Col>
@@ -30,10 +28,10 @@ class Sandbox extends React.Component<Props, State> {
         </Row>
         <Row>
           <Col>
-            <Shot description="Shot" value="test" text="hoge" />
+            <Shot description="Shot" default="test" value="hoge" />
           </Col>
         </Row>
-      </Basement>
+      </div>
     );
   }
 };

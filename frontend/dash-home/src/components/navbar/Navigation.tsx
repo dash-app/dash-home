@@ -6,12 +6,11 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import ThemeSwitcher from '../themes/ThemeSwitcher';
+import { Room } from '../../remote-go/Room';
 
 interface Props {
   theme: string,
-  roomName: any,
-  // temp: number,
-  // humid: number,
+  room?: Room,
 }
 interface State { }
 
@@ -28,16 +27,20 @@ class Navigation extends React.Component<Props, State> {
           <BarCol>
             <Title>
               <FontAwesomeIcon icon={["fas", "home"]} />
-              <span style={{ margin: "0.5em" }}><span>Test House</span><span style={{ fontSize: "0.5em" }}> // Bedroom</span></span>
+              <span style={{ margin: "0.5em" }}>
+                <span>{this.props.room && this.props.room.name}</span>
+                {/* TODO: Add house name */}
+                {/* <span style={{ fontSize: "0.5em" }}> // Bedroom</span> */}
+              </span>
             </Title>
             <RoomStatus theme={this.props.theme}>
               <StatusBox>
                 <FontAwesomeIcon icon={["fas", "thermometer-three-quarters"]} />
-                <StatusText>25.5℃</StatusText>
+                <StatusText>{this.props.room ? this.props.room.ambient.temp.toFixed(1) : "--"} ℃</StatusText>
               </StatusBox>
               <StatusBox>
                 <FontAwesomeIcon icon={["fas", "tint"]} />
-                <StatusText>40%</StatusText>
+                <StatusText>{this.props.room ? this.props.room.ambient.humid.toFixed(0) : "--"} %</StatusText>
               </StatusBox>
             </RoomStatus>
           </BarCol>
