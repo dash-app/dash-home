@@ -16,8 +16,8 @@ const Button = (props: any) => {
         return (
             <BaseButton
                 variant={theme === "CHEEKY_WHITE" ?
-                    props.selected ? "primary" : "light" :
-                    props.selected ? "primary" : "gray"
+                    props.selected && "primary" :
+                    props.selected && "gray"
                 }
                 // variant={theme === "CHEEKY_WHITE" ? "primary" : "light"}
                 type="button"
@@ -29,7 +29,7 @@ const Button = (props: any) => {
     } else {
         return (
             <BaseButton
-                variant={theme === "CHEEKY_WHITE" ? "primary" : "primary"}
+                variant={theme === "CHEEKY_WHITE" ? "primary" : "gray"}
                 {...props}
                 selected={false}
             >
