@@ -6,7 +6,6 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { Helmet } from "react-helmet";
 
 // Routing Template
 import Home from './pages/Home';
@@ -25,6 +24,7 @@ import './themes/ui.css';
 
 const App: React.FC = () => {
   const theme = useSelector<any, string>((state) => state.themes.name)
+  document.body.style.backgroundColor = theme === "CHEEKY_WHITE" ? "#FFFFFF" : "#111115";
 
   // Initialize Icons
   library.add(fab, fas, far);
@@ -32,13 +32,6 @@ const App: React.FC = () => {
   return (
     <ThemeContext.Provider value={theme}>
       <RoomProvider>
-        <Helmet>
-          <style>
-            {
-              `body { background-color: ${theme === "CHEEKY_WHITE" ? "#FFFFFF" : "#111115"}; }`
-            }
-          </style>
-        </Helmet>
         <Router>
           <Route exact path="/" render={() => <Home ctrl={""} />} />
           <Route path="/settings" component={Settings} />
