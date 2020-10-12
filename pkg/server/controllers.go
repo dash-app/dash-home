@@ -61,9 +61,21 @@ func (h *httpServer) postControllers(c *gin.Context) {
 		return
 	}
 
+	// Create Controller base
+	e, err := h.controller.Storage.Create(req.Name, req.Kind)
+	if err != nil {
+		if err == errors.New("not found") {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	// Add Controller Role
 	switch req.Type {
 	case "REMOTE":
-		r, err := h.controller.Storage.CreateRemote(req.Name, req.Kind, req.Remote.Vendor, req.Remote.Model)
+		r, err := h.controller.Storage.CreateRemote(e.ID, req.Kind, req.Remote.Vendor, req.Remote.Model)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -88,8 +100,24 @@ func (h *httpServer) getControllerByID(c *gin.Context) {
 	c.JSON(http.StatusOK, r)
 }
 
-func (h *httpServer) postControllerByID(c *gin.Context) {
-	// id := c.Param("id")
+func (h *httpServer) patchControllerByID(c *gin.Context) {
+	id := c.Param("id")
+	r, err := h.controller.Storage.GetByID(id)
+	if err != nil {
+		if err == errors.New("not found") {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	var req *SetControllerRequest
+
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	// TODO: Update controller name, vendor etc.
 }
 
