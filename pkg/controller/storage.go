@@ -23,6 +23,13 @@ type Entry struct {
 	Aircon *aircon.State `json:"aircon,omitempty"`
 }
 
+type Options struct {
+	// Remote
+	Remote *Remote `json:"remote,omitempty"`
+
+	// Switch....
+}
+
 func NewStorage(basePath string) (*Storage, error) {
 	store := &Storage{
 		Path:    basePath + "/" + "controllers.json",
@@ -72,33 +79,57 @@ func (s *Storage) GetByID(id string) (*Entry, error) {
 }
 
 // Update - Update Controller
-func (s *Storage) Update(id string, e *Entry) (*Entry, error) {
+func (s *Storage) Update(id string, name, kind, t string, opts *Options) (*Entry, error) {
 	// Get By ID
-	oldEntry, err := s.GetByID(id)
+	entry, err := s.GetByID(id)
 	if err != nil {
 		return nil, err
 	}
 
+	// Replace new values
+	entry.Name = name
+
 	// Rebuild struct when the kind / remote is different
-	if oldEntry.Kind != e.Kind || oldEntry.Type != e.Type {
-		newEntry := &Entry{
-			ID:     e.ID,
-			Name:   e.Name,
-			Kind:   e.Kind,
-			Type:   e.Type,
-			Remote: e.Remote,
+	if entry.Remote != nil {
+		entry.Kind = kind
+		entry.Type = t
+
+		// Purge when trying different kind / type
+		if entry.Kind != kind || entry.Type != t {
+			entry.Remote = nil
+			entry.Aircon = nil
 		}
-		s.Entries[e.ID] = newEntry
-		return newEntry, s.Save()
+
+		switch t {
+		case "REMOTE":
+			if opts.Remote == nil {
+				return nil, errors.New("remote is null")
+			}
+
+			// When Update (not new)
+			if entry.Remote != nil &&
+				(entry.Remote.Vendor != opts.Remote.Vendor || entry.Remote.Model != opts.Remote.Model) {
+				entry.Remote = &Remote{
+					Vendor: opts.Remote.Vendor,
+					Model:  opts.Remote.Model,
+				}
+
+				if err := entry.initRemote(); err != nil {
+					return nil, err
+				}
+			}
+		default:
+			return nil, errors.New("unsupported kind")
+		}
 	}
 
-	s.Entries[e.ID] = e
-	return e, s.Save()
+	s.Entries[entry.ID] = entry
+	return entry, s.Save()
 }
 
-// create - Create new Controller
-func (s *Storage) create(name, kind string) (*Entry, error) {
-	if e, err := s.GetByName(name); err != nil && err.Error() != "not found" {
+// Create - Create new Controller
+func (s *Storage) Create(name, kind, t string, opts *Options) (*Entry, error) {
+	if e, err := s.GetByName(name); err != nil && errors.Is(err, errors.New("not found")) {
 		return nil, err
 	} else if e != nil {
 		return nil, errors.New("already exists")
@@ -109,37 +140,50 @@ func (s *Storage) create(name, kind string) (*Entry, error) {
 		ID:   id.String(),
 		Name: name,
 	}
+
+	// Set kind
+	switch kind {
+	case "AIRCON":
+		entry.Kind = kind
+	default:
+		return nil, errors.New("unsupported kind")
+	}
+
+	// Set Type
+	switch t {
+	case "REMOTE":
+		entry.Type = t
+		entry.Remote = &Remote{
+			Vendor: opts.Remote.Vendor,
+			Model:  opts.Remote.Model,
+		}
+		if err := entry.initRemote(); err != nil {
+			return nil, err
+		}
+	default:
+		return nil, errors.New("unsupported type")
+	}
+
 	s.Entries[id.String()] = entry
 	return entry, s.Save()
 }
 
-// CreateRemote - Create Remote Controller
-func (s *Storage) CreateRemote(id, kind, vendor, model string) (*Entry, error) {
-	e, err := s.GetByID(id)
-	if err != nil {
-		return nil, err
-	}
-
-	e.Type = "REMOTE"
-	e.Remote = &Remote{
-		Vendor: vendor,
-		Model:  model,
-	}
-
+// initRemote - Initialize Remote Controller (Inject default state)
+func (e *Entry) initRemote() error {
 	switch e.Kind {
 	case "AIRCON":
 		remote, err := e.Remote.GetAircon()
 		if err != nil {
-			return nil, err
+			return err
 		}
 		if state, err := aircon.DefaultState(remote.Remote.Template()); err == nil {
 			e.Aircon = state
 		} else {
-			return nil, err
+			return err
 		}
 	default:
-		return nil, errors.New("invalid kind provided")
+		return errors.New("unsupported kind")
 	}
 
-	return s.Update(id, e)
+	return nil
 }
