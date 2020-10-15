@@ -19,7 +19,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     <Modal
       show={props.show}
       backdrop="static"
-      onHide={props.handleClose}
+      onHide={props.handleClose}  
       keyboard={false}
       variant="dark"
       animation={false}
@@ -91,7 +91,10 @@ const Controllers: React.FC<Props> = () => {
                       </td>
                       <td>{controller.kind}</td>
                       <td>
-                        <Button onClick={() => { setShow(true) }}>Edit</Button>
+                        {/* <Button onClick={() => { setShow(true) }}>Edit</Button> */}
+                        <Link to={`/controllers/${controller.id}/edit`}>
+                          <Button>Edit</Button>
+                        </Link>
                       </td>
                     </tr>
                   )

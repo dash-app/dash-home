@@ -13,6 +13,7 @@ import Settings from './pages/Settings';
 import About from './pages/About';
 import Controllers from './pages/Controllers';
 import Controller from './pages/Controller';
+import EditController from './pages/EditController';
 import Sandbox from './pages/Sandbox';
 import DemoAircon from './pages/DemoAircon';
 
@@ -39,7 +40,8 @@ const App: React.FC = () => {
 
           {/* Controllers */}
           <Route exact path="/controllers" component={Controllers} />
-          <Route path="/controllers/:id" component={Controller} />
+          <Route exact path="/controllers/:id" component={Controller} />
+          <Route path="/controllers/:id/edit" component={EditController} />
 
           {/* Sandbox Page (Remove before Release!) */}
           <Route path="/sandbox" component={Sandbox} />
