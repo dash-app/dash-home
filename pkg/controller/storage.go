@@ -81,46 +81,25 @@ func (s *Storage) GetByID(id string) (*Entry, error) {
 // Update - Update Controller
 func (s *Storage) Update(id string, name, kind, t string, opts *Options) (*Entry, error) {
 	// Get By ID
-	entry, err := s.GetByID(id)
+	oldEntry, err := s.GetByID(id)
 	if err != nil {
 		return nil, err
 	}
 
-	// Replace new values
-	entry.Name = name
+	entry, err := s.newEntry(id, name, kind, t, opts)
+	if err != nil {
+		return nil, err
+	}
 
-	// Rebuild struct when the kind / remote is different
-	if entry.Remote != nil {
-		entry.Kind = kind
-		entry.Type = t
-
-		// Purge when trying different kind / type
-		if entry.Kind != kind || entry.Type != t {
-			entry.Remote = nil
-			entry.Aircon = nil
+	// Set Type
+	switch t {
+	case "REMOTE":
+		if oldEntry.Kind == entry.Kind && oldEntry.Type == entry.Type && oldEntry.Remote.Vendor == entry.Remote.Vendor && oldEntry.Remote.Model == entry.Remote.Model {
+			// Merge State (Aircon, Light etc...)
+			entry.Aircon = oldEntry.Aircon
 		}
-
-		switch t {
-		case "REMOTE":
-			if opts.Remote == nil {
-				return nil, errors.New("remote is null")
-			}
-
-			// When Update (not new)
-			if entry.Remote != nil &&
-				(entry.Remote.Vendor != opts.Remote.Vendor || entry.Remote.Model != opts.Remote.Model) {
-				entry.Remote = &Remote{
-					Vendor: opts.Remote.Vendor,
-					Model:  opts.Remote.Model,
-				}
-
-				if err := entry.initRemote(); err != nil {
-					return nil, err
-				}
-			}
-		default:
-			return nil, errors.New("unsupported kind")
-		}
+	default:
+		return nil, errors.New("unsupported kind")
 	}
 
 	s.Entries[entry.ID] = entry
@@ -136,8 +115,18 @@ func (s *Storage) Create(name, kind, t string, opts *Options) (*Entry, error) {
 	}
 
 	id, _ := uuid.NewUUID()
+	entry, err := s.newEntry(id.String(), name, kind, t, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	s.Entries[id.String()] = entry
+	return entry, s.Save()
+}
+
+func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, error) {
 	entry := &Entry{
-		ID:   id.String(),
+		ID:   id,
 		Name: name,
 	}
 
@@ -150,9 +139,14 @@ func (s *Storage) Create(name, kind, t string, opts *Options) (*Entry, error) {
 	}
 
 	// Set Type
+	entry.Type = t
+
 	switch t {
 	case "REMOTE":
-		entry.Type = t
+		if opts.Remote == nil {
+			return nil, errors.New("remote is null")
+		}
+
 		entry.Remote = &Remote{
 			Vendor: opts.Remote.Vendor,
 			Model:  opts.Remote.Model,
@@ -164,8 +158,7 @@ func (s *Storage) Create(name, kind, t string, opts *Options) (*Entry, error) {
 		return nil, errors.New("unsupported type")
 	}
 
-	s.Entries[id.String()] = entry
-	return entry, s.Save()
+	return entry, nil
 }
 
 // initRemote - Initialize Remote Controller (Inject default state)

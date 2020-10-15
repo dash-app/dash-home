@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useReducer } from "react";
 import { API_ADDRESS } from "../config";
 
 export interface Controller {
@@ -80,6 +81,17 @@ export function fetchController(id: string, setResult: React.Dispatch<React.SetS
         error: error,
       });
     });
+}
+
+export function updateController(id: string, payload: Controller, setResult: React.Dispatch<React.SetStateAction<ControllerResult | undefined>>) {
+  axios
+    .patch<Controller>(`${API_ADDRESS}/api/v1/controllers/${id}`, payload)
+    .then(response => setResult({
+      controller: response.data,
+    }))
+    .catch(error => setResult({
+      error: error,
+    }));
 }
 
 // Emitter
