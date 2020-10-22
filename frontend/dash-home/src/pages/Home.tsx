@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import { Button } from '../components/atoms/Themed';
 import Basement from '../components/basements/Basement';
 import { ControllersResult, fetchControllers, Controller } from '../remote-go/Controller';
-import { Span } from '../components/atoms/Core';
 
-interface Props {
-  ctrl: any,
-}
+interface Props {}
 
 const Home: React.FC<Props> = (props: Props) => {
-
   // useStateで状態の保存場所を定義する。 参考：(https://ja.reactjs.org/docs/hooks-state.html)
   const [controllersResult, setControllers] = useState<ControllersResult | undefined>(undefined);
 
@@ -24,7 +18,6 @@ const Home: React.FC<Props> = (props: Props) => {
   return (
     <Basement>
       <Container fluid="lg">
-
         {/* controllersResultが正常な値の場合のみ処理を行う */}
         {controllersResult?.error == null && !controllersResult?.controllers ?
           <p>hoge</p> :
@@ -37,19 +30,6 @@ const Home: React.FC<Props> = (props: Props) => {
             )}
           </div>
         }
-      </Container>
-    </Basement>
-  )
-
-
-  return (
-    <Basement>
-      {/* Cards.... */}
-      <Container fluid="lg">
-        <Link to="/about">
-          <Button>About</Button>
-        </Link>
-
       </Container>
     </Basement>
   )
