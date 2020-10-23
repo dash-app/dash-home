@@ -2,10 +2,13 @@ import * as React from 'react';
 import { Container, Modal, Form, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Controller } from '../../remote-go/Controller';
+import { FAILED, PENDING, Status, SUCCESS } from '../../remote-go/Status';
+import { IconInvert, Spinner, SpinnerInvert } from '../atoms/Themed';
 
 interface Props {
   controller: Controller,
   handleSubmit: any,
+  status: Status,
 }
 
 const ControllerEditor: React.FC<Props> = (props: Props) => {
@@ -107,7 +110,10 @@ const ControllerEditor: React.FC<Props> = (props: Props) => {
             </Form.Row>
           </Modal.Body>
           <Modal.Footer>
-            <Button type="submit">Update</Button>
+            {props.status === PENDING && <SpinnerInvert aria-hidden="true" />}
+            {props.status === SUCCESS && <IconInvert icon={["fas", "check"]} />}
+            {props.status === FAILED && <IconInvert icon={["fas", "exclamation-triangle"]} />}
+            <Button type="submit" disabled={props.status === PENDING}>Update</Button>
             <Link to="/controllers">
               <Button variant="secondary">Back</Button>
             </Link>

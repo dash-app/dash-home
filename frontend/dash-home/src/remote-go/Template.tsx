@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_ADDRESS } from "../config";
+import { FAILED, PENDING, Status, SUCCESS } from "./Status";
 
 // Template
 export interface Template {
@@ -58,17 +59,23 @@ export interface AirconModes {
 
 // ---
 export interface TemplateResult {
+  status: Status,
   template?: Template,
   error?: any,
 }
 
 export function fetchTemplate(id: string, setResult: React.Dispatch<React.SetStateAction<TemplateResult | undefined>>) {
+  setResult({
+    status: PENDING,
+  })
+
   axios.request<Template>({
     url: `${API_ADDRESS}/api/v1/controllers/${id}/template`,
   })
     .then(response => {
       console.debug(response.data);
       setResult({
+        status: SUCCESS,
         template: response.data,
       })
     })
@@ -76,6 +83,7 @@ export function fetchTemplate(id: string, setResult: React.Dispatch<React.SetSta
       console.error(`*** Fetch error:`)
       console.error(error)
       setResult({
+        status: FAILED,
         error: error,
       })
     });

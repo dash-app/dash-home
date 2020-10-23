@@ -1,6 +1,6 @@
-import axios from "axios";
-import { useReducer } from "react";
+import axios from "../httpClient";
 import { API_ADDRESS } from "../config";
+import { FAILED, PENDING, Status, SUCCESS } from "./Status";
 
 export interface Controller {
   id: string,
@@ -19,11 +19,13 @@ export interface Remote {
 
 // --
 export interface ControllersResult {
+  status: Status,
   controllers?: Map<string, Controller>,
   error?: any,
 }
 
 export interface ControllerResult {
+  status: Status,
   controller?: Controller,
   error?: any,
 }
@@ -56,14 +58,20 @@ export interface AirconModes {
 }
 
 export function fetchControllers(setResult: React.Dispatch<React.SetStateAction<ControllersResult | undefined>>) {
+  setResult({
+    status: PENDING,
+  })
+  
   axios.get<Map<string, Controller>>(`${API_ADDRESS}/api/v1/controllers`)
     .then(response => setResult({
+      status: SUCCESS,
       controllers: response.data,
     }))
     .catch(error => {
       console.error(`*** Controllers > Fetch error:`);
       console.error(error);
       setResult({
+        status: FAILED,
         error: error,
       });
     });
@@ -72,24 +80,32 @@ export function fetchControllers(setResult: React.Dispatch<React.SetStateAction<
 export function fetchController(id: string, setResult: React.Dispatch<React.SetStateAction<ControllerResult | undefined>>) {
   axios.get<Controller>(`${API_ADDRESS}/api/v1/controllers/${id}`)
     .then(response => setResult({
+      status: SUCCESS,
       controller: response.data,
     }))
     .catch(error => {
       console.error(`*** Controller > Fetch error:`);
       console.error(error);
       setResult({
+        status: FAILED,
         error: error,
       });
     });
 }
 
 export function updateController(id: string, payload: Controller, setResult: React.Dispatch<React.SetStateAction<ControllerResult | undefined>>) {
+  setResult({
+    status: PENDING,
+  })
+
   axios
     .patch<Controller>(`${API_ADDRESS}/api/v1/controllers/${id}`, payload)
     .then(response => setResult({
+      status: SUCCESS,
       controller: response.data,
     }))
     .catch(error => setResult({
+      status: FAILED,
       error: error,
     }));
 }

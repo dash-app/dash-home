@@ -68,11 +68,39 @@ const Icon = (props: any) => {
     )
 }
 
+const IconInvert = (props: any) => {
+    return (
+        <FontAwesomeIcon
+            style={{
+                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#FFF" : "#000"
+            }}
+            {...props}
+        >
+            {props.children}
+        </FontAwesomeIcon>
+    )
+}
+
 const Spinner = (props: any) => {
     return (
         <BaseSpinner
             style={{
                 color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFF",
+                border: "0.15em solid currentColor",
+                borderRightColor: "transparent"
+            }}
+            {...props}
+        >
+            {props.children}
+        </BaseSpinner>
+    )
+}
+
+const SpinnerInvert = (props: any) => {
+    return (
+        <BaseSpinner
+            style={{
+                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#FFF" : "#000",
                 border: "0.15em solid currentColor",
                 borderRightColor: "transparent"
             }}
@@ -98,6 +126,8 @@ export {
     Button,
     Container,
     Icon,
+    IconInvert,
     Spinner,
+    SpinnerInvert,
     HR,
 };

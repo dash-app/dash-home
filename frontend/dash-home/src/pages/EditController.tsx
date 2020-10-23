@@ -8,6 +8,7 @@ import { HR } from '../components/atoms/Themed';
 import Basement from "../components/basements/Basement";
 import ControllerEditor from "../components/controller/ControllerEditor";
 import { Controller, ControllerResult, fetchController, updateController } from '../remote-go/Controller';
+import { NONE, PENDING, Status } from '../remote-go/Status';
 
 interface Props extends RouteComponentProps<{ id: string }> {
   controller: Controller,
@@ -15,10 +16,11 @@ interface Props extends RouteComponentProps<{ id: string }> {
 
 const EditController: React.FC<Props> = (props: Props) => {
   const id = props.match.params.id;
+  const [initialControllerResult, setInitialControllerResult] = React.useState<ControllerResult | undefined>(undefined);
   const [controllerResult, setControllerResult] = React.useState<ControllerResult | undefined>(undefined);
 
   React.useEffect(() => {
-    fetchController(id, setControllerResult);
+    fetchController(id, setInitialControllerResult);
     console.debug(`:: Edit...`);
   }, [id]);
 
@@ -36,9 +38,10 @@ const EditController: React.FC<Props> = (props: Props) => {
           </Alert>
         }
 
-        {controllerResult && controllerResult?.error == null &&
+        {initialControllerResult && initialControllerResult?.error == null &&
           <ControllerEditor 
-            controller={controllerResult.controller!}
+            controller={initialControllerResult?.controller!}
+            status={controllerResult ? controllerResult.status : NONE}
             handleSubmit={(c: Controller) => {
               updateController(id, c, setControllerResult)
             }}
