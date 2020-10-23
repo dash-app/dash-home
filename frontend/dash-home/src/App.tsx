@@ -34,7 +34,7 @@ const App: React.FC = () => {
     <ThemeContext.Provider value={theme}>
       <RoomProvider>
         <Router>
-          <Route exact path="/" render={() => <Home ctrl={""} />} />
+          <Route exact path="/" component={Home} />
           <Route path="/settings" component={Settings} />
           <Route path="/about" component={About} />
 
