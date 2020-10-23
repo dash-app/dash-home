@@ -1,6 +1,6 @@
 import React from 'react';
 // import Board from './components/basements/Board';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -16,6 +16,7 @@ import Controller from './pages/Controller';
 import EditController from './pages/EditController';
 import Sandbox from './pages/Sandbox';
 import DemoAircon from './pages/DemoAircon';
+import NotFound from './pages/NotFound';
 
 // Custom themes
 import ThemeContext from './components/themes/Theme';
@@ -34,20 +35,24 @@ const App: React.FC = () => {
     <ThemeContext.Provider value={theme}>
       <RoomProvider>
         <Router>
-          <Route exact path="/" component={Home} />
-          <Route path="/settings" component={Settings} />
-          <Route path="/about" component={About} />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/settings" component={Settings} />
+            <Route path="/about" component={About} />
 
-          {/* Controllers */}
-          <Route exact path="/controllers" component={Controllers} />
-          <Route exact path="/controllers/:id" component={Controller} />
-          <Route path="/controllers/:id/edit" component={EditController} />
+            {/* Controllers */}
+            <Route exact path="/controllers" component={Controllers} />
+            <Route exact path="/controllers/:id" component={Controller} />
+            <Route path="/controllers/:id/edit" component={EditController} />
 
-          {/* Sandbox Page (Remove before Release!) */}
-          <Route path="/sandbox" component={Sandbox} />
+            {/* Sandbox Page (Remove before Release!) */}
+            <Route path="/sandbox" component={Sandbox} />
 
-          {/* Component demo (AIRCON) */}
-          <Route path="/demo/aircon" component={DemoAircon} />
+            {/* Component demo (AIRCON) */}
+            <Route path="/demo/aircon" component={DemoAircon} />
+
+            <Route status={404} component={NotFound} />
+          </Switch>
         </Router>
       </RoomProvider>
     </ThemeContext.Provider>

@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import ThemeContext from '../themes/Theme';
 
 const H1 = (props: any) => {
@@ -83,11 +84,30 @@ const Span = (props: any) => {
     )
 }
 
+const Center = (props: any) => {
+    const Div = styled.div`
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+        -webkit-transform: translateY(-50%) translateX(-50%);
+    `
+    return (
+        <Div
+            {...props}
+        >
+            {props.children}
+        </Div>
+    )
+}
+
 export {
     H1,
     H2,
     H3,
     P,
     Div,
-    Span
+    Span,
+    Center
 };
