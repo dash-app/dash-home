@@ -1,14 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as React from 'react';
-import { Container, Nav, Button, Modal, Alert, Spinner, FormControl, InputGroup, Form, Col } from 'react-bootstrap';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Container, Alert } from 'react-bootstrap';
+import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
-import { Div, H2 } from '../components/atoms/Core';
-import { HR } from '../components/atoms/Themed';
 import Basement from "../components/basements/Basement";
 import ControllerEditor from "../components/controller/ControllerEditor";
 import { Controller, ControllerResult, fetchController, updateController } from '../remote-go/Controller';
-import { NONE, PENDING, Status } from '../remote-go/Status';
+import { NONE } from '../remote-go/Status';
 
 interface Props extends RouteComponentProps<{ id: string }> {
   controller: Controller,
