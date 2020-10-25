@@ -60,6 +60,11 @@ const Controllers: React.FC<Props> = () => {
               <Button>Back</Button>
             </Link>
           </Nav.Item>
+          <Nav.Item>
+            <Link to="/controllers/new">
+              <Button>New</Button>
+            </Link>
+          </Nav.Item>
         </Nav>
         <H2>Controllers...</H2>
         {controllersResult?.error == null && !controllersResult?.controllers ?

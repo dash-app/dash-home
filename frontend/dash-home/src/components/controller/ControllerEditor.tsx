@@ -3,7 +3,7 @@ import { Container, Modal, Form, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Controller } from '../../remote-go/Controller';
 import { FAILED, PENDING, Status, SUCCESS } from '../../remote-go/Status';
-import { IconInvert, Spinner, SpinnerInvert } from '../atoms/Themed';
+import { IconInvert, SpinnerInvert } from '../atoms/Themed';
 
 interface Props {
   controller: Controller,

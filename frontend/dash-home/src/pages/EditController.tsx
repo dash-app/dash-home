@@ -23,30 +23,28 @@ const EditController: React.FC<Props> = (props: Props) => {
   }, [id]);
 
   return (
-    <Basement>
-      <Container fluid="lg">
-        {/* Error Message (Controller) */}
-        {controllerResult?.error &&
-          <Alert variant="danger">
-            <Alert.Heading>
-              <CustomIcon icon={["fas", "exclamation-triangle"]} />
-              <span>Failed fetch controller data</span>
-            </Alert.Heading>
-            <p>(Please see console.)</p>
-          </Alert>
-        }
+    <Container fluid="lg">
+      {/* Error Message (Controller) */}
+      {controllerResult?.error &&
+        <Alert variant="danger">
+          <Alert.Heading>
+            <CustomIcon icon={["fas", "exclamation-triangle"]} />
+            <span>Failed fetch controller data</span>
+          </Alert.Heading>
+          <p>(Please see console.)</p>
+        </Alert>
+      }
 
-        {initialControllerResult && initialControllerResult?.error == null &&
-          <ControllerEditor 
-            controller={initialControllerResult?.controller!}
-            status={controllerResult ? controllerResult.status : NONE}
-            handleSubmit={(c: Controller) => {
-              updateController(id, c, setControllerResult)
-            }}
-          />
-        }
-      </Container>
-    </Basement>
+      {initialControllerResult && initialControllerResult?.error == null &&
+        <ControllerEditor
+          controller={initialControllerResult?.controller!}
+          status={controllerResult ? controllerResult.status : NONE}
+          handleSubmit={(c: Controller) => {
+            updateController(id, c, setControllerResult)
+          }}
+        />
+      }
+    </Container>
   )
 }
 
