@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
-	github.com/dash-app/remote-go v0.0.0-20201011062809-3cd24151033d
+	github.com/dash-app/remote-go v0.0.0-20201026092418-f6b8dad15a73
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.6.3
 	github.com/google/uuid v1.1.2
