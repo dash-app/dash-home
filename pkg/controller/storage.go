@@ -5,13 +5,16 @@ import (
 	"os"
 
 	"github.com/dash-app/dash-home/pkg/storage"
+	remotego "github.com/dash-app/remote-go"
 	"github.com/dash-app/remote-go/aircon"
+	"github.com/dash-app/remote-go/template"
 	"github.com/google/uuid"
 )
 
 type Storage struct {
 	Path    string
 	Entries map[string]*Entry
+	Remotes *remotego.Remote
 }
 
 type Entry struct {
@@ -30,10 +33,11 @@ type Options struct {
 	// Switch....
 }
 
-func NewStorage(basePath string) (*Storage, error) {
+func NewStorage(basePath string, remotes *remotego.Remote) (*Storage, error) {
 	store := &Storage{
 		Path:    basePath + "/" + "controllers.json",
 		Entries: make(map[string]*Entry),
+		Remotes: remotes,
 	}
 	if _, err := os.Stat(store.Path); os.IsNotExist(err) {
 		return store, store.Save()
@@ -151,7 +155,13 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 			Vendor: opts.Remote.Vendor,
 			Model:  opts.Remote.Model,
 		}
-		if err := entry.initRemote(); err != nil {
+
+		template, err := s.Remotes.GetTemplate(entry.Kind, entry.Remote.Vendor, entry.Remote.Model)
+		if err != nil {
+			return nil, err
+		}
+
+		if err := entry.initRemote(template); err != nil {
 			return nil, err
 		}
 	default:
@@ -162,14 +172,10 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 }
 
 // initRemote - Initialize Remote Controller (Inject default state)
-func (e *Entry) initRemote() error {
+func (e *Entry) initRemote(template *template.Template) error {
 	switch e.Kind {
 	case "AIRCON":
-		remote, err := e.Remote.GetAircon()
-		if err != nil {
-			return err
-		}
-		if state, err := aircon.DefaultState(remote.Remote.Template()); err == nil {
+		if state, err := aircon.DefaultState(template); err == nil {
 			e.Aircon = state
 		} else {
 			return err

@@ -154,7 +154,7 @@ func (h *httpServer) getControllerTemplateByID(c *gin.Context) {
 		return
 	}
 
-	t, err := r.Remote.GetTemplate(r.Kind)
+	t, err := h.controller.Remotes.GetTemplate(r.Kind, r.Remote.Vendor, r.Remote.Model)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

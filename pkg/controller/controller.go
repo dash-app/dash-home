@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/dash-app/dash-home/pkg/agent"
+	remotego "github.com/dash-app/remote-go"
 	"github.com/dash-app/remote-go/aircon"
 	"github.com/sirupsen/logrus"
 )
@@ -13,10 +14,14 @@ import (
 type Controller struct {
 	Storage *Storage
 	Agent   agent.Agent
+	Remotes *remotego.Remote
 }
 
 func New(basePath string, agent agent.Agent) (*Controller, error) {
-	store, err := NewStorage(basePath)
+	// Initialize remotes
+	remotes := remotego.Init()
+
+	store, err := NewStorage(basePath, remotes)
 	if err != nil {
 		return nil, err
 	}
@@ -24,6 +29,7 @@ func New(basePath string, agent agent.Agent) (*Controller, error) {
 	c := &Controller{
 		Storage: store,
 		Agent:   agent,
+		Remotes: remotes,
 	}
 
 	return c, nil
@@ -45,18 +51,18 @@ func (c *Controller) PushAircon(id string, ac *aircon.Entry) (*aircon.Entry, err
 	switch entry.Type {
 	case "REMOTE":
 		// Get remote provider
-		acRemote, err := entry.Remote.GetAircon()
+		acRemote, err := c.Remotes.GetAircon(entry.Remote.Vendor, entry.Remote.Model)
 		if err != nil {
 			return nil, err
 		}
 
 		// Validate
-		if err := ac.Validate(acRemote.Remote.Template()); err != nil {
+		if err := ac.Validate(acRemote.Template()); err != nil {
 			return nil, err
 		}
 
 		// Generate
-		code, err := acRemote.Remote.Generate(ac)
+		code, err := acRemote.Generate(ac)
 		if err != nil {
 			return nil, err
 		}
@@ -68,7 +74,7 @@ func (c *Controller) PushAircon(id string, ac *aircon.Entry) (*aircon.Entry, err
 		}
 
 		// Update
-		updated, err := entry.Aircon.UpdateFromEntry(ac, acRemote.Remote.Template())
+		updated, err := entry.Aircon.UpdateFromEntry(ac, acRemote.Template())
 		if err != nil {
 			return nil, err
 		}
