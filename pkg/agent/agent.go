@@ -36,6 +36,9 @@ type Agent interface {
 
 	// Remote
 	SendIR(context.Context, []*hex.HexCode) error
+
+	// SwitchBot
+	PostSwitch(context.Context, string, string) error
 }
 
 type agentService struct {

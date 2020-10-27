@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/dash-app/dash-home/pkg/agent"
 	"github.com/dash-app/dash-home/pkg/controller"
 	"github.com/dash-app/remote-go/aircon"
 	"github.com/gin-gonic/gin"
@@ -19,13 +20,19 @@ type SetControllerRequest struct {
 	Remote *RemoteController `json:"remote,omitempty"`
 
 	// TODO: Add Switchbot Controller
-	//Switch *SwitchController `json:"switch,omitempty"`
+	SwitchBot *SwitchBotController `json:"switchbot,omitempty"`
 }
 
 // RemoteController - as IR remote controller
 type RemoteController struct {
 	Vendor string `json:"vendor" validate:"required" example:"daikin"`
 	Model  string `json:"model" validate:"required" example:"daikin01"`
+}
+
+// SwitchBotController - as SwitchBot controller
+type SwitchBotController struct {
+	Mac     string `json:"mac" validate:"required" example:"FF:FF:FF:FF:FF:FF"`
+	Command string `json:"command" validate:"required" example:"PRESS"`
 }
 
 // CreateControllerResponse - Create controller response
@@ -68,6 +75,11 @@ func (h *httpServer) postControllers(c *gin.Context) {
 		opts.Remote = &controller.Remote{
 			Vendor: req.Remote.Vendor,
 			Model:  req.Remote.Model,
+		}
+	} else if req.Type == "SWITCHBOT" {
+		opts.SwitchBot = &agent.SwitchBot{
+			Mac:     req.SwitchBot.Mac,
+			Command: req.SwitchBot.Command,
 		}
 	}
 
@@ -124,6 +136,20 @@ func (h *httpServer) patchControllerByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, e)
+}
+
+func (h *httpServer) postSwitchBotByID(c *gin.Context) {
+	id := c.Param("id")
+
+	if err := h.controller.RaiseSwitchBot(id); err != nil {
+		if err == errors.New("not found") {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+		return
+	}
+	c.JSON(http.StatusOK, nil)
 }
 
 func (h *httpServer) postAirconByID(c *gin.Context) {

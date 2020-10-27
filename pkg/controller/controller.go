@@ -29,6 +29,27 @@ func New(basePath string, agent agent.Agent) (*Controller, error) {
 	return c, nil
 }
 
+func (c *Controller) RaiseSwitchBot(id string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	entry, err := c.Storage.GetByID(id)
+	if err != nil {
+		return err
+	}
+
+	if entry.Kind != "SWITCHBOT" && entry.Type != "SWITCHBOT" {
+		return errors.New("that controller does not setup for switchbot")
+	}
+
+	// Get SwitchBot Provider
+	if err := c.Agent.PostSwitch(ctx, entry.SwitchBot.Mac, entry.SwitchBot.Command); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (c *Controller) PushAircon(id string, ac *aircon.Entry) (*aircon.Entry, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
