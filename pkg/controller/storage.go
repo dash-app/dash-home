@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 
+	"github.com/dash-app/dash-home/pkg/agent"
 	"github.com/dash-app/dash-home/pkg/storage"
 	remotego "github.com/dash-app/remote-go"
 	"github.com/dash-app/remote-go/aircon"
@@ -18,12 +19,18 @@ type Storage struct {
 }
 
 type Entry struct {
-	ID     string        `json:"id,omitempty"`
-	Name   string        `json:"name"`
-	Kind   string        `json:"kind"`
-	Type   string        `json:"type"`
-	Remote *Remote       `json:"remote,omitempty"`
-	Aircon *aircon.State `json:"aircon,omitempty"`
+	ID string `json:"id,omitempty"`
+	// Name - ex. Bedroom Airconditioner
+	Name string `json:"name"`
+
+	// Kind - AIRCON, LIGHT, SWITCHBOT...
+	Kind string `json:"kind"`
+
+	// Type - type of controller (how to use?) / ex. REMOTE, SWITCHBOT...
+	Type      string           `json:"type"`
+	Remote    *Remote          `json:"remote,omitempty"`
+	SwitchBot *agent.SwitchBot `json:"switchbot,omitempty"`
+	Aircon    *aircon.State    `json:"aircon,omitempty"`
 }
 
 type Options struct {
@@ -31,6 +38,7 @@ type Options struct {
 	Remote *Remote `json:"remote,omitempty"`
 
 	// Switch....
+	SwitchBot *agent.SwitchBot `json:"switchbot,omitempty"`
 }
 
 func NewStorage(basePath string, remotes *remotego.Remote) (*Storage, error) {
@@ -90,20 +98,20 @@ func (s *Storage) Update(id string, name, kind, t string, opts *Options) (*Entry
 		return nil, err
 	}
 
+	// TODO: ↓ここで新しいデータを作らず、oldEntryに対してそれぞれ新しい情報を代入してあげれば良くない？
+	// TODO: newEntryではValidateを通過させるためでしかないので、構造体内のデータにすべてSet関数を持たせて個別にValidateさせるほうが良いのでは？
+	// NOTE: Validation済みのデータを取得する (Remoteの場合は必要なデータも生成される。)
 	entry, err := s.newEntry(id, name, kind, t, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	// Set Type
-	switch t {
-	case "REMOTE":
-		if oldEntry.Kind == entry.Kind && oldEntry.Type == entry.Type && oldEntry.Remote.Vendor == entry.Remote.Vendor && oldEntry.Remote.Model == entry.Remote.Model {
-			// Merge State (Aircon, Light etc...)
+	if t == "REMOTE" {
+		// NOTE: VendorとModelがそれぞれ変更前と同一の場合は各Stateをコピーする。
+		if oldEntry.Remote.Vendor == opts.Remote.Vendor && oldEntry.Remote.Model == opts.Remote.Model {
+			// NOTE: Copy old state
 			entry.Aircon = oldEntry.Aircon
 		}
-	default:
-		return nil, errors.New("unsupported kind")
 	}
 
 	s.Entries[entry.ID] = entry
@@ -137,6 +145,7 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 	// Set kind
 	switch kind {
 	case "AIRCON":
+	case "SWITCHBOT":
 		entry.Kind = kind
 	default:
 		return nil, errors.New("unsupported kind")
@@ -163,6 +172,15 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 
 		if err := entry.initRemote(template); err != nil {
 			return nil, err
+		}
+	case "SWITCHBOT":
+		if opts.SwitchBot == nil {
+			return nil, errors.New("switchbot options does not satisfied")
+		}
+
+		entry.SwitchBot = &agent.SwitchBot{
+			Mac:     opts.SwitchBot.Mac,
+			Command: opts.SwitchBot.Command,
 		}
 	default:
 		return nil, errors.New("unsupported type")
