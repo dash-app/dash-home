@@ -65,8 +65,6 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 
 	r.GET("/api/v1/controllers/:id/template", h.getControllerTemplateByID)
 
-	r.POST("/api/v1/switch", h.postSwitch)
-
 	return r
 }
 
