@@ -90,9 +90,9 @@ const ControllerEditor: React.FC<Props> = (props: Props) => {
               <Col>
                 <Form.Control
                   placeholder="Vendor"
-                  defaultValue={controller.remote.vendor}
+                  defaultValue={controller.remote?.vendor}
                   onChange={(e: any) => {
-                    controller.remote.vendor = e.currentTarget.value;
+                    controller.remote!.vendor = e.currentTarget.value;
                     setController(controller);
                   }}
                 />
@@ -100,9 +100,9 @@ const ControllerEditor: React.FC<Props> = (props: Props) => {
               <Col>
                 <Form.Control
                   placeholder="Model"
-                  defaultValue={controller.remote.model}
+                  defaultValue={controller.remote?.model}
                   onChange={(e: any) => {
-                    controller.remote.model = e.currentTarget.value;
+                    controller.remote!.model = e.currentTarget.value;
                     setController(controller);
                   }}
                 />

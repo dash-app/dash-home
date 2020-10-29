@@ -7,7 +7,7 @@ export interface Controller {
   name: string,
   kind: string, // "AIRCON", "LIGHT"...
   type: string, // "REMOTE"...
-  remote: Remote,
+  remote?: Remote,
   aircon?: AirconState,
 }
 
