@@ -144,8 +144,7 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 
 	// Set kind
 	switch kind {
-	case "AIRCON":
-	case "SWITCHBOT":
+	case "AIRCON", "SWITCHBOT":
 		entry.Kind = kind
 	default:
 		return nil, errors.New("unsupported kind")
