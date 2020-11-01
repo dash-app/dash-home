@@ -1,13 +1,14 @@
 import * as React from 'react';
 import Basement from "../components/basements/Basement";
-import { Button, Container, Form } from 'react-bootstrap';
-import { H1, P } from '../components/atoms/Core';
+import { ButtonGroup, Container, Dropdown, DropdownButton, Form } from 'react-bootstrap';
+import { Div, H1, P } from '../components/atoms/Core';
 import { Controller } from '../remote-go/Controller';
 import { FAILED, PENDING, Status, SUCCESS } from '../remote-go/Status';
 import { Link } from 'react-router-dom';
-import { SpinnerInvert, IconInvert } from '../components/atoms/Themed';
+import { SpinnerInvert, IconInvert, Button } from '../components/atoms/Themed';
+import { title } from 'process';
 
-interface Props { 
+interface Props {
   status: Status,
 }
 
@@ -15,12 +16,11 @@ const NewController: React.FC<Props> = (props: Props) => {
   const initial: Controller = {
     id: "",
     name: "",
-    kind: "",
-    type: "",
+    kind: "AIRCON",
+    type: "REMOTE",
   }
 
   const [controller, setController] = React.useState<Controller>(initial);
-
 
   const handleSubmit = (event: any) => {
     // props.handleSubmit(controller);
@@ -36,7 +36,6 @@ const NewController: React.FC<Props> = (props: Props) => {
 
         {/* Form */}
         <Form onSubmit={handleSubmit}>
-
           {/* Name */}
           <Form.Group>
             <Form.Label><P>Controller Name</P></Form.Label>
@@ -45,7 +44,7 @@ const NewController: React.FC<Props> = (props: Props) => {
               aria-label="name"
               onChange={(e: any) => {
                 controller.name = e.currentTarget.value;
-                setController(controller)
+                setController({ ...controller });
               }}
               required
             ></Form.Control>
@@ -53,41 +52,57 @@ const NewController: React.FC<Props> = (props: Props) => {
 
           {/* Kind */}
           <Form.Group>
-            <Form.Label><P>Kind</P></Form.Label>
-            <Form.Control
-              placeholder="Kind"
-              aria-label="kind"
-              as="select"
-              defaultValue="AIRCON"
-              onChange={(e: any) => {
-                controller.kind = e.currentTarget.value;
-                setController(controller)
-              }}
-            >
-              <option>AIRCON</option>
-            </Form.Control>
+            <Form.Label><P>Kind: {controller.kind}</P></Form.Label>
+            <DropdownButton title={controller.kind} drop="right">
+              {["AIRCON"].map((e) => {
+                return (
+                  <Dropdown.Item
+                    key={e}
+                    onClick={() => {
+                      controller.kind = e;
+                      setController({ ...controller });
+                    }}
+                    active={e === controller.kind}
+                  >
+                    {e}
+                  </Dropdown.Item>
+                )
+              })}
+            </DropdownButton>
           </Form.Group>
 
           {/* Type */}
           <Form.Group>
             <Form.Label><P>Type</P></Form.Label>
-            <Form.Control
-              placeholder="Type"
-              aria-label="type"
-              as="select"
-              defaultValue="REMOTE"
-              onChange={(e: any) => {
-                controller.type = e;
-                setController(controller)
-              }}
-            >
-              <option>REMOTE</option>
-            </Form.Control>
+            <Dropdown>
+              <Dropdown.Toggle id="dropdown-basic">
+                {controller.type ? controller.type : "Select Type..."}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {["REMOTE", "SWITCHBOT"].map((e) => {
+                  return (
+                    <Dropdown.Item
+                      onClick={() => {
+                        controller.type = e;
+                        setController({ ...controller });
+                      }}
+                    >
+                      {e}
+                    </Dropdown.Item>
+                  )
+                })}
+              </Dropdown.Menu>
+            </Dropdown>
           </Form.Group>
 
           {/* Show remote option (when choosed remote type) */}
           {controller.type === "REMOTE" &&
-            <Form.Label><P>Vendor: ....</P></Form.Label>
+            <Form.Group>
+              <Form.Label><P>Vendor: ....</P></Form.Label>
+              <Div>
+                <Button>// Select Remote...</Button>
+              </Div>
+            </Form.Group>
           }
 
           {props.status === PENDING && <SpinnerInvert aria-hidden="true" />}
