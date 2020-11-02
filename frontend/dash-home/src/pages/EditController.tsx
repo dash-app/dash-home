@@ -7,6 +7,7 @@ import Basement from "../components/basements/Basement";
 import ControllerEditor from "../components/controller/ControllerEditor";
 import { Controller, ControllerResult, fetchController, updateController } from '../remote-go/Controller';
 import { NONE } from '../remote-go/Status';
+import { NotifyError } from '../components/atoms/Notify';
 
 interface Props extends RouteComponentProps<{ id: string }> {
   controller: Controller,
@@ -26,13 +27,7 @@ const EditController: React.FC<Props> = (props: Props) => {
     <Container fluid="lg">
       {/* Error Message (Controller) */}
       {controllerResult?.error &&
-        <Alert variant="danger">
-          <Alert.Heading>
-            <CustomIcon icon={["fas", "exclamation-triangle"]} />
-            <span>Failed fetch controller data</span>
-          </Alert.Heading>
-          <p>(Please see console.)</p>
-        </Alert>
+        <NotifyError title="Failed fetch controller data" />
       }
 
       {initialControllerResult && initialControllerResult?.error == null &&
@@ -47,9 +42,5 @@ const EditController: React.FC<Props> = (props: Props) => {
     </Container>
   )
 }
-
-const CustomIcon = styled(FontAwesomeIcon)`
-  margin-right: 4px;
-`
 
 export default EditController;

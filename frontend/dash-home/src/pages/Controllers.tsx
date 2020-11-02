@@ -3,6 +3,7 @@ import { Container, Modal, Nav, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Div, H2, Span } from "../components/atoms/Core";
+import { NotifyError } from "../components/atoms/Notify";
 import { Button, Spinner } from "../components/atoms/Themed";
 import Basement from "../components/basements/Basement";
 import { Controller, ControllersResult, fetchControllers } from "../remote-go/Controller";
@@ -19,7 +20,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     <Modal
       show={props.show}
       backdrop="static"
-      onHide={props.handleClose}  
+      onHide={props.handleClose}
       keyboard={false}
       variant="dark"
       animation={false}
@@ -67,47 +68,50 @@ const Controllers: React.FC<Props> = () => {
           </Nav.Item>
         </Nav>
         <H2>Controllers...</H2>
-        {controllersResult?.error == null && !controllersResult?.controllers ?
-          <Div>
-            <CustomSpinner animation="border" aria-hidden="true" />
-            <Span>Loading...</Span>
-          </Div>
+        {controllersResult?.error ?
+          <NotifyError title="Failed fetch controllers" />
           :
-          <Div>
-            <Editor show={show} handleClose={() => { setShow(false) }} />
-            <Table hover variant="dark">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Kind</th>
-                  <th>Options</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.values(controllersResult.controllers!).map((controller: Controller) => {
-                  return (
-                    <tr key={controller.id}>
-                      <td>{controller.id}</td>
-                      <td>
-                        <Link to={`/controllers/${controller.id}`}>
-                          <Button>{controller.name}</Button>
-                        </Link>
-                      </td>
-                      <td>{controller.kind}</td>
-                      <td>
-                        {/* <Button onClick={() => { setShow(true) }}>Edit</Button> */}
-                        <Link to={`/controllers/${controller.id}/edit`}>
-                          <Button>Edit</Button>
-                        </Link>
-                      </td>
-                    </tr>
-                  )
-                })
-                }
-              </tbody>
-            </Table>
-          </Div>
+          !controllersResult?.controllers ?
+            <Div>
+              <CustomSpinner animation="border" aria-hidden="true" />
+              <Span>Loading...</Span>
+            </Div>
+            :
+            <Div>
+              <Editor show={show} handleClose={() => { setShow(false) }} />
+              <Table hover variant="dark">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Kind</th>
+                    <th>Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.values(controllersResult.controllers!).map((controller: Controller) => {
+                    return (
+                      <tr key={controller.id}>
+                        <td>{controller.id}</td>
+                        <td>
+                          <Link to={`/controllers/${controller.id}`}>
+                            <Button>{controller.name}</Button>
+                          </Link>
+                        </td>
+                        <td>{controller.kind}</td>
+                        <td>
+                          {/* <Button onClick={() => { setShow(true) }}>Edit</Button> */}
+                          <Link to={`/controllers/${controller.id}/edit`}>
+                            <Button>Edit</Button>
+                          </Link>
+                        </td>
+                      </tr>
+                    )
+                  })
+                  }
+                </tbody>
+              </Table>
+            </Div>
         }
       </Container>
     </Basement>

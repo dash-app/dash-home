@@ -13,6 +13,7 @@ import { fetchTemplate, TemplateResult } from '../remote-go/Template';
 import { fetchController, ControllerResult } from '../remote-go/Controller';
 import { useEffect, useState } from 'react';
 import Basement from '../components/basements/Basement';
+import { NotifyError } from '../components/atoms/Notify';
 
 interface Props extends RouteComponentProps<{ id: string }> { }
 
@@ -35,24 +36,12 @@ const Controller: React.FC<Props> = props => {
       <Container fluid="lg">
         {/* Error Message (Template) */}
         {templateResult?.error &&
-          <Alert variant="danger">
-            <Alert.Heading>
-              <CustomIcon icon={["fas", "exclamation-triangle"]} />
-              <span>Failed fetch template data</span>
-            </Alert.Heading>
-            <p>(Please see console.)</p>
-          </Alert>
+          <NotifyError title="Failed fetch template data" />
         }
 
         {/* Error Message (Controller) */}
         {controllerResult?.error &&
-          <Alert variant="danger">
-            <Alert.Heading>
-              <CustomIcon icon={["fas", "exclamation-triangle"]} />
-              <span>Failed fetch controller data</span>
-            </Alert.Heading>
-            <p>(Please see console.)</p>
-          </Alert>
+          <NotifyError title="Failed fetch controller data" />
         }
         <Navbar>
           <Navbar.Brand>
@@ -91,10 +80,6 @@ const Controller: React.FC<Props> = props => {
     </Basement>
   )
 }
-
-const CustomIcon = styled(FontAwesomeIcon)`
-  margin-right: 4px;
-`
 
 const CustomSpinner = styled(Spinner)`
   margin-left: 4px;

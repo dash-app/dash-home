@@ -9,6 +9,7 @@ import { Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 import { RoomContext } from './RoomProvider';
+import { NotifyError } from '../atoms/Notify';
 
 interface Props {
   children: React.ReactNode,
@@ -23,13 +24,7 @@ const Basement: React.FC<Props> = props => {
             <Div>
               <Navigation theme={theme} room={roomResult?.room} />
               {roomResult?.error &&
-                <Alert variant="danger">
-                  <Alert.Heading>
-                    <CustomIcon icon={["fas", "exclamation-triangle"]} />
-                    <span>Failed fetch room data</span>
-                  </Alert.Heading>
-                  <p>(Please see console.)</p>
-                </Alert>
+                <NotifyError title="Failed fetch room data" />
               }
               <Container fluid>
                 {props.children}
@@ -41,9 +36,5 @@ const Basement: React.FC<Props> = props => {
     </ThemeContext.Consumer>
   )
 }
-
-const CustomIcon = styled(FontAwesomeIcon)`
-  margin-right: 4px;
-`
 
 export default Basement;
