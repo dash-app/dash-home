@@ -6,7 +6,7 @@ import { Controller } from '../remote-go/Controller';
 import { FAILED, PENDING, Status, SUCCESS } from '../remote-go/Status';
 import { Link } from 'react-router-dom';
 import { SpinnerInvert, IconInvert, Button } from '../components/atoms/Themed';
-import { title } from 'process';
+import RemoteChooser from '../components/controller/RemoteChooser';
 
 interface Props {
   status: Status,
@@ -21,6 +21,8 @@ const NewController: React.FC<Props> = (props: Props) => {
   }
 
   const [controller, setController] = React.useState<Controller>(initial);
+
+  const [openChooser, setOpenChooser] = React.useState<boolean>(false);
 
   const handleSubmit = (event: any) => {
     // props.handleSubmit(controller);
@@ -99,8 +101,16 @@ const NewController: React.FC<Props> = (props: Props) => {
           {controller.type === "REMOTE" &&
             <Form.Group>
               <Form.Label><P>Vendor: ....</P></Form.Label>
-              <Div>
-                <Button>// Select Remote...</Button>
+              <Div>                
+                <Button onClick={() => {
+                  setOpenChooser(true);
+                }}>// Select Remote...</Button>
+                {/* Modal */}
+                <RemoteChooser
+                  visible={openChooser}
+                  handleClose={() => setOpenChooser(false)}
+                  kind={controller.kind}
+                />
               </Div>
             </Form.Group>
           }
