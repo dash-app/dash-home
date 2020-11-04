@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Modal, Button, Tabs, Card, Tab } from 'react-bootstrap';
+import { Remote } from '../../remote-go/Controller';
 import { RemotesResult, fetchRemotes } from '../../remote-go/Remotes';
 import { NotifyError } from '../atoms/Notify';
 
@@ -7,6 +8,7 @@ interface Props {
   visible: boolean,
   handleClose: any,
   kind: string,
+  handleUpdate: any,
 }
 
 const RemoteChooser: React.FC<Props> = (props: Props) => {
@@ -70,12 +72,17 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
             return (
               <Tab eventKey={r[0]} title={r[0]}>
                 {/* Models Card... */}
-                {r[1].map((models: string) => {
+                {r[1].map((model: string) => {
                   return (
                     <Card>
                       <Card.Body>
-                        <Card.Title>{models}</Card.Title>
-                        <Button variant="primary">Choose this!</Button>
+                        <Card.Title>{model}</Card.Title>
+                        <Button variant="primary" onClick={() => props.handleUpdate(
+                          ((): Remote => ({
+                            vendor: r[0],
+                            model: model,
+                          }))()
+                        )}>Choose this!</Button>
                         <Button variant="secondary" disabled>Test (Coming Soon...)</Button>
                       </Card.Body>
                     </Card>
@@ -86,7 +93,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
           })}
         </Tabs>
       </Modal.Body>
-    </Modal>
+    </Modal >
   )
 }
 

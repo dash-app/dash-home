@@ -100,7 +100,13 @@ const NewController: React.FC<Props> = (props: Props) => {
           {/* Show remote option (when choosed remote type) */}
           {controller.type === "REMOTE" &&
             <Form.Group>
-              <Form.Label><P>Vendor: ....</P></Form.Label>
+              <Form.Label>
+                {controller.remote ? 
+                  (<P>Vendor: {controller.remote?.vendor + "/" + controller.remote?.model}</P>)
+                  :
+                  (<P>Vendor</P>)
+                }
+              </Form.Label>
               <Div>
                 <Button onClick={() => {
                   setOpenChooser(true);
@@ -110,6 +116,10 @@ const NewController: React.FC<Props> = (props: Props) => {
                   visible={openChooser}
                   handleClose={() => setOpenChooser(false)}
                   kind={controller.kind}
+                  handleUpdate={(remote: Remote) => {
+                    controller.remote = remote
+                    setController({ ...controller });
+                  }}
                 />
               </Div>
             </Form.Group>
