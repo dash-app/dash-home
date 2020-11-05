@@ -27,6 +27,7 @@ export interface ControllersResult {
 export interface ControllerResult {
   status: Status,
   controller?: Controller,
+  response?: any,
   error?: any,
 }
 
@@ -61,7 +62,7 @@ export function fetchControllers(setResult: React.Dispatch<React.SetStateAction<
   setResult({
     status: PENDING,
   })
-  
+
   axios.get<Map<string, Controller>>(`${API_ADDRESS}/api/v1/controllers`)
     .then(response => setResult({
       status: SUCCESS,
@@ -108,6 +109,23 @@ export function updateController(id: string, payload: Controller, setResult: Rea
       status: FAILED,
       error: error,
     }));
+}
+
+export function createController(payload: Controller, setResult: React.Dispatch<React.SetStateAction<ControllerResult | undefined>>) {
+  setResult({
+    status: PENDING,
+  })
+
+  axios
+    .post<Controller>(`${API_ADDRESS}/api/v1/controllers`, payload)
+    .then(response => setResult({
+      status: SUCCESS,
+      controller: response.data,
+    }))
+    .catch(error => setResult({
+      status: FAILED,
+      error: error.response,
+    }));  
 }
 
 // Emitter

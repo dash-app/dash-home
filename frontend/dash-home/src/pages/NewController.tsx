@@ -2,15 +2,14 @@ import * as React from 'react';
 import Basement from "../components/basements/Basement";
 import { Container, Dropdown, DropdownButton, Form } from 'react-bootstrap';
 import { Div, H1, P } from '../components/atoms/Core';
-import { Controller, Remote } from '../remote-go/Controller';
-import { FAILED, PENDING, Status, SUCCESS } from '../remote-go/Status';
+import { Controller, ControllerResult, createController, Remote } from '../remote-go/Controller';
+import { FAILED, PENDING, SUCCESS } from '../remote-go/Status';
 import { Link } from 'react-router-dom';
-import { SpinnerInvert, IconInvert, Button } from '../components/atoms/Themed';
+import { Spinner, Icon, Button } from '../components/atoms/Themed';
 import RemoteChooser from '../components/controller/RemoteChooser';
+import { NotifyError } from '../components/atoms/Notify';
 
-interface Props {
-  status: Status,
-}
+interface Props { }
 
 const NewController: React.FC<Props> = (props: Props) => {
   const initial: Controller = {
@@ -21,14 +20,24 @@ const NewController: React.FC<Props> = (props: Props) => {
   }
 
   const [controller, setController] = React.useState<Controller>(initial);
-
   const [openChooser, setOpenChooser] = React.useState<boolean>(false);
+
+  // Create Result
+  const [postResult, setPostResult] = React.useState<ControllerResult | undefined>(undefined);
 
   const handleSubmit = (event: any) => {
     // props.handleSubmit(controller);
     console.log(controller);
+
+    // Submit
+    createController(controller, setPostResult)
+
     event.preventDefault();
     event.stopPropagation();
+  }
+
+  if (postResult?.error) {
+    console.log(postResult.error)
   }
 
   return (
@@ -101,7 +110,7 @@ const NewController: React.FC<Props> = (props: Props) => {
           {controller.type === "REMOTE" &&
             <Form.Group>
               <Form.Label>
-                {controller.remote ? 
+                {controller.remote ?
                   (<P>Vendor: {controller.remote?.vendor + "/" + controller.remote?.model}</P>)
                   :
                   (<P>Vendor</P>)
@@ -125,15 +134,16 @@ const NewController: React.FC<Props> = (props: Props) => {
             </Form.Group>
           }
 
-          {props.status === PENDING && <SpinnerInvert aria-hidden="true" />}
-          {props.status === SUCCESS && <IconInvert icon={["fas", "check"]} />}
-          {props.status === FAILED && <IconInvert icon={["fas", "exclamation-triangle"]} />}
-          <Button type="submit" disabled={props.status === PENDING}>Update</Button>
+          <Button type="submit" disabled={postResult && postResult.status === PENDING}>Update</Button>
           <Link to="/controllers">
             <Button variant="secondary">Back</Button>
           </Link>
+          <Div>
+            {postResult && postResult.status === PENDING && <Spinner aria-hidden="true" />}
+            {postResult && postResult.status === SUCCESS && <Icon icon={["fas", "check"]} />}
+            {postResult && postResult.status === FAILED && <NotifyError title="Failed create controller" message={`${postResult.error!.data.error ? postResult.error!.data.error : postResult.error!.data}`} />}
+          </Div>
         </Form>
-
       </Container>
     </Basement>
   )

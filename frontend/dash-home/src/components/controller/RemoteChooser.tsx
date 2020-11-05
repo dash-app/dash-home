@@ -77,12 +77,15 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
                     <Card>
                       <Card.Body>
                         <Card.Title>{model}</Card.Title>
-                        <Button variant="primary" onClick={() => props.handleUpdate(
-                          ((): Remote => ({
-                            vendor: r[0],
-                            model: model,
-                          }))()
-                        )}>Choose this!</Button>
+                        <Button variant="primary" onClick={() => {
+                          props.handleUpdate(
+                            ((): Remote => ({
+                              vendor: r[0],
+                              model: model,
+                            }))()
+                          );
+                          props.handleClose();
+                        }}>Choose this!</Button>
                         <Button variant="secondary" disabled>Test (Coming Soon...)</Button>
                       </Card.Body>
                     </Card>
