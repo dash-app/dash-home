@@ -4,7 +4,7 @@ import { Container, Dropdown, DropdownButton, Form } from 'react-bootstrap';
 import { Div, H1, P } from '../components/atoms/Core';
 import { Controller, ControllerResult, createController, Remote } from '../remote-go/Controller';
 import { FAILED, PENDING, SUCCESS } from '../remote-go/Status';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Spinner, Icon, Button } from '../components/atoms/Themed';
 import RemoteChooser from '../components/controller/RemoteChooser';
 import { NotifyError } from '../components/atoms/Notify';
@@ -84,26 +84,23 @@ const NewController: React.FC<Props> = (props: Props) => {
 
           {/* Type */}
           <Form.Group>
-            <Form.Label><P>Type</P></Form.Label>
-            <Dropdown>
-              <Dropdown.Toggle id="dropdown-basic">
-                {controller.type ? controller.type : "Select Type..."}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {["REMOTE", "SWITCHBOT"].map((e) => {
-                  return (
-                    <Dropdown.Item
-                      onClick={() => {
-                        controller.type = e;
-                        setController({ ...controller });
-                      }}
-                    >
-                      {e}
-                    </Dropdown.Item>
-                  )
-                })}
-              </Dropdown.Menu>
-            </Dropdown>
+            <Form.Label><P>Type: {controller.type}</P></Form.Label>
+            <DropdownButton title={controller.kind} drop="right">
+              {["REMOTE", "SWITCHBOT"].map((e) => {
+                return (
+                  <Dropdown.Item
+                    key={e}
+                    onClick={() => {
+                      controller.type = e;
+                      setController({ ...controller });
+                    }}
+                    active={e === controller.type}
+                  >
+                    {e}
+                  </Dropdown.Item>
+                )
+              })}
+            </DropdownButton>
           </Form.Group>
 
           {/* Show remote option (when choosed remote type) */}
@@ -140,7 +137,8 @@ const NewController: React.FC<Props> = (props: Props) => {
           </Link>
           <Div>
             {postResult && postResult.status === PENDING && <Spinner aria-hidden="true" />}
-            {postResult && postResult.status === SUCCESS && <Icon icon={["fas", "check"]} />}
+            {/* {postResult && postResult.status === SUCCESS && <Icon icon={["fas", "check"]} />} */}
+            {postResult && postResult.status === SUCCESS && <Redirect to="/controllers" />}
             {postResult && postResult.status === FAILED && <NotifyError title="Failed create controller" message={`${postResult.error!.data.error ? postResult.error!.data.error : postResult.error!.data}`} />}
           </Div>
         </Form>
