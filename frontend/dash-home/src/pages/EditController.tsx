@@ -1,9 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as React from 'react';
-import { Container, Alert } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
-import styled from 'styled-components';
-import Basement from "../components/basements/Basement";
 import ControllerEditor from "../components/controller/ControllerEditor";
 import { Controller, ControllerResult, fetchController, updateController } from '../remote-go/Controller';
 import { NONE } from '../remote-go/Status';

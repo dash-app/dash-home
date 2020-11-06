@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { Div, Span } from '../components/atoms/Core';
-import { Alert, Navbar } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Navbar } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Button, Container, Spinner } from '../components/atoms/Themed';
 

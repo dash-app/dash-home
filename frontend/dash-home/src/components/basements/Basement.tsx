@@ -5,9 +5,6 @@ import Navigation from '../navbar/Navigation';
 import { Container } from '../atoms/Themed';
 import { Div } from '../atoms/Core';
 import ThemeContext from '../themes/Theme';
-import { Alert } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styled from 'styled-components';
 import { RoomContext } from './RoomProvider';
 import { NotifyError } from '../atoms/Notify';
 
