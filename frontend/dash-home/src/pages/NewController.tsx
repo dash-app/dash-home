@@ -5,13 +5,13 @@ import { Div, H1, P } from '../components/atoms/Core';
 import { Controller, ControllerResult, createController, Remote } from '../remote-go/Controller';
 import { FAILED, PENDING, SUCCESS } from '../remote-go/Status';
 import { Link, Redirect } from 'react-router-dom';
-import { Spinner, Icon, Button } from '../components/atoms/Themed';
+import { Spinner, Button } from '../components/atoms/Themed';
 import RemoteChooser from '../components/controller/RemoteChooser';
 import { NotifyError } from '../components/atoms/Notify';
 
 interface Props { }
 
-const NewController: React.FC<Props> = (props: Props) => {
+const NewController: React.FC<Props> = () => {
   const initial: Controller = {
     id: "",
     name: "",
