@@ -72,11 +72,21 @@ func (h *httpServer) postControllers(c *gin.Context) {
 	// Set Options
 	var opts controller.Options
 	if req.Type == "REMOTE" {
+
+		//Remoteにデータが登録されていない場合エラーを返す処理(nil処理)
+		if req.Remote == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": errors.New("remote options must be satisfied").Error()})
+			return
+		}
 		opts.Remote = &controller.Remote{
 			Vendor: req.Remote.Vendor,
 			Model:  req.Remote.Model,
 		}
 	} else if req.Type == "SWITCHBOT" {
+		if req.SwitchBot == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": errors.New("switchbot options must be satisfied").Error()})
+			return
+		}
 		opts.SwitchBot = &agent.SwitchBot{
 			Mac:     req.SwitchBot.Mac,
 			Command: req.SwitchBot.Command,
