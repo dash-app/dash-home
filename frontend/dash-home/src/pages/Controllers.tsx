@@ -7,6 +7,7 @@ import { NotifyError } from "../components/atoms/Notify";
 import { Button, Spinner } from "../components/atoms/Themed";
 import Basement from "../components/basements/Basement";
 import { Controller, ControllersResult, fetchControllers } from "../remote-go/Controller";
+import DeleteController from "./DeleteController";
 
 interface Props { }
 
@@ -43,6 +44,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 const Controllers: React.FC<Props> = () => {
   const [controllersResult, setControllers] = useState<ControllersResult | undefined>(undefined);
   const [show, setShow] = useState<boolean>(false);
+  const [deleteQueue, setDeleteQueue] = React.useState<Controller | null>(null);
 
   const fetch = () => {
     fetchControllers(setControllers);
@@ -55,6 +57,14 @@ const Controllers: React.FC<Props> = () => {
   return (
     <Basement>
       <Container fluid="lg">
+        {deleteQueue != null &&
+          <DeleteController
+            controller={deleteQueue}
+            handleClose={() => setDeleteQueue(null)}
+            whenSuccess={() => fetch()}
+            visible={deleteQueue != null}
+          />
+        }
         <Nav>
           <Nav.Item>
             <Link to="/">
@@ -104,6 +114,9 @@ const Controllers: React.FC<Props> = () => {
                           <Link to={`/controllers/${controller.id}/edit`}>
                             <Button>Edit</Button>
                           </Link>
+                          <Button variant="danger" onClick={() => {
+                            setDeleteQueue(controller)
+                          }}>Delete</Button>
                         </td>
                       </tr>
                     )

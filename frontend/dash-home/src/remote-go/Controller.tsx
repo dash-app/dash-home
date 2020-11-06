@@ -125,7 +125,23 @@ export function createController(payload: Controller, setResult: React.Dispatch<
     .catch(error => setResult({
       status: FAILED,
       error: error.response,
-    }));  
+    }));
+}
+
+export function deleteController(id: string, setResult: React.Dispatch<React.SetStateAction<ControllerResult | undefined>>) {
+  setResult({
+    status: PENDING,
+  })
+
+  axios
+    .delete(`${API_ADDRESS}/api/v1/controllers/${id}`)
+    .then(response => setResult({
+      status: SUCCESS,
+    }))
+    .catch(error => setResult({
+      status: FAILED,
+      error: error.response,
+    }));
 }
 
 // Emitter

@@ -148,6 +148,22 @@ func (h *httpServer) patchControllerByID(c *gin.Context) {
 	c.JSON(http.StatusOK, e)
 }
 
+func (h *httpServer) deleteControllerByID(c *gin.Context) {
+	id := c.Param("id")
+
+	err := h.controller.Storage.Remove(id)
+	if err != nil {
+		if err == errors.New("not found") {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	c.JSON(http.StatusOK, nil)
+}
+
 func (h *httpServer) postSwitchBotByID(c *gin.Context) {
 	id := c.Param("id")
 

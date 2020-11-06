@@ -136,6 +136,18 @@ func (s *Storage) Create(name, kind, t string, opts *Options) (*Entry, error) {
 	return entry, s.Save()
 }
 
+// Remove - Remove controller
+func (s *Storage) Remove(id string) error {
+	// Get By ID
+	_, err := s.GetByID(id)
+	if err != nil {
+		return err
+	}
+
+	delete(s.Entries, id)
+	return s.Save()
+}
+
 func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, error) {
 	entry := &Entry{
 		ID:   id,
