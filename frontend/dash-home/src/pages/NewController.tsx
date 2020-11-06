@@ -85,7 +85,7 @@ const NewController: React.FC<Props> = (props: Props) => {
           {/* Type */}
           <Form.Group>
             <Form.Label><P>Type: {controller.type}</P></Form.Label>
-            <DropdownButton title={controller.kind} drop="right">
+            <DropdownButton title={controller.type} drop="right">
               {["REMOTE", "SWITCHBOT"].map((e) => {
                 return (
                   <Dropdown.Item
