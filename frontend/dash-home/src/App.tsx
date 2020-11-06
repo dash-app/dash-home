@@ -15,8 +15,6 @@ import Controllers from './pages/Controllers';
 import Controller from './pages/Controller';
 import NewController from './pages/NewController';
 import EditController from './pages/EditController';
-import Sandbox from './pages/Sandbox';
-import DemoAircon from './pages/DemoAircon';
 import NotFound from './pages/NotFound';
 
 // Custom themes
@@ -46,12 +44,6 @@ const App: React.FC = () => {
             <Route exact path="/controllers/new" component={NewController} />
             <Route exact path="/controllers/:id" component={Controller} />
             <Route exact path="/controllers/:id/edit" component={EditController} />
-
-            {/* Sandbox Page (Remove before Release!) */}
-            <Route path="/sandbox" component={Sandbox} />
-
-            {/* Component demo (AIRCON) */}
-            <Route path="/demo/aircon" component={DemoAircon} />
 
             <Route status={404} component={NotFound} />
           </Switch>
