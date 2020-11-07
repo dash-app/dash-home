@@ -2,17 +2,15 @@ import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import { AirconCard } from '../components/cards/CardBase';
-import List from '../components/controller/List';
-import { Aircon, AirconState, sendAircon } from '../remote-go/Controller';
+import List from '../components/controller/template/List';
+import { Aircon, AirconState, Controller, sendAircon } from '../remote-go/Controller';
 import { AirconModes as TplAirconModes, Template } from '../remote-go/Template';
 import { useCallback, useEffect, useState } from 'react';
 import { HR } from '../components/atoms/Themed';
 import { SummonByTpl } from '../components/controller/Template';
 
 interface Props {
-  id: string,
-  name: string,
-  initialState: AirconState,
+  controller: Controller,
   template: Template,
 }
 
@@ -73,11 +71,11 @@ const AirconPanel: React.FC<Props> = props => {
   const { sending, setSending } = useSendingIcon();
 
   const callTimer = useTask();
-  const [aircon, setAircon] = useState(props.initialState);
+  const [aircon, setAircon] = useState<AirconState>(props.controller.aircon!);
   const update = (state: AirconState, after?: any) => {
     setAircon(state);
     callTimer(() => {
-      sendAircon(props.id, stateToEntry(state), () => {
+      sendAircon(props.controller.id, stateToEntry(state), () => {
         console.debug(stateToEntry(state));
         setSending();
         if (after) {
@@ -96,7 +94,7 @@ const AirconPanel: React.FC<Props> = props => {
   }
 
   return (
-    <AirconCard name={props.name} mode={aircon.mode} send={sending}>
+    <AirconCard name={props.controller.name} mode={aircon.mode} send={sending}>
       <Row>
         {/* Operation */}
         <Contents>

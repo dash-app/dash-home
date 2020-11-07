@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ButtonGroup, Col, Container, Dropdown, DropdownButton, Row } from 'react-bootstrap';
-import { H1, P } from '../atoms/Core';
+import { H1, P } from '../../atoms/Core';
 
 import styled from 'styled-components';
-import { Button } from '../atoms/Themed';
+import { Button } from '../../atoms/Themed';
 
 interface Props {
     description?: string,

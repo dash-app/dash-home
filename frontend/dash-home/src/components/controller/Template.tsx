@@ -1,9 +1,9 @@
 import React from "react";
-import List from './List';
-import Toggle from './Toggle';
-import Range from './Range';
 import { Action } from '../../remote-go/Template';
-import Shot from "./Shot";
+import List from './template/List';
+import Range from './template/Range';
+import Shot from "./template/Shot";
+import Toggle from './template/Toggle';
 
 interface SummonProps {
   onChange?: any,
