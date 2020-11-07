@@ -69,9 +69,7 @@ const Controller: React.FC<Props> = props => {
           controllerResult?.controller.aircon &&
 
           <AirconPanel
-            id={controllerResult?.controller.id}
-            name={controllerResult?.controller.name}
-            initialState={controllerResult?.controller.aircon}
+            controller={controllerResult?.controller}
             template={templateResult?.template}
           />
         }
