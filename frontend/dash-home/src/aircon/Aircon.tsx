@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
-import { AirconCard } from '../components/cards/CardBase';
+import { AirconCard } from '../components/cards/Aircon';
 import List from '../components/controller/template/List';
 import { Aircon, AirconState, Controller, sendAircon } from '../remote-go/Controller';
 import { AirconModes as TplAirconModes, Template } from '../remote-go/Template';

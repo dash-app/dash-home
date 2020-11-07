@@ -6,7 +6,7 @@ import styled from 'styled-components';
 interface AirconProps {
   name: string,
   mode: string,
-  send: boolean,
+  send?: boolean,
   children: React.ReactNode,
 }
 
@@ -38,7 +38,6 @@ const AirconCard = (props: AirconProps) => {
         <Row>
           <Col>
             <Icon icon={["fas", "fan"]} style={{ color: modeColor }} />
-            {/* <CardTitle>{props.name}</CardTitle> */}
           </Col>
           {props.send && <Col style={{ textAlign: "right" }}><Icon icon={["fas", "wifi"]} style={{ color: modeColor }} /></Col>}
         </Row>
