@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
+import styled from 'styled-components';
+import { Div, Span } from '../components/atoms/Core';
+import { NotifyError } from '../components/atoms/Notify';
 import Basement from '../components/basements/Basement';
 import { ControllersResult, fetchControllers, Controller } from '../remote-go/Controller';
 
-interface Props {}
+interface Props { }
 
 const Home: React.FC<Props> = (props: Props) => {
   // useStateで状態の保存場所を定義する。 参考：(https://ja.reactjs.org/docs/hooks-state.html)
@@ -18,21 +21,27 @@ const Home: React.FC<Props> = (props: Props) => {
   return (
     <Basement>
       <Container fluid="lg">
-        {/* controllersResultが正常な値の場合のみ処理を行う */}
-        {controllersResult?.error == null && !controllersResult?.controllers ?
-          <p>hoge</p> :
-          <div>
-            {Object.values(controllersResult.controllers!).map((controller: Controller) =>
-              <div>
-                {/* 画面上に取得したデータを出力する。(デバッグ) */}
-                <p>{controller.name}</p>
-              </div>
-            )}
-          </div>
+        {controllersResult?.error ?
+          <NotifyError title="Failed fetch controllers" />
+          :
+          !controllersResult?.controllers ?
+            <Div>
+              <CustomSpinner animation="border" aria-hidden="true" />
+              <Span>Loading...</Span>
+            </Div>
+            :
+            <Div>
+              {/* TODO: Implement here... */}
+            </Div>
         }
       </Container>
     </Basement>
   )
 }
+
+const CustomSpinner = styled(Spinner)`
+  margin-left: 4px;
+  margin-right: 4px;
+`
 
 export default Home;
