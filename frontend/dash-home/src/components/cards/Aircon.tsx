@@ -1,7 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as React from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
-import styled from 'styled-components';
+import { CardBase } from './CardBase';
 
 interface AirconProps {
   name: string,
@@ -27,37 +25,16 @@ const AirconCard = (props: AirconProps) => {
       break;
   }
   return (
-    <div
-      style={{
-        borderColor: modeColor,
-        boxShadow: `0.1px 0px 2px 1.5px ${modeColor}`,
-        border: `1px solid ${modeColor}`
-      }}
+    <CardBase
+      color={modeColor}
+      title={props.name}
+      icon={["fas", "fan"]}
+      send={props.send}
     >
-      <Header>
-        <Row>
-          <Col>
-            <Icon icon={["fas", "fan"]} style={{ color: modeColor }} />
-          </Col>
-          {props.send && <Col style={{ textAlign: "right" }}><Icon icon={["fas", "wifi"]} style={{ color: modeColor }} /></Col>}
-        </Row>
-      </Header>
-      <Card.Body>
-        {props.children}
-      </Card.Body>
-    </div>
+      {props.children}
+    </CardBase>
   )
 }
-
-const Header = styled(Card.Header)`
-  background-color: initial;
-`
-
-const Icon = styled(FontAwesomeIcon)`
-  font-size: 2em;
-  margin-left: 4px;
-  margin-right: 4px;
-`
 
 export {
   AirconCard
