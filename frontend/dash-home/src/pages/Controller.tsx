@@ -5,9 +5,6 @@ import { Div, Span } from '../components/atoms/Core';
 import { Navbar } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Button, Container, Spinner } from '../components/atoms/Themed';
-
-import { AirconPanel } from '../aircon/Aircon';
-
 import { fetchTemplate, TemplateResult } from '../remote-go/Template';
 import { fetchController, ControllerResult } from '../remote-go/Controller';
 import { useEffect, useState } from 'react';

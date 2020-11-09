@@ -7,7 +7,6 @@ const H1 = (props: any) => {
         <h1
             {...props}
             style={{
-                fontSize: "3rem",
                 fontFamily: "M PLUS 1p",
                 color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
@@ -21,7 +20,6 @@ const H2 = (props: any) => {
         <h2
             {...props}
             style={{
-                fontSize: "2rem",
                 fontFamily: "M PLUS 1p",
                 color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
@@ -35,9 +33,7 @@ const H3 = (props: any) => {
         <h3
             {...props}
             style={{
-                fontSize: "2rem",
                 fontFamily: "M PLUS 1p",
-                fontWeight: 400,
                 color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
             {props.children}
@@ -48,11 +44,10 @@ const H3 = (props: any) => {
 const P = (props: any) => {
     return (
         <p
+            {...props}
             style={{
-                fontFamily: "M PLUS 1p",
-                fontWeight: 400,
                 color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
-            }} {...props}>
+            }}>
             {props.children}
         </p>
     )
