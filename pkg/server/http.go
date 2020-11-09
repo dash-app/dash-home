@@ -8,6 +8,7 @@ import (
 	"github.com/dash-app/dash-home/pkg/controller"
 	"github.com/dash-app/dash-home/pkg/room"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -44,28 +45,39 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 	r.GET("/healthz", h.getHealthz)
 
 	// Agent
-	r.GET("/api/v1/agent", h.getAgent)
-	r.POST("/api/v1/agent", h.postAgent)
-	r.GET("/api/v1/agent/sensors", h.getAgentSensors)
+	apiGroup := r.Group("/api/v1")
+	apiGroup.GET("agent", h.getAgent)
+	apiGroup.POST("agent", h.postAgent)
+	apiGroup.GET("agent/sensors", h.getAgentSensors)
 
 	// Room
-	r.GET("/api/v1/room", h.getRoom)
-	r.POST("/api/v1/room", h.postRoom)
+	apiGroup.GET("room", h.getRoom)
+	apiGroup.POST("room", h.postRoom)
 
 	// Controllers
-	r.GET("/api/v1/controllers", h.getControllers)
-	r.POST("/api/v1/controllers", h.postControllers)
+	apiGroup.GET("controllers", h.getControllers)
+	apiGroup.POST("controllers", h.postControllers)
 
 	// Controllers -> ByID (individual)
-	r.GET("/api/v1/controllers/:id", h.getControllerByID)
-	r.PATCH("/api/v1/controllers/:id", h.patchControllerByID)
-	r.DELETE("/api/v1/controllers/:id", h.deleteControllerByID)
+	apiGroup.GET("controllers/:id", h.getControllerByID)
+	apiGroup.PATCH("controllers/:id", h.patchControllerByID)
+	apiGroup.DELETE("controllers/:id", h.deleteControllerByID)
 
-	r.POST("/api/v1/controllers/:id/switchbot", h.postSwitchBotByID)
-	r.POST("/api/v1/controllers/:id/aircon", h.postAirconByID)
-	r.GET("/api/v1/remotes", h.getRemotes)
+	// Controllers -> Appliances...
+	apiGroup.POST("controllers/:id/switchbot", h.postSwitchBotByID)
+	apiGroup.POST("controllers/:id/aircon", h.postAirconByID)
 
-	r.GET("/api/v1/controllers/:id/template", h.getControllerTemplateByID)
+	// Controller template
+	apiGroup.GET("controllers/:id/template", h.getControllerTemplateByID)
+
+	// Remotes
+	apiGroup.GET("remotes", h.getRemotes)
+
+	// Handle Frontend
+	r.Use(static.Serve("/", static.LocalFile("./public", true)))
+	r.NoRoute(func(c *gin.Context) {
+		c.File("./public/index.html")
+	})
 
 	return r
 }
