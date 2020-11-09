@@ -10,6 +10,8 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/rakyll/statik/fs"
+	"github.com/sirupsen/logrus"
 )
 
 // Subset - HTTP Subset
@@ -23,6 +25,21 @@ type httpServer struct {
 	agent      agent.Agent
 	room       *room.RoomService
 	controller *controller.Controller
+}
+
+type statikFileSystem struct {
+	fs http.FileSystem
+}
+
+func (b *statikFileSystem) Open(name string) (http.File, error) {
+	return b.fs.Open(name)
+}
+
+func (b *statikFileSystem) Exists(prefix string, filepath string) bool {
+	if _, err := b.fs.Open(filepath); err != nil {
+		return false
+	}
+	return true
 }
 
 // NewHTTPServer - Start HTTP Server
@@ -75,8 +92,20 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 
 	// Handle Frontend
 	r.Use(static.Serve("/", static.LocalFile("./public", true)))
+	statikFS, err := fs.New()
+	if err != nil {
+		logrus.WithError(err).Fatal("[Static]")
+	}
+	r.Use(static.Serve("/", &statikFileSystem{
+		statikFS,
+	}))
+
+	r.NoRoute(static.Serve("/", &statikFileSystem{
+		statikFS,
+	}))
+
 	r.NoRoute(func(c *gin.Context) {
-		c.File("./public/index.html")
+		c.FileFromFS("/", statikFS)
 	})
 
 	return r
