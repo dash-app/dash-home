@@ -6,13 +6,14 @@ import { Navbar } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Button, Container, Spinner } from '../components/atoms/Themed';
 
-import AirconPanel from '../aircon/Aircon';
+import { AirconPanel } from '../aircon/Aircon';
 
 import { fetchTemplate, TemplateResult } from '../remote-go/Template';
 import { fetchController, ControllerResult } from '../remote-go/Controller';
 import { useEffect, useState } from 'react';
 import Basement from '../components/basements/Basement';
 import { NotifyError } from '../components/atoms/Notify';
+import SummonPanel from '../components/controller/SummonPanel';
 
 interface Props extends RouteComponentProps<{ id: string }> { }
 
@@ -66,9 +67,7 @@ const Controller: React.FC<Props> = props => {
         {/* aircon */}
         {(templateResult != null && templateResult?.template != null &&
           controllerResult != null && controllerResult?.controller != null) &&
-          controllerResult?.controller.aircon &&
-
-          <AirconPanel
+          <SummonPanel
             controller={controllerResult?.controller}
             template={templateResult?.template}
           />

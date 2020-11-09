@@ -5,12 +5,12 @@ import ThemeContext from '../themes/Theme';
 const H1 = (props: any) => {
     return (
         <h1
+            {...props}
             style={{
                 fontSize: "3rem",
                 fontFamily: "M PLUS 1p",
-                fontWeight: 300,
                 color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
-            }} {...props}>
+            }}>
             {props.children}
         </h1>
     )
@@ -19,12 +19,12 @@ const H1 = (props: any) => {
 const H2 = (props: any) => {
     return (
         <h2
+            {...props}
             style={{
                 fontSize: "2rem",
                 fontFamily: "M PLUS 1p",
-                fontWeight: 400,
                 color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
-            }} {...props}>
+            }}>
             {props.children}
         </h2>
     )

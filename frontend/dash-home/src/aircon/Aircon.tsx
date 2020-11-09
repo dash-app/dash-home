@@ -8,10 +8,33 @@ import { AirconModes as TplAirconModes, Template } from '../remote-go/Template';
 import { useCallback, useEffect, useState } from 'react';
 import { HR } from '../components/atoms/Themed';
 import { SummonByTpl } from '../components/controller/Template';
+import { H1, H2 } from '../components/atoms/Core';
 
 interface Props {
   controller: Controller,
   template: Template,
+}
+
+interface MiniProps {
+  controller: Controller,
+}
+
+const AirconMiniPanel: React.FC<MiniProps> = props => {
+  const aircon = props.controller.aircon!;
+  return (
+    <AirconCard name={props.controller.name} mode={aircon.mode}>
+      {aircon.modes[aircon.mode].temp ?
+        <H1>{aircon.modes[aircon.mode].temp}℃</H1>
+      :
+      aircon.modes[aircon.mode].humid ?
+        <H1>{aircon.modes[aircon.mode].humid}</H1>
+      :
+      <H1>{aircon.modes[aircon.mode].fan}</H1>
+      }
+
+      <H2 style={{fontWeight: 100}}>{aircon.mode}</H2>
+    </AirconCard>
+  )
 }
 
 const AirconPanel: React.FC<Props> = props => {
@@ -198,4 +221,7 @@ const Contents = styled(Col)`
   min-width: auto;
 `
 
-export default AirconPanel;
+export {
+  AirconMiniPanel,
+  AirconPanel,
+};

@@ -3,7 +3,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { H2, P, Span } from '../atoms/Core';
+import { Span } from '../atoms/Core';
 
 interface Props {
   color: string,
@@ -29,7 +29,7 @@ export const CardBase = (props: Props) => {
               <Icon icon={props.icon} style={{ color: props.color }} />
             }
             {props.title &&
-              <Span style={{color: props.color, verticalAlign: "initial"}}>{props.title}</Span>
+              <Span style={{ color: props.color, verticalAlign: "initial" }}>{props.title}</Span>
             }
           </Col>
           {props.send &&

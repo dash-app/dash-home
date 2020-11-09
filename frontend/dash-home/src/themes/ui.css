@@ -18,3 +18,11 @@
     background-color: #202020;
     color: #FFFFFF;
 }
+
+h1 {
+    font-weight: 300;
+}
+
+h2 {
+    font-weight: 400;
+}

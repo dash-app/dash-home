@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Container, Spinner } from 'react-bootstrap';
+import { Card, CardColumns, Spinner } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Div, Span } from '../components/atoms/Core';
 import { NotifyError } from '../components/atoms/Notify';
 import Basement from '../components/basements/Basement';
-import { ControllersResult, fetchControllers, Controller } from '../remote-go/Controller';
+import SummonPanel from '../components/controller/SummonPanel';
+import { Controller, ControllersResult, fetchControllers } from '../remote-go/Controller';
 
 interface Props { }
 
-const Home: React.FC<Props> = (props: Props) => {
+const Home: React.FC<Props> = () => {
   // useStateで状態の保存場所を定義する。 参考：(https://ja.reactjs.org/docs/hooks-state.html)
   const [controllersResult, setControllers] = useState<ControllersResult | undefined>(undefined);
 
@@ -20,21 +21,28 @@ const Home: React.FC<Props> = (props: Props) => {
 
   return (
     <Basement>
-      <Container fluid="lg">
-        {controllersResult?.error ?
-          <NotifyError title="Failed fetch controllers" />
+      {controllersResult?.error ?
+        <NotifyError title="Failed fetch controllers" />
+        :
+        !controllersResult?.controllers ?
+          <Div>
+            <CustomSpinner animation="border" aria-hidden="true" />
+            <Span>Loading...</Span>
+          </Div>
           :
-          !controllersResult?.controllers ?
-            <Div>
-              <CustomSpinner animation="border" aria-hidden="true" />
-              <Span>Loading...</Span>
-            </Div>
-            :
-            <Div>
-              {/* TODO: Implement here... */}
-            </Div>
-        }
-      </Container>
+          <Div>
+            {/* TODO: Implement here... */}
+            <CardColumns>
+              {Object.values(controllersResult.controllers!).map((c: Controller) => {
+                return (
+                  <Card style={{ backgroundColor: "initial" }}>
+                    <SummonPanel controller={c} />
+                  </Card>
+                );
+              })}
+            </CardColumns>
+          </Div>
+      }
     </Basement>
   )
 }
