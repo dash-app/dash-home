@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/dash-app/dash-home/pkg/room"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,12 +20,16 @@ type CreateRoomRequest struct {
 // @Success 200 {object} room.Room
 // @Produce json
 func (h *httpServer) getRoom(c *gin.Context) {
-	room, err := h.room.Get()
+	r, err := h.room.Get()
 	if err != nil {
+		if err == room.ErrNotFound {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error(), "code": "NOT_FOUND"})
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, room)
+	c.JSON(http.StatusOK, r)
 }
 
 // Create Room

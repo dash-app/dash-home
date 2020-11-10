@@ -64,7 +64,7 @@ func (s *Storage) Create(name string) (*Entry, error) {
 
 func (s *Storage) Get() (*Entry, error) {
 	if s.Room == nil {
-		return nil, errors.New("room not found")
+		return nil, ErrNotFound
 	}
 
 	return s.Room, nil
