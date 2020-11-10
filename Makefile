@@ -31,7 +31,7 @@ clean: clean_frontend
 	@rm -rfv ./build
 	@rm -rfv ./pkg/server/statik.go
 
-build: build_linux_amd64 build_linux_armv6
+build: build_linux_amd64 build_linux_armv6 build_darwin_amd64
 build_linux_amd64: statik
 	@mkdir -p ./build/linux_amd64
 	@GOOS=linux GOARCH=amd64 \
@@ -42,4 +42,10 @@ build_linux_armv6: statik
 	@mkdir -p ./build/linux_armv6
 	@GOOS=linux GOARCH=arm GOARM=6 \
 		go build -v -o build/linux_armv6/dash-home \
+		./cmd/dash-home/main.go
+
+build_darwin_amd64: statik
+	@mkdir -p ./build/darwin_amd64
+	@GOOS=darwin GOARCH=amd64 \
+		go build -v -o build/darwin_amd64/dash-home \
 		./cmd/dash-home/main.go
