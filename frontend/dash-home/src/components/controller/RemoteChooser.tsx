@@ -37,7 +37,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
       <Modal
         size="lg"
         show={props.visible}
-        backdroup="static"
+        backdrop="static"
         variant="dark"
         animation={false}
         centered
@@ -57,7 +57,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
     <Modal
       size="lg"
       show={props.visible}
-      backdroup="static"
+      backdrop="static"
       variant="dark"
       animation={false}
       onHide={props.handleClose}
