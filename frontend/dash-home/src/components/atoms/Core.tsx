@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import ThemeContext from '../themes/Theme';
 
-const H1 = (props: any) => {
+const H1 = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
     return (
         <h1
             {...props}
             style={{
+                ...props.style,
                 fontFamily: "M PLUS 1p",
                 color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
@@ -41,11 +42,12 @@ const H3 = (props: any) => {
     )
 }
 
-const P = (props: any) => {
+const P = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
     return (
         <p
             {...props}
             style={{
+                ...props.style,
                 color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
             {props.children}
