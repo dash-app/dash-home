@@ -24,5 +24,5 @@ export const RoomProvider: React.FC<Props> = props => {
     <RoomContext.Provider value={roomResult}>
       {props.children}
     </RoomContext.Provider>
-  )
+  ) 
 }

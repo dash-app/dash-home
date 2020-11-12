@@ -22,6 +22,7 @@ import ThemeContext from './components/themes/Theme';
 import { RoomProvider } from './components/basements/RoomProvider';
 import './themes/bootstrap.min.css';
 import './themes/ui.css';
+import RoomSetup from './pages/RoomSetup';
 
 const App: React.FC = () => {
   const theme = useSelector<any, string>((state) => state.themes.name)
@@ -38,6 +39,9 @@ const App: React.FC = () => {
             <Route exact path="/" component={Home} />
             <Route path="/settings" component={Settings} />
             <Route path="/about" component={About} />
+
+            {/* Room */}
+            <Route exact path="/room/setup" component={RoomSetup} />
 
             {/* Controllers */}
             <Route exact path="/controllers" component={Controllers} />

@@ -23,7 +23,7 @@ func (h *httpServer) getRoom(c *gin.Context) {
 	r, err := h.room.Get()
 	if err != nil {
 		if err == room.ErrNotFound {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error(), "code": "NOT_FOUND"})
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error(), "code": "ROOM_NOT_FOUND"})
 			return
 		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
