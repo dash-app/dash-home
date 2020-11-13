@@ -23,12 +23,12 @@ const Basement: React.FC<Props> = props => {
             return (
               <Div>
                 <Navigation theme={theme} room={roomResult?.room} />
-                {roomResult?.error &&
+                {roomResult?.error != null && (
                   roomResult.error.data["code"] === "ROOM_NOT_FOUND" ?
-                  <Redirect to={"/room/setup"}/>
-                  :
-                  <NotifyError title="Failed fetch room data" />
-                }
+                    <Redirect to={"/room/setup"} />
+                    :
+                    <NotifyError title="Failed fetch room data" />
+                )}
                 <Container fluid>
                   {props.children}
                 </Container>
