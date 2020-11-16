@@ -19,14 +19,10 @@ const Controller: React.FC<Props> = props => {
   const [templateResult, setTemplate] = useState<TemplateResult | undefined>(undefined);
   const [controllerResult, setController] = useState<ControllerResult | undefined>(undefined);
 
-  const fetch = () => {
+  useEffect(() => {
     fetchTemplate(id, setTemplate);
     fetchController(id, setController);
-  };
-
-  useEffect(() => {
-    fetch();
-  }, []);
+  }, [id, setTemplate, setController]);
 
   return (
     <Basement>
