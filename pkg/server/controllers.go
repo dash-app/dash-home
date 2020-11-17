@@ -31,8 +31,13 @@ type RemoteController struct {
 
 // SwitchBotController - as SwitchBot controller
 type SwitchBotController struct {
-	Mac     string `json:"mac" validate:"required" example:"FF:FF:FF:FF:FF:FF"`
-	Command string `json:"command" validate:"required" example:"PRESS"`
+	Mac  string `json:"mac" validate:"required" example:"FF:FF:FF:FF:FF:FF"`
+	Type string `json:"type" validate:"required" example:"TOGGLE"`
+}
+
+// PostSwitchBotRequest - post switchbot payload...
+type PostSwitchBotRequest struct {
+	Command string `json:"command" validate:"required" example:"ON"`
 }
 
 // CreateControllerResponse - Create controller response
@@ -88,8 +93,8 @@ func (h *httpServer) postControllers(c *gin.Context) {
 			return
 		}
 		opts.SwitchBot = &agent.SwitchBot{
-			Mac:     req.SwitchBot.Mac,
-			Command: req.SwitchBot.Command,
+			Mac:  req.SwitchBot.Mac,
+			Type: req.SwitchBot.Type,
 		}
 	}
 
@@ -165,9 +170,14 @@ func (h *httpServer) deleteControllerByID(c *gin.Context) {
 }
 
 func (h *httpServer) postSwitchBotByID(c *gin.Context) {
+	var req *PostSwitchBotRequest
 	id := c.Param("id")
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error(), "code": "ERR_INVALID_PAYLOAD"})
+		return
+	}
 
-	if err := h.controller.RaiseSwitchBot(id); err != nil {
+	if err := h.controller.RaiseSwitchBot(id, req.Command); err != nil {
 		if err == errors.New("not found") {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		} else {

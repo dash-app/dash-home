@@ -8,6 +8,7 @@ export interface Controller {
   kind: string, // "AIRCON", "LIGHT"...
   type: string, // "REMOTE"...
   remote?: Remote,
+  switchbot?: SwitchBot,
   aircon?: AirconState,
 }
 
@@ -15,6 +16,13 @@ export interface Controller {
 export interface Remote {
   vendor: string,
   model: string,
+}
+
+// SwitchBot
+export interface SwitchBot {
+  mac: string,
+  type: string,
+  state?: string,
 }
 
 // --

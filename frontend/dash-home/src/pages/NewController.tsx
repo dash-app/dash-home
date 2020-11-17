@@ -2,11 +2,12 @@ import * as React from 'react';
 import Basement from "../components/basements/Basement";
 import { Container, Dropdown, DropdownButton, Form } from 'react-bootstrap';
 import { Div, H1, P } from '../components/atoms/Core';
-import { Controller, ControllerResult, createController, Remote } from '../remote-go/Controller';
+import { Controller, ControllerResult, createController, Remote, SwitchBot } from '../remote-go/Controller';
 import { FAILED, PENDING, SUCCESS } from '../remote-go/Status';
 import { Link, Redirect } from 'react-router-dom';
 import { Spinner, Button } from '../components/atoms/Themed';
 import RemoteChooser from '../components/controller/RemoteChooser';
+import SwitchBotChooser from '../components/controller/SwitchBotChooser';
 import { NotifyError } from '../components/atoms/Notify';
 
 interface Props { }
@@ -19,8 +20,12 @@ const NewController: React.FC<Props> = () => {
     type: "REMOTE",
   }
 
+  // Saving current definition
   const [controller, setController] = React.useState<Controller>(initial);
+
+  // Handle window state (remote/switchbot editor...)
   const [openChooser, setOpenChooser] = React.useState<boolean>(false);
+  const [switchBotChooser, setSwitchBotChooser] = React.useState<boolean>(false);
 
   // Create Result
   const [postResult, setPostResult] = React.useState<ControllerResult | undefined>(undefined);
@@ -114,16 +119,36 @@ const NewController: React.FC<Props> = () => {
                 }
               </Form.Label>
               <Div>
-                <Button onClick={() => {
-                  setOpenChooser(true);
-                }}>// Select Remote...</Button>
+                <Button onClick={() => setOpenChooser(true)}>// Select Remote...</Button>
                 {/* Modal */}
                 <RemoteChooser
                   visible={openChooser}
                   handleClose={() => setOpenChooser(false)}
                   kind={controller.kind}
                   handleUpdate={(remote: Remote) => {
-                    controller.remote = remote
+                    controller.remote = remote;
+                    setController({ ...controller });
+                  }}
+                />
+              </Div>
+            </Form.Group>
+          }
+
+          {/* Show switchbot option (when choosed switchbot type) */}
+          {controller.type === "SWITCHBOT" &&
+            <Form.Group>
+              <Form.Label>
+                <P>MAC: {controller.switchbot?.mac !== undefined && controller.switchbot?.mac}</P>
+                <P>Type: {controller.switchbot?.type !== undefined && controller.switchbot?.type}</P>
+              </Form.Label>
+              <Div>
+                <Button onClick={() => setSwitchBotChooser(true)}>Open SwitchBot Settings...</Button>
+                <SwitchBotChooser
+                  initialState={controller.switchbot}
+                  visible={switchBotChooser}
+                  handleClose={() => setSwitchBotChooser(false)}
+                  handleUpdate={(switchbot: SwitchBot) => {
+                    controller.switchbot = switchbot;
                     setController({ ...controller });
                   }}
                 />

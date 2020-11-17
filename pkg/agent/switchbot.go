@@ -8,10 +8,17 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"regexp"
 	"time"
 )
 
 type SwitchBot struct {
+	Mac   string `json:"mac"`
+	Type  string `json:"type"`
+	State string `json:"state"`
+}
+
+type postPayload struct {
 	Mac     string `json:"mac"`
 	Command string `json:"command"`
 }
@@ -27,7 +34,7 @@ func (as *agentService) PostSwitch(ctx context.Context, mac, command string) err
 	if err != nil {
 		return err
 	}
-	payload := &SwitchBot{
+	payload := &postPayload{
 		Mac:     mac,
 		Command: command,
 	}
@@ -63,4 +70,11 @@ func (as *agentService) PostSwitch(ctx context.Context, mac, command string) err
 	}
 	resp.Body.Close()
 	return nil
+}
+
+// ValidateMacAddress - Check mac address range & format
+func (sb *SwitchBot) ValidateMacAddress() bool {
+	checkSize := 17 // (xx) + (:xx)*5 = 2 + (3*5)
+	r := regexp.MustCompile(`[0-9a-f]{2}(:[0-9a-f]{2}){5}`)
+	return (r.Match([]byte(sb.Mac)) && len(sb.Mac) == checkSize)
 }

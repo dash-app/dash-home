@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"os"
+	"strings"
 
 	"github.com/dash-app/dash-home/pkg/agent"
 	"github.com/dash-app/dash-home/pkg/storage"
@@ -189,10 +190,30 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 			return nil, errors.New("switchbot options does not satisfied")
 		}
 
-		entry.SwitchBot = &agent.SwitchBot{
-			Mac:     opts.SwitchBot.Mac,
-			Command: opts.SwitchBot.Command,
+		var initialState string
+
+		// Validate Type
+		switch opts.SwitchBot.Type {
+		case "TOGGLE":
+			initialState = "OFF"
+		case "PRESS":
+			initialState = "PRESS"
+		default:
+			return nil, ErrInvalidType
 		}
+
+		// Build struct
+		entry.SwitchBot = &agent.SwitchBot{
+			Mac:   strings.ToLower(opts.SwitchBot.Mac),
+			Type:  opts.SwitchBot.Type,
+			State: initialState,
+		}
+
+		// Call validate
+		if ok := entry.SwitchBot.ValidateMacAddress(); !ok {
+			return nil, ErrValidateMacAddress
+		}
+
 	default:
 		return nil, errors.New("unsupported type")
 	}

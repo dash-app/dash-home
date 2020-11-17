@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/dash-app/dash-home/pkg/agent"
@@ -35,7 +36,7 @@ func New(basePath string, agent agent.Agent) (*Controller, error) {
 	return c, nil
 }
 
-func (c *Controller) RaiseSwitchBot(id string) error {
+func (c *Controller) RaiseSwitchBot(id string, command string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -49,7 +50,15 @@ func (c *Controller) RaiseSwitchBot(id string) error {
 	}
 
 	// Get SwitchBot Provider
-	if err := c.Agent.PostSwitch(ctx, entry.SwitchBot.Mac, entry.SwitchBot.Command); err != nil {
+	if err := c.Agent.PostSwitch(ctx, entry.SwitchBot.Mac, strings.ToLower(command)); err != nil {
+		return err
+	}
+
+	// Update Database entry
+	entry.SwitchBot.State = command
+
+	// Save to storage
+	if err := c.Storage.Save(); err != nil {
 		return err
 	}
 
