@@ -12,27 +12,29 @@ interface Props {
 const SummonPanel: React.FC<Props> = props => {
   switch (props.controller.kind) {
     case "AIRCON":
-      return (
-        <span>
-          {props.template ?
-            <AirconPanel
-              controller={props.controller}
-              template={props.template}
-            />
-            :
-            <AirconMiniPanel
-              controller={props.controller}
-            />
-          }
-        </span>
-      )
-    default:
-      return (
-        <span>
-          <H1>Unknown</H1>
-        </span>
-      )
+      if (props.controller.type === "REMOTE") {
+        return (
+          <span>
+            {props.template ?
+              <AirconPanel
+                controller={props.controller}
+                template={props.template}
+              />
+              :
+              <AirconMiniPanel
+                controller={props.controller}
+              />
+            }
+          </span>
+        )
+      }
   }
+
+  return (
+    <span>
+      <H1>Unknown</H1>
+    </span>
+  )
 }
 
 export default SummonPanel;
