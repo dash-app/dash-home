@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Card, CardColumns, Spinner } from 'react-bootstrap';
+import { Card, Row, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Center, Div, H1, P, Span } from '../components/atoms/Core';
+import { Center, Div, P, Span } from '../components/atoms/Core';
 import { NotifyError } from '../components/atoms/Notify';
 import { Button, Icon } from '../components/atoms/Themed';
 import Basement from '../components/basements/Basement';
@@ -36,7 +36,7 @@ const Home: React.FC<Props> = () => {
           :
           <Div>
             {/* When controlles is empty */}
-            {Object.values(controllersResult.controllers).length == 0 &&
+            {Object.values(controllersResult.controllers).length === 0 &&
               <Center>
                 <CardBase
                   color="#2A2A2A"
@@ -66,15 +66,15 @@ const Home: React.FC<Props> = () => {
             }
 
             {/* Show Controllers */}
-            <CardColumns>
+            <Row>
               {Object.values(controllersResult.controllers!).map((c: Controller) => {
                 return (
-                  <Card style={{ backgroundColor: "initial" }}>
+                  <Card style={{ minWidth: "24rem", backgroundColor: "initial", margin: "2rem" }}>
                     <SummonPanel controller={c} />
                   </Card>
                 );
               })}
-            </CardColumns>
+            </Row>
           </Div>
       }
     </Basement>
