@@ -1,4 +1,5 @@
 # Custom Entries
+/pkg/server/statik.go
 /public
 /local
 

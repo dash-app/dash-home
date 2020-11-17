@@ -91,22 +91,25 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 	apiGroup.GET("remotes", h.getRemotes)
 
 	// Handle Frontend
-	r.Use(static.Serve("/", static.LocalFile("./public", true)))
 	statikFS, err := fs.New()
 	if err != nil {
-		logrus.WithError(err).Fatal("[Static]")
+		logrus.WithError(err).Error("[Static]")
 	}
-	r.Use(static.Serve("/", &statikFileSystem{
-		statikFS,
-	}))
+	if statikFS == nil {
+		logrus.Warn("[Static] Static Serving disabled.")
+	} else {
+		r.Use(static.Serve("/", &statikFileSystem{
+			statikFS,
+		}))
 
-	r.NoRoute(static.Serve("/", &statikFileSystem{
-		statikFS,
-	}))
+		r.NoRoute(static.Serve("/", &statikFileSystem{
+			statikFS,
+		}))
 
-	r.NoRoute(func(c *gin.Context) {
-		c.FileFromFS("/", statikFS)
-	})
+		r.NoRoute(func(c *gin.Context) {
+			c.FileFromFS("/", statikFS)
+		})
+	}
 
 	return r
 }
