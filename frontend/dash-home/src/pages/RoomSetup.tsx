@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Form, Modal } from 'react-bootstrap';
-import { Link, Redirect } from 'react-router-dom';
 import { Center, Div, H1, P } from '../components/atoms/Core';
 import { NotifyError } from '../components/atoms/Notify';
 import { Button, HR } from '../components/atoms/Themed';

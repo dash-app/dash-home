@@ -1,6 +1,5 @@
 import axios from "axios";
 import { API_ADDRESS } from "../config";
-import Controller from "../pages/Controller";
 import { FAILED, PENDING, Status, SUCCESS } from "./Status";
 
 export interface Room {
