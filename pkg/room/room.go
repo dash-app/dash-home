@@ -1,40 +1,51 @@
 package room
 
-import "github.com/dash-app/dash-home/pkg/storage"
+import "github.com/dash-app/dash-home/pkg/agent"
 
-// Subset - Room subset
-type Subset struct {
-	Store *storage.RoomStore
+type RoomService struct {
+	Storage *Storage
+	Agent   agent.Agent
 }
 
-type Room interface {
-	Create(string) (*storage.Room, error)
-	Get() (*storage.Room, error)
+type Room struct {
+	// ID - Room ID
+	ID string `json:"id"`
+
+	// Name - Room name (ex: `john's room`)
+	Name string `json:"name" example:"john's room"`
+
+	// Ambient - Room ambient (from agent)
+	Ambient *agent.Ambient `json:"ambient"`
 }
 
-type roomService struct {
-	store *storage.RoomStore
-}
-
-func New(subset *Subset) Room {
-	return &roomService{
-		store: subset.Store,
-	}
-}
-
-func (rs *roomService) Get() (*storage.Room, error) {
-	r, err := rs.store.Get()
-	if err != nil {
-		return nil, err
-	}
-	return r, nil
-}
-
-func (rs *roomService) Create(name string) (*storage.Room, error) {
-	r, err := rs.store.Create(name)
+func New(basePath string, agent agent.Agent) (*RoomService, error) {
+	store, err := NewStorage(basePath)
 	if err != nil {
 		return nil, err
 	}
 
-	return r, nil
+	return &RoomService{
+		Storage: store,
+		Agent:   agent,
+	}, nil
+}
+
+func (rs *RoomService) Get() (*Room, error) {
+	// Get Room Entry
+	e, err := rs.Storage.Get()
+	if err != nil {
+		return nil, err
+	}
+
+	// Get Ambient
+	ambient, err := rs.Agent.GetAmbient()
+	if err != nil {
+		return nil, err
+	}
+
+	return &Room{
+		ID:      e.ID,
+		Name:    e.Name,
+		Ambient: ambient,
+	}, nil
 }

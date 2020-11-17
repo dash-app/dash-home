@@ -1,53 +1,60 @@
-import * as React from 'react';
+import React from 'react';
 // import Board from './components/basements/Board';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import styled from 'styled-components';
 
 // Routing Template
-import Home from './templates/Home';
-import Settings from './templates/Settings';
-import About from './templates/About';
-import Sandbox from './templates/Sandbox';
-import DemoAircon from './templates/DemoAircon';
+import Home from './pages/Home';
+import Settings from './pages/Settings';
+import About from './pages/About';
+import Controllers from './pages/Controllers';
+import Controller from './pages/Controller';
+import NewController from './pages/NewController';
+import EditController from './pages/EditController';
+import NotFound from './pages/NotFound';
 
 // Custom themes
-import { Container } from 'react-bootstrap';
+import ThemeContext from './components/themes/Theme';
+import { RoomProvider } from './components/basements/RoomProvider';
 import './themes/bootstrap.min.css';
 import './themes/ui.css';
-
-// UI Components./components/navbar/Navigation
-import Navigation from './components/navbar/Navigation';
+import RoomSetup from './pages/RoomSetup';
 
 const App: React.FC = () => {
+  const theme = useSelector<any, string>((state) => state.themes.name)
+  document.body.style.backgroundColor = theme === "CHEEKY_WHITE" ? "#FFFFFF" : "#111115";
+
   // Initialize Icons
   library.add(fab, fas, far);
 
   return (
-    <Router>
-      <Navigation />
-      <Container fluid>
-        <Contents>
-          <Route exact path="/" component={Home} />
-          <Route path="/settings" component={Settings} />
-          <Route path="/about" component={About} />
+    <ThemeContext.Provider value={theme}>
+      <RoomProvider>
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/settings" component={Settings} />
+            <Route path="/about" component={About} />
 
-          {/* Sandbox Page (Remove before Release!) */}
-          <Route path="/sandbox" component={Sandbox} />
+            {/* Room */}
+            <Route exact path="/room/setup" component={RoomSetup} />
 
-          {/* Component demo (AIRCON) */}
-          <Route path="/demo/aircon" component={DemoAircon} />
+            {/* Controllers */}
+            <Route exact path="/controllers" component={Controllers} />
+            <Route exact path="/controllers/new" component={NewController} />
+            <Route exact path="/controllers/:id" component={Controller} />
+            <Route exact path="/controllers/:id/edit" component={EditController} />
 
-        </Contents>
-      </Container>
-    </Router>
+            <Route status={404} component={NotFound} />
+          </Switch>
+        </Router>
+      </RoomProvider>
+    </ThemeContext.Provider>
   );
 }
-
-const Contents = styled.div`
-`
 
 export default App;
