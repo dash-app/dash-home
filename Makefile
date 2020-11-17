@@ -1,4 +1,7 @@
-docs:
+clean_docs:
+	@rm -rfv $(PWD)/docs
+
+docs: clean_docs
 	@swag init --parseVendor --parseDependency -o ./docs -g ./pkg/server/http.go
 	@npx redoc-cli bundle ./docs/swagger.yaml -o ./docs/index.html
 
@@ -27,7 +30,6 @@ statik:
 	@statik -f -src ./public -p server -dest ./pkg/
 
 clean: clean_frontend
-	@rm -rfv $(PWD)/docs
 	@rm -rfv ./build
 	@rm -rfv ./pkg/server/statik.go
 

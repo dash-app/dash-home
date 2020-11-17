@@ -12,14 +12,19 @@ import (
 
 // SetControllerRequest - Create / Update controller request
 type SetControllerRequest struct {
-	//Aircon *aircon.Controller
+	// Name - ex. Bedroom Airconditioner
 	Name string `json:"name" validate:"required" example:"Bedroom Airconditioner"`
-	Kind string `json:"kind" validate:"required" eaxmple:"AIRCON"`
+
+	// Kind - AIRCON, LIGHT, SWITCHBOT...
+	Kind string `json:"kind" validate:"required" example:"AIRCON"`
+
+	// Type - type of controller (how to use?) / ex. REMOTE, SWITCHBOT...
 	Type string `json:"type" validate:"required" example:"REMOTE"`
-	// Controllers (nil will be ignore)
+
+	// Remote - Remote Controller settings (required when type is REMOTE)
 	Remote *RemoteController `json:"remote,omitempty"`
 
-	// TODO: Add Switchbot Controller
+	// SwitchBot - SwitchBot settings (required when type is SWITCHBOT)
 	SwitchBot *SwitchBotController `json:"switchbot,omitempty"`
 }
 
@@ -40,19 +45,11 @@ type PostSwitchBotRequest struct {
 	Command string `json:"command" validate:"required" example:"ON"`
 }
 
-// CreateControllerResponse - Create controller response
-type CreateControllerResponse struct {
-}
-
-// ControllerResponse - Controller response
-type ControllerResponse struct {
-}
-
 // Get Controllers
 // @Summary Get controllers
 // @Router /api/v1/controllers [get]
 // @tags controller
-// @Success 200 {object} []Controllers
+// @Success 200 {object} []controller.Entry
 // @Produce json
 func (h *httpServer) getControllers(c *gin.Context) {
 	c.JSON(http.StatusOK, h.controller.Storage.GetAll())
@@ -63,7 +60,7 @@ func (h *httpServer) getControllers(c *gin.Context) {
 // @Router /api/v1/controllers [post]
 // @tags controller
 // @Param entry body SetControllerRequest true "Add new controller"
-// @Success 200 {object} CreateControllerResponse
+// @Success 200 {object} controller.Entry
 // @Accept json
 // @Produce json
 func (h *httpServer) postControllers(c *gin.Context) {
@@ -108,6 +105,12 @@ func (h *httpServer) postControllers(c *gin.Context) {
 	c.JSON(http.StatusOK, e)
 }
 
+// Get Controller By ID
+// @Summary Get controller by ID
+// @Router /api/v1/controllers/:id [get]
+// @tags controller
+// @Success 200 {object} controller.Entry
+// @Produce json
 func (h *httpServer) getControllerByID(c *gin.Context) {
 	id := c.Param("id")
 	r, err := h.controller.Storage.GetByID(id)
@@ -122,6 +125,12 @@ func (h *httpServer) getControllerByID(c *gin.Context) {
 	c.JSON(http.StatusOK, r)
 }
 
+// Patch Controller By ID
+// @Summary Patch controller by ID
+// @Router /api/v1/controllers/:id [patch]
+// @tags controller
+// @Success 200 {object} controller.Entry
+// @Produce json
 func (h *httpServer) patchControllerByID(c *gin.Context) {
 	id := c.Param("id")
 
@@ -153,6 +162,12 @@ func (h *httpServer) patchControllerByID(c *gin.Context) {
 	c.JSON(http.StatusOK, e)
 }
 
+// Delete Controller By ID
+// @Summary Delete controller by ID
+// @Router /api/v1/controllers/:id [delete]
+// @tags controller
+// @Success 200
+// @Produce json
 func (h *httpServer) deleteControllerByID(c *gin.Context) {
 	id := c.Param("id")
 
@@ -169,6 +184,12 @@ func (h *httpServer) deleteControllerByID(c *gin.Context) {
 	c.JSON(http.StatusOK, nil)
 }
 
+// Post SwitchBot By ID
+// @Summary Post SwitchBot by ID
+// @Router /api/v1/controllers/:id/switchbot [post]
+// @tags controller
+// @Success 200
+// @Produce json
 func (h *httpServer) postSwitchBotByID(c *gin.Context) {
 	var req *PostSwitchBotRequest
 	id := c.Param("id")
@@ -188,6 +209,12 @@ func (h *httpServer) postSwitchBotByID(c *gin.Context) {
 	c.JSON(http.StatusOK, nil)
 }
 
+// Post Aircon By ID
+// @Summary Post Aircon by ID
+// @Router /api/v1/controllers/:id/aircon [post]
+// @tags controller
+// @Success 200 {object} aircon.Entry
+// @Produce json
 func (h *httpServer) postAirconByID(c *gin.Context) {
 	var req *aircon.Entry
 	id := c.Param("id")
@@ -208,6 +235,12 @@ func (h *httpServer) postAirconByID(c *gin.Context) {
 	}
 }
 
+// Get Controller Template By ID
+// @Summary Get controller template by ID
+// @Router /api/v1/controllers/:id/template [get]
+// @tags controller
+// @Success 200 {object} template.Template
+// @Produce json
 func (h *httpServer) getControllerTemplateByID(c *gin.Context) {
 	id := c.Param("id")
 	r, err := h.controller.Storage.GetByID(id)

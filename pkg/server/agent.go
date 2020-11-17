@@ -9,6 +9,7 @@ import (
 
 // UpdateAgentRequest - Update Agent Request
 type UpdateAgentRequest struct {
+	// Address of Pigent
 	Address string `json:"address" validate:"required" example:"localhost:8081"`
 }
 

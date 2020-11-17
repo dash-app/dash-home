@@ -37,7 +37,7 @@ func (h *httpServer) getRoom(c *gin.Context) {
 // @Router /api/v1/room [post]
 // @tags room
 // @Param entry body CreateRoomRequest true "Create new room"
-// @Success 200 {object} storage.Room
+// @Success 200 {object} room.Entry
 // @Accept json
 // @Produce json
 func (h *httpServer) postRoom(c *gin.Context) {
