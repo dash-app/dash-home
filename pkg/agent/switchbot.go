@@ -13,14 +13,14 @@ import (
 )
 
 type SwitchBot struct {
-	Mac   string `json:"mac"`
-	Type  string `json:"type"`
-	State string `json:"state"`
+	Mac   string `json:"mac" example:"xx:xx:xx:xx:xx:xx"`
+	Type  string `json:"type" example:"TOGGLE"`
+	State string `json:"state" example:"ON"`
 }
 
 type postPayload struct {
-	Mac     string `json:"mac"`
-	Command string `json:"command"`
+	Mac     string `json:"mac" example:"xx:xx:xx:xx:xx:xx"`
+	Command string `json:"command" example:"ON"`
 }
 
 func (as *agentService) PostSwitch(ctx context.Context, mac, command string) error {

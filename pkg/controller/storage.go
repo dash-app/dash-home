@@ -20,18 +20,26 @@ type Storage struct {
 }
 
 type Entry struct {
-	ID string `json:"id,omitempty"`
+	// ID - Generated ID
+	ID string `json:"id,omitempty" example:"<UNIQUE_ID>"`
+
 	// Name - ex. Bedroom Airconditioner
-	Name string `json:"name"`
+	Name string `json:"name" validate:"required" example:"Bedroom Airconditioner"`
 
 	// Kind - AIRCON, LIGHT, SWITCHBOT...
-	Kind string `json:"kind"`
+	Kind string `json:"kind" validate:"required" example:"AIRCON"`
 
 	// Type - type of controller (how to use?) / ex. REMOTE, SWITCHBOT...
-	Type      string           `json:"type"`
-	Remote    *Remote          `json:"remote,omitempty"`
+	Type string `json:"type" validate:"required" example:"REMOTE"`
+
+	// Remote - Remote Controller settings (required when type is REMOTE)
+	Remote *Remote `json:"remote,omitempty"`
+
+	// SwitchBot - SwitchBot settings (required when type is SWITCHBOT)
 	SwitchBot *agent.SwitchBot `json:"switchbot,omitempty"`
-	Aircon    *aircon.State    `json:"aircon,omitempty"`
+
+	// Aircon - State of Aircon
+	Aircon *aircon.State `json:"aircon,omitempty"`
 }
 
 type Options struct {
