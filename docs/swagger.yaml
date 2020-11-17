@@ -483,6 +483,7 @@ paths:
       - controller
   /api/v1/remotes:
     get:
+      description: 'Entries like as: `{"aircon": {"daikin": ["daikin01", "daikin02"]}}`...'
       produces:
       - application/json
       responses:
@@ -492,7 +493,7 @@ paths:
             $ref: '#/definitions/server.GetRemotesResponse'
       summary: Get remote controllers
       tags:
-      - controller
+      - remotes
   /api/v1/room:
     get:
       produces:

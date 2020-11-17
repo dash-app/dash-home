@@ -12,8 +12,9 @@ type GetRemotesResponse struct {
 
 // Get remote controllers
 // @Summary Get remote controllers
+// @Description Entries like as: `{"aircon": {"daikin": ["daikin01", "daikin02"]}}`...
 // @Router /api/v1/remotes [get]
-// @tags controller
+// @tags remotes
 // @Success 200 {object} GetRemotesResponse
 // @Produce json
 func (h *httpServer) getRemotes(c *gin.Context) {

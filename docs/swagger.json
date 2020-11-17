@@ -234,11 +234,12 @@
         },
         "/api/v1/remotes": {
             "get": {
+                "description": "Entries like as: `{\"aircon\": {\"daikin\": [\"daikin01\", \"daikin02\"]}}`...",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "controller"
+                    "remotes"
                 ],
                 "summary": "Get remote controllers",
                 "responses": {
