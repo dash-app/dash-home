@@ -16,7 +16,7 @@ interface Props {
 const Basement: React.FC<Props> = props => {
   return (
     <ThemeContext.Consumer>
-      {(theme) => (
+      {({theme}) => (
         <RoomContext.Consumer>
           {(roomResult) => {
             console.log(roomResult?.error)

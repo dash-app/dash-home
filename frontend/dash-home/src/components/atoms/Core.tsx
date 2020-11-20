@@ -9,7 +9,7 @@ const H1 = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingEleme
             style={{
                 ...props.style,
                 fontFamily: "M PLUS 1p",
-                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
+                color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
             {props.children}
         </h1>
@@ -22,7 +22,7 @@ const H2 = (props: any) => {
             {...props}
             style={{
                 fontFamily: "M PLUS 1p",
-                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
+                color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
             {props.children}
         </h2>
@@ -35,7 +35,7 @@ const H3 = (props: any) => {
             {...props}
             style={{
                 fontFamily: "M PLUS 1p",
-                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
+                color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
             {props.children}
         </h3>
@@ -48,7 +48,7 @@ const P = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElemen
             {...props}
             style={{
                 ...props.style,
-                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
+                color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
             {props.children}
         </p>
@@ -59,7 +59,7 @@ const Div = (props: any) => {
     return (
         <div
             style={{
-                backgroundColor: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#FFFFFF" : "#111115"
+                backgroundColor: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#FFFFFF" : "#111115"
             }} {...props}>
             {props.children}
         </div>
@@ -73,7 +73,7 @@ const Span = (props: any) => {
             style={{
                 fontFamily: "M PLUS 1p",
                 fontWeight: 400,
-                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFFFFF",
+                color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFFFFF",
                 ...props.style
             }}>
             {props.children}

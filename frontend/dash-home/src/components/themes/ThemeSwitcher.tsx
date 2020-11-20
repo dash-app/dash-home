@@ -1,64 +1,43 @@
+import * as React from 'react';
 import { ButtonGroup } from 'react-bootstrap';
 import { Button } from '../atoms/Themed';
-
-import * as React from 'react';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
-
-import { setThemes } from '../../actions/themes';
-import { ThemeAction } from '../../reducers/themes/type';
 import { P } from '../atoms/Core';
+import ThemeContext from './Theme';
 
-interface Props {
-    name?: string,
-    setThemes?: any
-}
-interface State { }
+interface Props { }
 
-const mapStateToProps = (store: {themes: ThemeAction}) => {
-    return {
-        name: store.themes.name,
-    }
-}
+const ThemeSwitcher: React.FC<Props> = () => {
+  const { theme, setTheme } = React.useContext(ThemeContext);
 
-const mapDispatchToProps = (dispatch: Dispatch, Props: Props) => ({    
-    setThemes(name: string) {
-        dispatch(setThemes(name))
-    }
-});
-
-class ThemeSwitcher extends React.Component<Props, State> {
-    render() {
-        return (
-            <div>
-                <span>
-                    <P>Current: {this.props.name}</P>
-                </span>
-                <ButtonGroup>
-                    <Button
-                        type="radio"
-                        onClick={() => {
-                            this.props.setThemes("CHEEKY_WHITE")
-                        }}
-                        key={"CHEEKY_WHITE"}
-                        selected={this.props.name === "CHEEKY_WHITE"}
-                    >
-                        Cheeky White
-                    </Button>
-                    <Button
-                        type="radio"
-                        onClick={() => {
-                            this.props.setThemes("NERD_BLACK")
-                        }}
-                        key={"NERD_BLACK"}
-                        selected={this.props.name === "NERD_BLACK"}
-                    >
-                        Nerd Black
-                    </Button>
-                </ButtonGroup>
-            </div>
-        )
-    }
+  return (
+    <span>
+      <span>
+        <P>Current: {theme}</P>
+      </span>
+      <ButtonGroup>
+        <Button
+          type="radio"
+          onClick={() => {
+            setTheme("CHEEKY_WHITE")
+          }}
+          key={"CHEEKY_WHITE"}
+          selected={theme === "CHEEKY_WHITE"}
+        >
+          Cheeky White
+        </Button>
+        <Button
+          type="radio"
+          onClick={() => {
+            setTheme("NERD_BLACK")
+          }}
+          key={"NERD_BLACK"}
+          selected={theme === "NERD_BLACK"}
+        >
+          Nerd Black
+        </Button>
+      </ButtonGroup>
+    </span>
+  )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ThemeSwitcher);
+export default ThemeSwitcher;

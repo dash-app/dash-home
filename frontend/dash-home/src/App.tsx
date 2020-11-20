@@ -1,7 +1,6 @@
 import React from 'react';
 // import Board from './components/basements/Board';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
@@ -25,14 +24,19 @@ import './themes/ui.css';
 import RoomSetup from './pages/RoomSetup';
 
 const App: React.FC = () => {
-  const theme = useSelector<any, string>((state) => state.themes.name)
+  // Get from cookie?
+  const [theme, setTheme] = React.useState<string>("CHEEKY_WHITE");
+  React.useEffect(() => {
+    console.debug(":: Update theme")
+  })
+
   document.body.style.backgroundColor = theme === "CHEEKY_WHITE" ? "#FFFFFF" : "#111115";
 
   // Initialize Icons
   library.add(fab, fas, far);
 
   return (
-    <ThemeContext.Provider value={theme}>
+    <ThemeContext.Provider value={{theme, setTheme}}>
       <RoomProvider>
         <Router>
           <Switch>

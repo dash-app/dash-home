@@ -10,7 +10,7 @@ import ThemeContext from '../themes/Theme';
 
 // Button
 const Button = (props: any) => {
-    const theme = React.useContext(ThemeContext)
+    const theme = React.useContext(ThemeContext).theme
     // provided current (for Button Group)
     if (props.type === "radio") {
         return (
@@ -44,7 +44,7 @@ const Container = (props: any) => {
     return (
         <BaseContainer
             style={
-                React.useContext(ThemeContext) === "CHEEKY_WHITE" ?
+                React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ?
                     { backgroundColor: "#FFFFFF" } :
                     { backgroundColor: "#111115" }
             }
@@ -59,7 +59,7 @@ const Icon = (props: any) => {
     return (
         <FontAwesomeIcon
             style={{
-                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFF"
+                color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFF"
             }}
             {...props}
         >
@@ -72,7 +72,7 @@ const IconInvert = (props: any) => {
     return (
         <FontAwesomeIcon
             style={{
-                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#FFF" : "#000"
+                color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#FFF" : "#000"
             }}
             {...props}
         >
@@ -85,7 +85,7 @@ const Spinner = (props: any) => {
     return (
         <BaseSpinner
             style={{
-                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#000" : "#FFF",
+                color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFF",
                 border: "0.15em solid currentColor",
                 borderRightColor: "transparent"
             }}
@@ -100,7 +100,7 @@ const SpinnerInvert = (props: any) => {
     return (
         <BaseSpinner
             style={{
-                color: React.useContext(ThemeContext) === "CHEEKY_WHITE" ? "#FFF" : "#000",
+                color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#FFF" : "#000",
                 border: "0.15em solid currentColor",
                 borderRightColor: "transparent"
             }}
