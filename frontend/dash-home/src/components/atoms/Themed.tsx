@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ThemeContext } from '../themes/ThemeProvider';
 
 import {
     Button as BaseButton,
     Container as BaseContainer,
     Spinner as BaseSpinner
 } from 'react-bootstrap';
-import ThemeContext from '../themes/Theme';
 
 // Button
 const Button = (props: any) => {

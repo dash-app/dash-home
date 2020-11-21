@@ -10,6 +10,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import Home from './pages/Home';
 import Settings from './pages/Settings';
 import About from './pages/About';
+import RoomSetup from './pages/RoomSetup';
 import Controllers from './pages/Controllers';
 import Controller from './pages/Controller';
 import NewController from './pages/NewController';
@@ -17,26 +18,17 @@ import EditController from './pages/EditController';
 import NotFound from './pages/NotFound';
 
 // Custom themes
-import ThemeContext from './components/themes/Theme';
 import { RoomProvider } from './components/basements/RoomProvider';
+import { ThemeProvider } from './components/themes/ThemeProvider';
 import './themes/bootstrap.min.css';
 import './themes/ui.css';
-import RoomSetup from './pages/RoomSetup';
 
 const App: React.FC = () => {
-  // Get from cookie?
-  const [theme, setTheme] = React.useState<string>("CHEEKY_WHITE");
-  React.useEffect(() => {
-    console.debug(":: Update theme")
-  })
-
-  document.body.style.backgroundColor = theme === "CHEEKY_WHITE" ? "#FFFFFF" : "#111115";
-
   // Initialize Icons
   library.add(fab, fas, far);
 
   return (
-    <ThemeContext.Provider value={{theme, setTheme}}>
+    <ThemeProvider>
       <RoomProvider>
         <Router>
           <Switch>
@@ -57,7 +49,7 @@ const App: React.FC = () => {
           </Switch>
         </Router>
       </RoomProvider>
-    </ThemeContext.Provider>
+    </ThemeProvider>
   );
 }
 

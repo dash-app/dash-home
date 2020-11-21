@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import ThemeContext from '../themes/Theme';
+import { ThemeContext } from '../themes/ThemeProvider';
 
 const H1 = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
     return (

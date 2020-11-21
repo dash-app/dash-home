@@ -24,7 +24,7 @@ class Navigation extends React.Component<Props, State> {
         expand="lg"
       >
         <Row>
-          <BarCol>
+          <Col>
             <Title>
               <FontAwesomeIcon icon={["fas", "home"]} />
               <span style={{ margin: "0.5em" }}>
@@ -43,7 +43,7 @@ class Navigation extends React.Component<Props, State> {
                 <StatusText>{this.props.room ? this.props.room.ambient.humid.toFixed(0) : "--"} %</StatusText>
               </StatusBox>
             </RoomStatus>
-          </BarCol>
+          </Col>
         </Row>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -59,9 +59,6 @@ class Navigation extends React.Component<Props, State> {
 const CustomNavbar = styled(Navbar)`
   border: none;
   background-color: initial !important;
-`
-
-const BarCol = styled(Col)`
   padding-left: 4em;
   padding-right: 4em;
 `

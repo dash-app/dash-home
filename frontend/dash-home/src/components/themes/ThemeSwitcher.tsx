@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ButtonGroup } from 'react-bootstrap';
 import { Button } from '../atoms/Themed';
 import { P } from '../atoms/Core';
-import ThemeContext from './Theme';
+import { ThemeContext } from './ThemeProvider';
 
 interface Props { }
 

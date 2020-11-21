@@ -4,7 +4,7 @@ import * as React from 'react';
 import Navigation from '../navbar/Navigation';
 import { Container } from '../atoms/Themed';
 import { Div } from '../atoms/Core';
-import ThemeContext from '../themes/Theme';
+import { ThemeContext } from '../themes/ThemeProvider';
 import { RoomContext } from './RoomProvider';
 import { NotifyError } from '../atoms/Notify';
 import { Redirect } from 'react-router-dom';
@@ -16,10 +16,9 @@ interface Props {
 const Basement: React.FC<Props> = props => {
   return (
     <ThemeContext.Consumer>
-      {({theme}) => (
+      {({ theme }) => (
         <RoomContext.Consumer>
           {(roomResult) => {
-            console.log(roomResult?.error)
             return (
               <Div>
                 <Navigation theme={theme} room={roomResult?.room} />

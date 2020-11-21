@@ -16,6 +16,9 @@ export const RoomProvider: React.FC<Props> = props => {
     if (!roomResult) {
       fetchRoom(setRoom);
     }
+    if (roomResult?.error) {
+      console.error(roomResult.error);
+    }
   }, [roomResult]);
 
   console.debug(`:: Rendering > RoomProvider...`)
