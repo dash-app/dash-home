@@ -11,3 +11,8 @@ interface MiniProps {
   controller: Controller,
 }
 
+const LightMiniPanel: React.FC<MiniProps> = props => {
+  return (
+    
+  )
+}
