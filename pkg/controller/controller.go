@@ -9,6 +9,7 @@ import (
 	"github.com/dash-app/dash-home/pkg/agent"
 	remotego "github.com/dash-app/remote-go"
 	"github.com/dash-app/remote-go/aircon"
+	"github.com/dash-app/remote-go/light"
 	"github.com/sirupsen/logrus"
 )
 
@@ -119,4 +120,56 @@ func (c *Controller) PushAircon(id string, ac *aircon.Entry) (*aircon.Entry, err
 	default:
 		return nil, errors.New("unsupported type provided")
 	}
+}
+
+func (c *Controller) PushLight(id string, l *light.Entry) (*light.State, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	entry, err := c.Storage.GetByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	if entry.Kind != "LIGHT" {
+		return nil, errors.New("that controller does not setup for light")
+	}
+
+	switch entry.Type {
+	case "REMOTE":
+		// Get remote provider
+		r, err := c.Remotes.GetLight(entry.Remote.Vendor, entry.Remote.Model)
+		if err != nil {
+			return nil, err
+		}
+
+		// Generate
+		code, err := r.Generate(l)
+		if err != nil {
+			return nil, err
+		}
+
+		// Send
+		if err := c.Agent.SendIR(ctx, code); err != nil {
+			logrus.WithError(err).Errorf("[Send] Failed Send IR")
+			return nil, err
+		}
+
+		// Update
+		updated, err := entry.Light.UpdateFromEntry(l, r.Template())
+		if err != nil {
+			return nil, err
+		}
+
+		// Insert
+		entry.Light = updated
+		if err := c.Storage.Save(); err != nil {
+			return nil, err
+		}
+
+		return updated, nil
+	default:
+		return nil, errors.New("unsupported type provided")
+	}
+
 }

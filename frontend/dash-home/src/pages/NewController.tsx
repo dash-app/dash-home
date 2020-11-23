@@ -70,7 +70,7 @@ const NewController: React.FC<Props> = () => {
           <Form.Group>
             <Form.Label><P>Kind: {controller.kind}</P></Form.Label>
             <DropdownButton title={controller.kind} drop="right">
-              {["AIRCON"].map((e) => {
+              {["AIRCON", "LIGHT"].map((e) => {
                 return (
                   <Dropdown.Item
                     key={e}

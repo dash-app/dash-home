@@ -10,6 +10,7 @@ export interface Controller {
   remote?: Remote,
   switchbot?: SwitchBot,
   aircon?: AirconState,
+  light?: LightState,
 }
 
 // Remote
@@ -64,6 +65,17 @@ export interface AirconModes {
   fan: string,
   horizontal_vane: string,
   vertical_vane: string,
+}
+
+// ---------
+// Light
+// ---------
+export interface Light {
+  action: string,
+}
+
+export interface LightState {
+  LastState: string,
 }
 
 export function fetchControllers(setResult: React.Dispatch<React.SetStateAction<ControllersResult | undefined>>) {
@@ -156,6 +168,13 @@ export function deleteController(id: string, setResult: React.Dispatch<React.Set
 export function sendAircon(id: string, payload: Aircon, callback: any) {
   axios
     .post<Aircon>(`${API_ADDRESS}/api/v1/controllers/${id}/aircon`, payload)
+    .then(response => callback(response.data))
+    .catch(error => error.response);
+}
+
+export function sendLight(id: string, payload: Light, callback: any) {
+  axios
+    .post<Light>(`${API_ADDRESS}/api/v1/controllers/${id}/light`, payload)
     .then(response => callback(response.data))
     .catch(error => error.response);
 }

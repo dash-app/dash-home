@@ -8,6 +8,7 @@ import (
 
 type GetRemotesResponse struct {
 	Aircon map[string][]string `json:"aircon"`
+	Light  map[string][]string `json:"light"`
 }
 
 // Get remote controllers
@@ -20,5 +21,6 @@ type GetRemotesResponse struct {
 func (h *httpServer) getRemotes(c *gin.Context) {
 	c.JSON(http.StatusOK, &GetRemotesResponse{
 		Aircon: h.controller.Remotes.AvailableAircons(),
+		Light:  h.controller.Remotes.AvailableLights(),
 	})
 }

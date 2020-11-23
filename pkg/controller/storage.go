@@ -9,6 +9,7 @@ import (
 	"github.com/dash-app/dash-home/pkg/storage"
 	remotego "github.com/dash-app/remote-go"
 	"github.com/dash-app/remote-go/aircon"
+	"github.com/dash-app/remote-go/light"
 	"github.com/dash-app/remote-go/template"
 	"github.com/google/uuid"
 )
@@ -40,6 +41,9 @@ type Entry struct {
 
 	// Aircon - State of Aircon
 	Aircon *aircon.State `json:"aircon,omitempty"`
+
+	// Light - State of Light
+	Light *light.State `json:"light,omitempty"`
 }
 
 type Options struct {
@@ -165,7 +169,7 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 
 	// Set kind
 	switch kind {
-	case "AIRCON", "SWITCHBOT":
+	case "AIRCON", "LIGHT", "SWITCHBOT":
 		entry.Kind = kind
 	default:
 		return nil, errors.New("unsupported kind")
@@ -235,6 +239,12 @@ func (e *Entry) initRemote(template *template.Template) error {
 	case "AIRCON":
 		if state, err := aircon.DefaultState(template); err == nil {
 			e.Aircon = state
+		} else {
+			return err
+		}
+	case "LIGHT":
+		if state, err := light.DefaultState(template); err == nil {
+			e.Light = state
 		} else {
 			return err
 		}

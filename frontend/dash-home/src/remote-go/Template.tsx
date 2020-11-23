@@ -8,6 +8,7 @@ export interface Template {
   model: string,
   kind: string,
   aircon?: Aircon,
+  light?: Light,
 }
 
 // Action - define controller action
@@ -55,6 +56,13 @@ export interface AirconModes {
   fan?: Action,
   horizontal_vane?: Action,
   vertical_vane?: Action,
+}
+
+// Light - Light Template
+export interface Light {
+  mode: string,
+  brightness: string,
+  color: string,
 }
 
 // ---

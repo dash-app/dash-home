@@ -7,6 +7,7 @@ import (
 	"github.com/dash-app/dash-home/pkg/agent"
 	"github.com/dash-app/dash-home/pkg/controller"
 	"github.com/dash-app/remote-go/aircon"
+	"github.com/dash-app/remote-go/light"
 	"github.com/gin-gonic/gin"
 )
 
@@ -225,6 +226,32 @@ func (h *httpServer) postAirconByID(c *gin.Context) {
 
 	// Try Push
 	if r, err := h.controller.PushAircon(id, req); err != nil {
+		if err == errors.New("not found") {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+	} else {
+		c.JSON(http.StatusOK, r)
+	}
+}
+
+// Post Light By ID
+// @Summary Post Light by ID
+// @Router /api/v1/controllers/:id/light [post]
+// @tags controller
+// @Success 200 {object} light.Entry
+// @Produce json
+func (h *httpServer) postLightByID(c *gin.Context) {
+	var req *light.Entry
+	id := c.Param("id")
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Try Push
+	if r, err := h.controller.PushLight(id, req); err != nil {
 		if err == errors.New("not found") {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		} else {
