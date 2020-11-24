@@ -75,7 +75,7 @@ export interface Light {
 }
 
 export interface LightState {
-  LastState: string,
+  last_action: string,
 }
 
 export function fetchControllers(setResult: React.Dispatch<React.SetStateAction<ControllersResult | undefined>>) {

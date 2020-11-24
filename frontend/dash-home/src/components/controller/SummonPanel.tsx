@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Controller } from "../../remote-go/Controller";
 import { Template } from "../../remote-go/Template";
 import { AirconPanel, AirconMiniPanel } from "../../aircon/Aircon";
+import { LightPanel, LightMiniPanel } from "../../light/Light";
 import { H1 } from '../atoms/Core';
 
 interface Props {
@@ -22,6 +23,23 @@ const SummonPanel: React.FC<Props> = props => {
               />
               :
               <AirconMiniPanel
+                controller={props.controller}
+              />
+            }
+          </span>
+        )
+      }
+    case "LIGHT":
+      if (props.controller.type === "REMOTE") {
+        return (
+          <span>
+            {props.template ?
+              <LightPanel
+                controller={props.controller}
+                template={props.template}
+              />
+              :
+              <LightMiniPanel
                 controller={props.controller}
               />
             }
