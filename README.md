@@ -8,7 +8,7 @@ Dashboard for Home, Dash-Home.
 * **Go** 1.15+
 * **Node.js** 10.13+
 > Also, Required Pigent for Access Hardware (IR, Sensors etc.) \
-> https://github.com/synchthia/hexpi
+> https://github.com/dash-app/pigent
 
 ## Build
 ```bash
