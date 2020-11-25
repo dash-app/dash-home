@@ -4,6 +4,7 @@ import { Controller, Light, LightState, sendLight } from '../remote-go/Controlle
 import { Template } from '../remote-go/Template';
 import { MiniPanelInner } from '../components/cards/MiniPanel';
 import { SummonByTpl } from '../components/controller/Template';
+import { Row } from 'react-bootstrap';
 
 interface Props {
   controller: Controller,
@@ -63,31 +64,35 @@ export const LightPanel: React.FC<Props> = props => {
 
   // const stateToEntry = (entry: )
 
-  const callTimer = useTask();
-  const [light, setLight] = React.useState<Light>();
-  const update = (entry: Light, after?: any) => {
-    setLight(entryToState(entry));
-    callTimer(() => {
-      sendLight(props.controller.id, entry, () => {
-        if (after) {
-          after();
-        }
-      });
-    }, 500);
-  }
+  // const callTimer = useTask();
+  // const [light, setLight] = React.useState<Light>();
+  // const update = (entry: Light, after?: any) => {
+  //   setLight(entryToState(entry));
+  //   callTimer(() => {
+  //     sendLight(props.controller.id, entry, () => {
+  //       if (after) {
+  //         after();
+  //       }
+  //     });
+  //   }, 500);
+  // }
 
   return (
-    <LightCard name={props.controller.name}>
-      <Row>
-        {/* Mode */}
-        <Contents>
-          <SummonByTpl 
-            description="mode"
-            value={light.last_action}
-            setter={(e: any) => light}
-          />
-        </Contents>
-      </Row>
-    </LightCard>
+    <p>wip</p>
   )
+
+  // return (
+  //   <LightCard name={props.controller.name}>
+  //     <Row>
+  //       {/* Mode */}
+  //       <Contents>
+  //         <SummonByTpl 
+  //           description="mode"
+  //           value={light.last_action}
+  //           setter={(e: any) => light}
+  //         />
+  //       </Contents>
+  //     </Row>
+  //   </LightCard>
+  // )
 }
