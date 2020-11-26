@@ -1,4 +1,4 @@
-import { Navbar, Row, Col, Nav } from 'react-bootstrap';
+import { Navbar, Row, Col, Nav, Button } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -7,6 +7,8 @@ import styled from 'styled-components';
 
 import ThemeSwitcher from '../themes/ThemeSwitcher';
 import { Room } from '../../remote-go/Room';
+import { Link } from 'react-router-dom';
+import { Span } from '../atoms/Core';
 
 interface Props {
   theme: string,
@@ -49,6 +51,16 @@ class Navigation extends React.Component<Props, State> {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <ThemeSwitcher />
+          </Nav>
+          <Nav>
+            <span style={{marginRight: "1rem"}}>
+              <Span>DASH-APP //</Span>
+            </span>
+          </Nav>
+          <Nav>
+            <Link to="/controllers">
+              <Button>{"Controllers"}</Button>
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </CustomNavbar>

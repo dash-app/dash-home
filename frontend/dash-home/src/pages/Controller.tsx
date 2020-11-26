@@ -49,7 +49,7 @@ const Controller: React.FC<Props> = props => {
               </Div>
               :
               <Div>
-                <Link to="/controllers">
+                <Link to="/">
                   <Button>{"Back"}</Button>
                 </Link>
               </Div>
