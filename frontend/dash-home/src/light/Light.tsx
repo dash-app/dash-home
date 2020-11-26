@@ -4,7 +4,8 @@ import { Controller, Light, LightState, sendLight } from '../remote-go/Controlle
 import { Template } from '../remote-go/Template';
 import { MiniPanelInner } from '../components/cards/MiniPanel';
 import { SummonByTpl } from '../components/controller/Template';
-import { Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
+import styled from 'styled-components';
 
 interface Props {
   controller: Controller,
@@ -64,35 +65,37 @@ export const LightPanel: React.FC<Props> = props => {
 
   // const stateToEntry = (entry: )
 
-  // const callTimer = useTask();
-  // const [light, setLight] = React.useState<Light>();
-  // const update = (entry: Light, after?: any) => {
-  //   setLight(entryToState(entry));
-  //   callTimer(() => {
-  //     sendLight(props.controller.id, entry, () => {
-  //       if (after) {
-  //         after();
-  //       }
-  //     });
-  //   }, 500);
-  // }
+  const callTimer = useTask();
+  const [light, setLight] = React.useState<Light>();
+  const update = (entry: Light, after?: any) => {
+    callTimer(() => {
+      sendLight(props.controller.id, entry, () => {
+        if (after) {
+          after();
+        }
+      });
+    }, 500);
+  }
 
   return (
-    <p>wip</p>
+    <LightCard name={props.controller.name}>
+      <Row>
+        {/* Mode */}
+        <Contents>
+          <SummonByTpl
+            description="mode"
+            value={props.controller.light?.last_action}
+            setter={(e: any) => light}
+            action={props.template.light?.mode!}
+          />
+        </Contents>
+      </Row>
+    </LightCard>
   )
-
-  // return (
-  //   <LightCard name={props.controller.name}>
-  //     <Row>
-  //       {/* Mode */}
-  //       <Contents>
-  //         <SummonByTpl 
-  //           description="mode"
-  //           value={light.last_action}
-  //           setter={(e: any) => light}
-  //         />
-  //       </Contents>
-  //     </Row>
-  //   </LightCard>
-  // )
 }
+
+const Contents = styled(Col)`
+  padding-top: 12px;
+  padding-bottom: 12px;
+  min-width: auto;
+`

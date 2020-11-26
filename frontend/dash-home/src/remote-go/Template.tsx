@@ -60,9 +60,9 @@ export interface AirconModes {
 
 // Light - Light Template
 export interface Light {
-  mode: string,
-  brightness: string,
-  color: string,
+  mode: Action,
+  brightness: Action,
+  color: Action,
 }
 
 // ---
