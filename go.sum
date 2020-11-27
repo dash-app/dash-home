@@ -9,8 +9,8 @@ github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578/go.mod h1:uGdko
 github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 h1:JYp7IbQjafoB+tBA3gMyHYHrpOtNuDiK/uB5uXxq5wM=
 github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d/go.mod h1:maD7wRr/U5Z6m/iR4s+kqSMx2CaBsrgA7czyZG/E6dU=
-github.com/dash-app/remote-go v0.0.0-20201123085725-9e10662a0a1f h1:L3QN0Sfcvzsnbqs//tp2GHcrYd/oMDnAk/WikN9YMRI=
-github.com/dash-app/remote-go v0.0.0-20201123085725-9e10662a0a1f/go.mod h1:NDeDX5ytimaP0cjt4kj7m/3stnbWokHKSgN7cZY5ZdA=
+github.com/dash-app/remote-go v0.0.0-20201123151502-c150549c1ebd h1:L0LjWVLWWc4adOP8fQA8i1z9sM3zJFiBOwzAX7rutCs=
+github.com/dash-app/remote-go v0.0.0-20201123151502-c150549c1ebd/go.mod h1:NDeDX5ytimaP0cjt4kj7m/3stnbWokHKSgN7cZY5ZdA=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
