@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Modal, Nav, Table } from "react-bootstrap";
+import { Container, Nav, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Div, H2, Span } from "../components/atoms/Core";
@@ -11,39 +11,8 @@ import DeleteController from "./DeleteController";
 
 interface Props { }
 
-interface EditorProps {
-  show: boolean,
-  handleClose: any,
-}
-
-const Editor: React.FC<EditorProps> = (props: EditorProps) => {
-  return (
-    <Modal
-      show={props.show}
-      backdrop="static"
-      onHide={props.handleClose}
-      keyboard={false}
-      variant="dark"
-      animation={false}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>Edit: ***</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        // WIP
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={() => { props.handleClose() }}>
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  )
-}
-
 const Controllers: React.FC<Props> = () => {
   const [controllersResult, setControllers] = useState<ControllersResult | undefined>(undefined);
-  const [show, setShow] = useState<boolean>(false);
   const [deleteQueue, setDeleteQueue] = React.useState<Controller | null>(null);
 
   const fetch = () => {
@@ -88,7 +57,6 @@ const Controllers: React.FC<Props> = () => {
             </Div>
             :
             <Div>
-              <Editor show={show} handleClose={() => { setShow(false) }} />
               <Table hover variant="dark">
                 <thead>
                   <tr>
