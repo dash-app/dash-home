@@ -44,7 +44,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
         onHide={props.handleClose}
       >
         <Modal.Header closeButton>
-          <Modal.Title>// Error</Modal.Title>
+          <Modal.Title>Error</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>Unknown kind: {props.kind}</p>
@@ -63,7 +63,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
       onHide={props.handleClose}
     >
       <Modal.Header closeButton={props.handleClose && true}>
-        <Modal.Title>// Select Remote ({props.kind})...</Modal.Title>
+        <Modal.Title>Select Remote ({props.kind})...</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Tabs defaultActiveKey={remotes[0]} id="tabs">

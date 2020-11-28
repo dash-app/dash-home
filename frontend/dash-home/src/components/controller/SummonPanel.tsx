@@ -29,6 +29,7 @@ const SummonPanel: React.FC<Props> = props => {
           </span>
         )
       }
+      break;
     case "LIGHT":
       if (props.controller.type === "REMOTE") {
         return (
@@ -46,6 +47,7 @@ const SummonPanel: React.FC<Props> = props => {
           </span>
         )
       }
+      break;
   }
 
   return (

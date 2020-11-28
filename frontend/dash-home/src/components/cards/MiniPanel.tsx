@@ -14,7 +14,7 @@ interface Props {
 export const MiniPanelInner = (props: Props) => {
   return (
     <Div>
-      <Title>{props.title} {props.note && <Note>// {props.note}</Note>}</Title>
+      <Title>{props.title} {props.note && <Note>{"//"} {props.note}</Note>}</Title>
       <Description>{props.description && props.description}</Description>
       {props.id && <Link to={`/controllers/${props.id}`}><Button>Click to Edit</Button></Link>}
     </Div>

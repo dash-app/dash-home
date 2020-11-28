@@ -119,7 +119,7 @@ const NewController: React.FC<Props> = () => {
                 }
               </Form.Label>
               <Div>
-                <Button onClick={() => setOpenChooser(true)}>// Select Remote...</Button>
+                <Button onClick={() => setOpenChooser(true)}>Select Remote...</Button>
                 {/* Modal */}
                 <RemoteChooser
                   visible={openChooser}

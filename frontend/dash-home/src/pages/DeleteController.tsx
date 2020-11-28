@@ -31,7 +31,7 @@ const DeleteController: React.FC<Props> = (props: Props) => {
         onHide={props.handleClose}
       >
         <Modal.Header>
-          <Modal.Title>// Delete Controller: {props.controller.name}</Modal.Title>
+          <Modal.Title>Delete Controller: {props.controller.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <h6>Removed.</h6>
@@ -56,7 +56,7 @@ const DeleteController: React.FC<Props> = (props: Props) => {
       onHide={props.handleClose}
     >
       <Modal.Header>
-        <Modal.Title>// Delete Controller: {props.controller.name}</Modal.Title>
+        <Modal.Title>Delete Controller: {props.controller.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <h6>Are you sure you want to delete this item?</h6>

@@ -39,7 +39,7 @@ const SwitchBotChooser: React.FC<Props> = (props: Props) => {
     >
       <Form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
-          <Modal.Title>// SwitchBot Settings...</Modal.Title>
+          <Modal.Title>SwitchBot Settings...</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* Mac Address */}
