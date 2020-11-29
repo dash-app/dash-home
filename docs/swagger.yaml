@@ -88,7 +88,6 @@ definitions:
       aircon:
         $ref: '#/definitions/aircon.State'
         description: Aircon - State of Aircon
-        type: object
       id:
         description: ID - Generated ID
         example: <UNIQUE_ID>
@@ -97,6 +96,9 @@ definitions:
         description: Kind - AIRCON, LIGHT, SWITCHBOT...
         example: AIRCON
         type: string
+      light:
+        $ref: '#/definitions/light.State'
+        description: Light - State of Light
       name:
         description: Name - ex. Bedroom Airconditioner
         example: Bedroom Airconditioner
@@ -104,11 +106,9 @@ definitions:
       remote:
         $ref: '#/definitions/controller.Remote'
         description: Remote - Remote Controller settings (required when type is REMOTE)
-        type: object
       switchbot:
         $ref: '#/definitions/agent.SwitchBot'
         description: SwitchBot - SwitchBot settings (required when type is SWITCHBOT)
-        type: object
       type:
         description: Type - type of controller (how to use?) / ex. REMOTE, SWITCHBOT...
         example: REMOTE
@@ -127,6 +127,22 @@ definitions:
         example: daikin
         type: string
     type: object
+  light.Entry:
+    properties:
+      action:
+        description: |-
+          Action - OFF, ON, NIGHT_LIGHT, ALL_LIGHT, TO_WARM, TO_COOL, TO_BRIGHT, TO_DIM
+          Direct Action (Use by when not support state-based signal)
+        example: "OFF"
+        type: string
+    type: object
+  light.State:
+    properties:
+      last_action:
+        description: LastAction - Issued last action...
+        example: "OFF"
+        type: string
+    type: object
   room.Entry:
     properties:
       id:
@@ -142,7 +158,6 @@ definitions:
       ambient:
         $ref: '#/definitions/agent.Ambient'
         description: Ambient - Room ambient (from agent)
-        type: object
       id:
         description: ID - Room ID
         type: string
@@ -160,6 +175,12 @@ definitions:
   server.GetRemotesResponse:
     properties:
       aircon:
+        additionalProperties:
+          items:
+            type: string
+          type: array
+        type: object
+      light:
         additionalProperties:
           items:
             type: string
@@ -191,11 +212,9 @@ definitions:
       remote:
         $ref: '#/definitions/server.RemoteController'
         description: Remote - Remote Controller settings (required when type is REMOTE)
-        type: object
       switchbot:
         $ref: '#/definitions/server.SwitchBotController'
         description: SwitchBot - SwitchBot settings (required when type is SWITCHBOT)
-        type: object
       type:
         description: Type - type of controller (how to use?) / ex. REMOTE, SWITCHBOT...
         example: REMOTE
@@ -256,13 +275,10 @@ definitions:
         type: array
       range:
         $ref: '#/definitions/template.Range'
-        type: object
       shot:
         $ref: '#/definitions/template.Shot'
-        type: object
       toggle:
         $ref: '#/definitions/template.Toggle'
-        type: object
       type:
         type: integer
     type: object
@@ -274,25 +290,28 @@ definitions:
         type: object
       operation:
         $ref: '#/definitions/template.Action'
-        type: object
     type: object
   template.AirconMode:
     properties:
       fan:
         $ref: '#/definitions/template.Action'
-        type: object
       horizontal_vane:
         $ref: '#/definitions/template.Action'
-        type: object
       humid:
         $ref: '#/definitions/template.Action'
-        type: object
       temp:
         $ref: '#/definitions/template.Action'
-        type: object
       vertical_vane:
         $ref: '#/definitions/template.Action'
-        type: object
+    type: object
+  template.Light:
+    properties:
+      brightness:
+        $ref: '#/definitions/template.Action'
+      color:
+        $ref: '#/definitions/template.Action'
+      mode:
+        $ref: '#/definitions/template.Action'
     type: object
   template.Range:
     properties:
@@ -316,12 +335,21 @@ definitions:
     properties:
       aircon:
         $ref: '#/definitions/template.Aircon'
-        type: object
+        description: Aircon template
       kind:
+        description: Target Kind
+        example: aircon
         type: string
+      light:
+        $ref: '#/definitions/template.Light'
+        description: Light template
       model:
+        description: Target Model
+        example: daikin01
         type: string
       vendor:
+        description: Target vendor
+        example: vendor
         type: string
     type: object
   template.Toggle:
@@ -458,6 +486,18 @@ paths:
           schema:
             $ref: '#/definitions/aircon.Entry'
       summary: Post Aircon by ID
+      tags:
+      - controller
+  /api/v1/controllers/:id/light:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/light.Entry'
+      summary: Post Light by ID
       tags:
       - controller
   /api/v1/controllers/:id/switchbot:

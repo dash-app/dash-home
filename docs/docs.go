@@ -217,6 +217,25 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/controllers/:id/light": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "Post Light by ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/light.Entry"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/controllers/:id/switchbot": {
             "post": {
                 "produces": [
@@ -462,7 +481,6 @@ var doc = `{
             "properties": {
                 "aircon": {
                     "description": "Aircon - State of Aircon",
-                    "type": "object",
                     "$ref": "#/definitions/aircon.State"
                 },
                 "id": {
@@ -475,6 +493,10 @@ var doc = `{
                     "type": "string",
                     "example": "AIRCON"
                 },
+                "light": {
+                    "description": "Light - State of Light",
+                    "$ref": "#/definitions/light.State"
+                },
                 "name": {
                     "description": "Name - ex. Bedroom Airconditioner",
                     "type": "string",
@@ -482,12 +504,10 @@ var doc = `{
                 },
                 "remote": {
                     "description": "Remote - Remote Controller settings (required when type is REMOTE)",
-                    "type": "object",
                     "$ref": "#/definitions/controller.Remote"
                 },
                 "switchbot": {
                     "description": "SwitchBot - SwitchBot settings (required when type is SWITCHBOT)",
-                    "type": "object",
                     "$ref": "#/definitions/agent.SwitchBot"
                 },
                 "type": {
@@ -510,6 +530,26 @@ var doc = `{
                 }
             }
         },
+        "light.Entry": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "description": "Action - OFF, ON, NIGHT_LIGHT, ALL_LIGHT, TO_WARM, TO_COOL, TO_BRIGHT, TO_DIM\nDirect Action (Use by when not support state-based signal)",
+                    "type": "string",
+                    "example": "OFF"
+                }
+            }
+        },
+        "light.State": {
+            "type": "object",
+            "properties": {
+                "last_action": {
+                    "description": "LastAction - Issued last action...",
+                    "type": "string",
+                    "example": "OFF"
+                }
+            }
+        },
         "room.Entry": {
             "type": "object",
             "properties": {
@@ -529,7 +569,6 @@ var doc = `{
             "properties": {
                 "ambient": {
                     "description": "Ambient - Room ambient (from agent)",
-                    "type": "object",
                     "$ref": "#/definitions/agent.Ambient"
                 },
                 "id": {
@@ -556,6 +595,15 @@ var doc = `{
             "type": "object",
             "properties": {
                 "aircon": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "light": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "array",
@@ -603,12 +651,10 @@ var doc = `{
                 },
                 "remote": {
                     "description": "Remote - Remote Controller settings (required when type is REMOTE)",
-                    "type": "object",
                     "$ref": "#/definitions/server.RemoteController"
                 },
                 "switchbot": {
                     "description": "SwitchBot - SwitchBot settings (required when type is SWITCHBOT)",
-                    "type": "object",
                     "$ref": "#/definitions/server.SwitchBotController"
                 },
                 "type": {
@@ -689,15 +735,12 @@ var doc = `{
                     }
                 },
                 "range": {
-                    "type": "object",
                     "$ref": "#/definitions/template.Range"
                 },
                 "shot": {
-                    "type": "object",
                     "$ref": "#/definitions/template.Shot"
                 },
                 "toggle": {
-                    "type": "object",
                     "$ref": "#/definitions/template.Toggle"
                 },
                 "type": {
@@ -715,7 +758,6 @@ var doc = `{
                     }
                 },
                 "operation": {
-                    "type": "object",
                     "$ref": "#/definitions/template.Action"
                 }
             }
@@ -724,23 +766,32 @@ var doc = `{
             "type": "object",
             "properties": {
                 "fan": {
-                    "type": "object",
                     "$ref": "#/definitions/template.Action"
                 },
                 "horizontal_vane": {
-                    "type": "object",
                     "$ref": "#/definitions/template.Action"
                 },
                 "humid": {
-                    "type": "object",
                     "$ref": "#/definitions/template.Action"
                 },
                 "temp": {
-                    "type": "object",
                     "$ref": "#/definitions/template.Action"
                 },
                 "vertical_vane": {
-                    "type": "object",
+                    "$ref": "#/definitions/template.Action"
+                }
+            }
+        },
+        "template.Light": {
+            "type": "object",
+            "properties": {
+                "brightness": {
+                    "$ref": "#/definitions/template.Action"
+                },
+                "color": {
+                    "$ref": "#/definitions/template.Action"
+                },
+                "mode": {
                     "$ref": "#/definitions/template.Action"
                 }
             }
@@ -777,17 +828,27 @@ var doc = `{
             "type": "object",
             "properties": {
                 "aircon": {
-                    "type": "object",
+                    "description": "Aircon template",
                     "$ref": "#/definitions/template.Aircon"
                 },
                 "kind": {
-                    "type": "string"
+                    "description": "Target Kind",
+                    "type": "string",
+                    "example": "aircon"
+                },
+                "light": {
+                    "description": "Light template",
+                    "$ref": "#/definitions/template.Light"
                 },
                 "model": {
-                    "type": "string"
+                    "description": "Target Model",
+                    "type": "string",
+                    "example": "daikin01"
                 },
                 "vendor": {
-                    "type": "string"
+                    "description": "Target vendor",
+                    "type": "string",
+                    "example": "vendor"
                 }
             }
         },
