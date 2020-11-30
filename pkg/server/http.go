@@ -83,6 +83,7 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 	// Controllers -> Appliances...
 	apiGroup.POST("controllers/:id/switchbot", h.postSwitchBotByID)
 	apiGroup.POST("controllers/:id/aircon", h.postAirconByID)
+	apiGroup.POST("controllers/:id/light", h.postLightByID)
 
 	// Controller template
 	apiGroup.GET("controllers/:id/template", h.getControllerTemplateByID)

@@ -6,6 +6,7 @@ import { MiniPanelInner } from '../components/cards/MiniPanel';
 import { SummonByTpl } from '../components/controller/Template';
 import { Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
+import { HR } from '../components/atoms/Themed';
 
 interface Props {
   controller: Controller,
@@ -57,17 +58,19 @@ export const LightPanel: React.FC<Props> = props => {
     return callTimer;
   }
 
-  const entryToState = (entry: Light): LightState => {
+
+  const stateToEntry = (state: LightState): Light => {
     return {
-      last_action: entry.action,
+      action: state.last_action,
     }
   }
 
   // const stateToEntry = (entry: )
 
   const callTimer = useTask();
-  const [light, setLight] = React.useState<Light>();
+  const [light, setLight] = React.useState<Light>(stateToEntry(props.controller.light!));
   const update = (entry: Light, after?: any) => {
+    setLight(entry);
     callTimer(() => {
       sendLight(props.controller.id, entry, () => {
         if (after) {
@@ -85,8 +88,33 @@ export const LightPanel: React.FC<Props> = props => {
           <SummonByTpl
             description="mode"
             value={props.controller.light?.last_action}
-            setter={(e: any) => light}
+            setter={(e: any) => light!.action = e}
+            sender={(after: any) => update({ ...light! }, after)}
             action={props.template.light?.mode!}
+          />
+        </Contents>
+      </Row>
+      <HR />
+      <Row>
+        {/* Bightness */}
+        <Contents>
+          <SummonByTpl
+            description="brightness"
+            value={""}
+            setter={(e: any) => light!.action = e}
+            sender={(after: any) => update({ ...light! }, after)}
+            action={props.template.light?.brightness!}
+          />
+        </Contents>
+
+        {/* Color */}
+        <Contents>
+          <SummonByTpl
+            description="color"
+            value={"N/A"}
+            setter={(e: any) => light!.action = e}
+            sender={(after: any) => update({ ...light! }, after)}
+            action={props.template.light?.color!}
           />
         </Contents>
       </Row>

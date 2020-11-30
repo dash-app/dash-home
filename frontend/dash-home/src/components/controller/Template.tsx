@@ -1,11 +1,14 @@
 import React from "react";
 import { Action } from '../../remote-go/Template';
+import { Container } from "../atoms/Themed";
 import List from './template/List';
 import Range from './template/Range';
 import Shot from "./template/Shot";
 import Toggle from './template/Toggle';
+import { TplBase } from './template/TplBase';
 
 interface SummonProps {
+  hideTitle?: boolean,
   onChange?: any,
   description: string,
   default?: any,
@@ -20,10 +23,12 @@ export const SummonByTpl = (props: SummonProps) => {
     case "LIST":
       return (
         <List
+          hideTitle={props.hideTitle}
           description={props.description}
-          values={props.action.list}
+          values={props.action.list.values}
           key={props.value}
           status={props.value}
+          shot={props.action.list.shot}
           onClick={props.setter && ((e: any) => {
             props.setter(e);
             props.sender();
@@ -33,6 +38,7 @@ export const SummonByTpl = (props: SummonProps) => {
     case "RANGE":
       return (
         <Range
+          hideTitle={props.hideTitle}
           description={props.description}
           key={props.value}
           value={props.value}
@@ -50,6 +56,7 @@ export const SummonByTpl = (props: SummonProps) => {
     case "TOGGLE":
       return (
         <Toggle
+          hideTitle={props.hideTitle}
           description={props.description}
           key={props.value}
           value={props.value}
@@ -63,9 +70,10 @@ export const SummonByTpl = (props: SummonProps) => {
     case "SHOT":
       return (
         <Shot
+          hideTitle={props.hideTitle}
           description={props.description}
           key={props.value}
-          default={props.action.default}
+          default={props.action.default ? props.action.default : props.action.shot.value}
           value={props.action.shot.value}
           onClick={props.setter && ((e: any) => {
             props.setter(e);
@@ -77,17 +85,24 @@ export const SummonByTpl = (props: SummonProps) => {
       )
     case "MULTIPLE":
       return (
-        <div>
+        <Container fluid>
           {props.action.multiple.map((v) => {
             return (
-              <SummonByTpl 
+              <SummonByTpl
+                hideTitle={true}
                 description={props.description}
                 value={props.value}
+                setter={props.setter && ((e: any) => {
+                  props.setter(e);
+                })}
+                sender={props.sender && ((e: any) => {
+                  props.sender(e);
+                })}
                 action={v}
               />
             )
           })}
-        </div>
+        </Container>
       )
     default:
       return (<p>** Unknown **</p>)

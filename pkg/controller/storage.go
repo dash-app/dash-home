@@ -124,6 +124,7 @@ func (s *Storage) Update(id string, name, kind, t string, opts *Options) (*Entry
 		if oldEntry.Remote.Vendor == opts.Remote.Vendor && oldEntry.Remote.Model == opts.Remote.Model {
 			// NOTE: Copy old state
 			entry.Aircon = oldEntry.Aircon
+			entry.Light = oldEntry.Light
 		}
 	}
 

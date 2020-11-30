@@ -15,11 +15,17 @@ export interface Template {
 export interface Action {
   type: string,
   default: any,
-  list: string[],
+  list: List,
   range: Range,
   toggle: Toggle,
   shot: Shot,
   multiple: Action[],
+}
+
+// List - List entries
+export interface List {
+  shot?: boolean,
+  values: string[],
 }
 
 // Range - Numeric range

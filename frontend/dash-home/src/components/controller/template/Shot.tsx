@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import { H1, P } from '../../atoms/Core';
 
 import styled from 'styled-components';
 
 interface Props {
+    hideTitle?: boolean,
     description?: string,
     default: string,
     onClick?: any,
@@ -27,36 +28,38 @@ class Shot extends React.Component<Props> {
 
     render() {
         return (
-            <Container fluid>
-                <Row>
-                    <Col>
-                        <H1>
-                            <Span>{this.props.default}</Span>
-                        </H1>
-                        <H1>
-                            <Span>{this.props.value}</Span>
-                        </H1>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <P>
-                            <Span>{this.props.description}</Span>
-                        </P>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Button
-                            type="button"
-                            size="lg"
-                            onClick={() => this.onClick()}
-                        >
-                            {this.props.default}
-                        </Button>
-                    </Col>
-                </Row>
-            </Container>
+            <span>
+                {!this.props.hideTitle &&
+                    <span>
+                        <Row>
+                            <Col>
+                                <H1>
+                                    <Span>{this.props.default}</Span>
+                                </H1>
+                                <H1>
+                                    <Span>{this.props.value}</Span>
+                                </H1>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <P>
+                                    <Span>{this.props.description}</Span>
+                                </P>
+                            </Col>
+                        </Row>
+                    </span>
+                }
+                <Col>
+                    <Button
+                        type="button"
+                        size="lg"
+                        onClick={() => this.onClick()}
+                    >
+                        {this.props.default}
+                    </Button>
+                </Col>
+            </span>
         )
     }
 }

@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { Button } from '../../atoms/Themed';
 
 interface Props {
+    hideTitle?: boolean,
     description?: string,
     value: boolean,
     icon?: IconProp,
@@ -39,20 +40,24 @@ class Toggle extends React.Component<Props, State> {
     render() {
         return (
             <Container fluid>
-                <Row>
-                    <Col>
-                        <H1>
-                            <Span>{this.state.value ? "ON" : "OFF"}</Span>
-                        </H1>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <P>
-                            <Span>{this.props.description}</Span>
-                        </P>
-                    </Col>
-                </Row>
+                {!this.props.hideTitle &&
+                    <span>
+                        <Row>
+                            <Col>
+                                <H1>
+                                    <Span>{this.state.value ? "ON" : "OFF"}</Span>
+                                </H1>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <P>
+                                    <Span>{this.props.description}</Span>
+                                </P>
+                            </Col>
+                        </Row>
+                    </span>
+                }
                 <Row>
                     <Col>
                         {(this.props.icon || this.props.btnText) &&
