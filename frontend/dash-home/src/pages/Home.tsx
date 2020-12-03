@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Center, Div, P, Span } from '../components/atoms/Core';
 import { NotifyError } from '../components/atoms/Notify';
-import { Button, Icon } from '../components/atoms/Themed';
+import { Button, Container, Icon } from '../components/atoms/Themed';
 import Basement from '../components/basements/Basement';
 import { CardBase } from '../components/cards/CardBase';
 import SummonPanel from '../components/controller/SummonPanel';
@@ -34,7 +34,7 @@ const Home: React.FC<Props> = () => {
             <Span>Loading...</Span>
           </Div>
           :
-          <Div>
+          <Container fluid>
             {/* When controlles is empty */}
             {Object.values(controllersResult.controllers).length === 0 &&
               <Center>
@@ -69,13 +69,13 @@ const Home: React.FC<Props> = () => {
             <Row>
               {Object.values(controllersResult.controllers!).map((c: Controller) => {
                 return (
-                  <Card style={{ minWidth: "24rem", backgroundColor: "initial", margin: "2rem" }}>
+                  <Card style={{ minWidth: "18rem", backgroundColor: "initial", margin: "0.5rem" }}>
                     <SummonPanel controller={c} />
                   </Card>
                 );
               })}
             </Row>
-          </Div>
+          </Container>
       }
     </Basement>
   )
