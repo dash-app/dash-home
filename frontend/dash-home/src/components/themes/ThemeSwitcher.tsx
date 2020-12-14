@@ -1,19 +1,18 @@
 import * as React from 'react';
 import { ButtonGroup } from 'react-bootstrap';
 import { Button } from '../atoms/Themed';
-import { P } from '../atoms/Core';
 import { ThemeContext } from './ThemeProvider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-interface Props { }
+interface Props {
+  otaku?: boolean,
+}
 
-const ThemeSwitcher: React.FC<Props> = () => {
+const ThemeSwitcher: React.FC<Props> = props => {
   const { theme, setTheme } = React.useContext(ThemeContext);
 
   return (
     <span>
-      <span>
-        <P>Current: {theme}</P>
-      </span>
       <ButtonGroup>
         <Button
           type="radio"
@@ -23,7 +22,12 @@ const ThemeSwitcher: React.FC<Props> = () => {
           key={"CHEEKY_WHITE"}
           selected={theme === "CHEEKY_WHITE"}
         >
-          Cheeky White
+          {/* Cheeky White */}
+          {props.otaku ?
+            <p style={{ fontSize: "1rem" }}>😎</p>
+            :
+            <FontAwesomeIcon icon={["fas", "sun"]} style={{ fontSize: "1.5rem" }} />
+          }
         </Button>
         <Button
           type="radio"
@@ -33,7 +37,12 @@ const ThemeSwitcher: React.FC<Props> = () => {
           key={"NERD_BLACK"}
           selected={theme === "NERD_BLACK"}
         >
-          Nerd Black
+          {/* Nerd Black */}
+          {props.otaku ?
+            <p style={{ fontSize: "1rem" }}>🤓</p>
+            :
+            <FontAwesomeIcon icon={["fas", "moon"]} style={{ fontSize: "1.5rem" }} />
+          }
         </Button>
       </ButtonGroup>
     </span>

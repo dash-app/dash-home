@@ -6,13 +6,13 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { ThemeContext } from '../themes/ThemeProvider';
-import ThemeSwitcher from '../themes/ThemeSwitcher';
-import { Room } from '../../remote-go/Room';
 import { Link } from 'react-router-dom';
 import { Span } from '../atoms/Core';
 import { RoomContext } from '../basements/RoomProvider';
 
-interface Props { }
+interface Props {
+  menuHandler: any,
+}
 
 interface ThemeProps {
   theme: string,
@@ -54,7 +54,7 @@ const Navigation: React.FC<Props> = props => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <ThemeSwitcher />
+          {/* Just Blank... */}
         </Nav>
         <Nav>
           <span style={{ marginRight: "1rem" }}>
@@ -62,8 +62,11 @@ const Navigation: React.FC<Props> = props => {
           </span>
         </Nav>
         <Nav>
+          <Button onClick={() => { props.menuHandler() }}>
+            <FontAwesomeIcon icon={["fas", "ellipsis-v"]} style={{ marginRight: "1rem" }} />
+            <span>MENU</span>
+          </Button>
           <Link to="/controllers">
-            <Button>{"Controllers"}</Button>
           </Link>
         </Nav>
       </Navbar.Collapse>
@@ -74,9 +77,7 @@ const Navigation: React.FC<Props> = props => {
 const CustomNavbar = styled(Navbar)`
   border: none;
   background-color: initial !important;
-  padding-left: 4em;import { ThemeContext } from '../themes/ThemeProvider';
-import { RoomContext } from '../basements/RoomProvider';
-
+  padding-left: 4em;
   padding-right: 4em;
 `
 
