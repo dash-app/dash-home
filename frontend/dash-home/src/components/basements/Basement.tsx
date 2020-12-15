@@ -22,9 +22,7 @@ const Basement: React.FC<Props> = props => {
   const [otaku, setOtaku] = React.useState<boolean>(false);
   const [otakuCount, setOtakuCount] = React.useState<number>(0);
   React.useEffect(() => {
-    console.log("Combo!")
     if (otakuCount >= 10) {
-      console.log("OTAKU!")
       setOtaku(true);
     }
   }, [otakuCount])
@@ -49,7 +47,7 @@ const Basement: React.FC<Props> = props => {
                   onHide={() => setShowMenu(false)}
                   // backdrop="static"
                   variant="dark"
-                  // centered={true}
+                // centered={true}
                 >
                   <Modal.Header closeButton>
                     <Modal.Title>
@@ -57,7 +55,7 @@ const Basement: React.FC<Props> = props => {
                     </Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <Container>
+                    <Container fluid>
                       {/* Main Menu */}
                       <p><Icon icon={["fas", "ellipsis-h"]} />{"Main Menu"}</p>
                       <CustomRow>
@@ -92,24 +90,24 @@ const Basement: React.FC<Props> = props => {
                       <hr />
                       <CustomRow>
                         {/* + */}
-                        <Col>
-                          <p onClick={() => { setOtakuCount(otakuCount + 1) }}><Icon icon={["fas", "swatchbook"]} />{"Appearance"}</p>
-                          <ThemeSwitcher otaku={otaku} />
-                        </Col>
-                        <Col>
+                        <Col sm style={{ marginTop: "1rem" }}>
                           <p><Icon icon={["fas", "server"]} />{"Environment"}</p>
-                          <p style={{ fontSize: "2rem" }}>
+                          <Col style={{ paddingLeft: "0", fontSize: "2rem" }}>
                             <Icon fixedWidth style={{ fontSize: "1.5rem" }} icon={["fas", "thermometer-three-quarters"]} />{roomResult?.room?.ambient.temp.toFixed(1)}
                             <span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>℃</span>
-                          </p>
-                          <p style={{ fontSize: "2rem" }}>
+                          </Col>
+                          <Col style={{ paddingLeft: "0", fontSize: "2rem" }}>
                             <Icon fixedWidth style={{ fontSize: "1.5rem" }} icon={["fas", "tint"]} />{roomResult?.room?.ambient.humid.toFixed(0)}
                             <span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>%</span>
-                          </p>
-                          <p style={{ fontSize: "2rem" }}>
+                          </Col>
+                          <Col style={{ paddingLeft: "0", fontSize: "2rem" }}>
                             <Icon fixedWidth style={{ fontSize: "1.5rem" }} icon={["fas", "wind"]} />{roomResult?.room?.ambient.pressure.toFixed(1)}
                             <span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>hPa</span>
-                          </p>
+                          </Col>
+                        </Col>
+                        <Col sm style={{ marginTop: "1rem" }}>
+                          <p onClick={() => { setOtakuCount(otakuCount + 1) }}><Icon icon={["fas", "swatchbook"]} />{"Appearance"}</p>
+                          <ThemeSwitcher otaku={otaku} />
                         </Col>
                       </CustomRow>
                     </Container>
