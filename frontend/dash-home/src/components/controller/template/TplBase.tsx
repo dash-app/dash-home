@@ -8,6 +8,11 @@ interface Props {
   children?: React.ReactNode,
 }
 
+export interface ValueSet {
+  value: any,
+  displayComponent: any,
+}
+
 export const TplBase: React.FC<Props> = props => {
   return (
     <Container fluid>

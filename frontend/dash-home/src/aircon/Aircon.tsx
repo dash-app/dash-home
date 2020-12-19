@@ -9,6 +9,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { HR } from '../components/atoms/Themed';
 import { SummonByTpl } from '../components/controller/Template';
 import { MiniPanelInner } from '../components/cards/MiniPanel';
+import { FanIcon, FanStep, HorizontalVaneStep, ThemedIcon } from '../components/atoms/DashIcon';
+import { ValueSet } from '../components/controller/template/TplBase';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
   controller: Controller,
@@ -61,7 +64,14 @@ const AirconMiniPanel: React.FC<MiniProps> = props => {
           return (
             <MiniPanelInner
               id={props.controller.id}
-              title={aircon.modes[aircon.mode].fan}
+              title={
+                <ThemedIcon style={{ fontSize: "1rem" }}>
+                  <FanIcon />
+                  <FanStep
+                    current={aircon.modes[aircon.mode].fan}
+                  />
+                </ThemedIcon>
+              }
               note="fan"
               description={aircon.mode}
             />
@@ -167,10 +177,21 @@ const AirconPanel: React.FC<Props> = props => {
 
         {/* Mode */}
         <Contents>
-          <List description="mode" values={[...Array.from(modesTpl.keys())]} status={aircon.mode} onClick={(e: any) => {
-            aircon.mode = e;
-            update({ ...aircon });
-          }} />
+          <List description="mode" values={((): ValueSet[] => {
+            let values: ValueSet[] = [];
+            [...Array.from(modesTpl.keys())].map((v) => {
+              values.push({
+                value: v,
+                displayComponent: v,
+              })
+            })
+            return values
+          })()}
+            status={aircon.mode} onClick={(e: any) => {
+              aircon.mode = e;
+              update({ ...aircon });
+            }}
+          />
         </Contents>
       </Row>
 
@@ -180,6 +201,11 @@ const AirconPanel: React.FC<Props> = props => {
           <Contents>
             <HR />
             <SummonByTpl
+              title={
+                <ThemedIcon>
+                  <FontAwesomeIcon icon={["fas", "thermometer-three-quarters"]}/>
+                </ThemedIcon>
+              }
               description="temp"
               value={aircon.modes[aircon.mode].temp}
               setter={(e: any) => aircon.modes[aircon.mode].temp = e}
@@ -209,6 +235,14 @@ const AirconPanel: React.FC<Props> = props => {
           <Contents>
             <HR />
             <SummonByTpl
+              title={
+                <ThemedIcon>
+                  <FanIcon />
+                  <FanStep
+                    current={aircon.modes[aircon.mode].fan}
+                  />
+                </ThemedIcon>
+              }
               description="fan"
               value={aircon.modes[aircon.mode].fan}
               setter={(e: any) => aircon.modes[aircon.mode].fan = e}
@@ -224,6 +258,13 @@ const AirconPanel: React.FC<Props> = props => {
           <Contents>
             <HR />
             <SummonByTpl
+              title={
+                <ThemedIcon>
+                  <HorizontalVaneStep
+                    current={aircon.modes[aircon.mode].horizontal_vane}
+                  />
+                </ThemedIcon>
+              }
               description="horizontal_vane"
               value={aircon.modes[aircon.mode].horizontal_vane}
               setter={(e: any) => aircon.modes[aircon.mode].horizontal_vane = e}

@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { ButtonGroup, Col, Container, Dropdown, DropdownButton, Row } from 'react-bootstrap';
 import { H1, P } from '../../atoms/Core';
+import { ValueSet } from './TplBase';
 
 import styled from 'styled-components';
 import { Button } from '../../atoms/Themed';
 
 interface Props {
     hideTitle?: boolean,
+    title?: any,
     description?: string,
-    values: string[],
+    values: ValueSet[],
     status?: string,
     drop?: boolean,
     shot?: boolean,
@@ -16,7 +18,7 @@ interface Props {
 }
 interface State {
     status?: string,
-    values: string[],
+    values: ValueSet[],
 }
 
 class List extends React.Component<Props, State> {
@@ -47,9 +49,12 @@ class List extends React.Component<Props, State> {
                             <Col>
                                 <H1>
                                     <Span>
-                                        {this.props.shot ? 
-                                            this.props.description :
-                                            this.state.status
+                                        {this.props.title ?
+                                            this.props.title
+                                            :
+                                            this.props.shot ?
+                                                this.props.description :
+                                                this.state.status
                                         }
                                     </Span>
                                 </H1>
@@ -70,11 +75,11 @@ class List extends React.Component<Props, State> {
                             {this.props.values.map((e) => {
                                 return (
                                     <Dropdown.Item
-                                        key={e}
-                                        onClick={() => this.onClick(e)}
-                                        active={!this.props.shot && e === this.state.status}
+                                        key={e.value}
+                                        onClick={() => this.onClick(e.value)}
+                                        active={!this.props.shot && e.value === this.state.status}
                                     >
-                                        {e}
+                                        {e.displayComponent ? e.displayComponent : e.value}
                                     </Dropdown.Item>
                                 )
                             })}
@@ -87,11 +92,11 @@ class List extends React.Component<Props, State> {
                                     <Button
                                         type="radio"
                                         size="lg"
-                                        key={e}
-                                        selected={this.props.shot ? true : e === this.state.status}
-                                        onClick={() => this.onClick(e)}
+                                        key={e.value}
+                                        selected={this.props.shot ? true : e.value === this.state.status}
+                                        onClick={() => this.onClick(e.value)}
                                     >
-                                        {e}
+                                        {e.displayComponent ? e.displayComponent : e.value}
                                     </Button>
                                 )
                             })}

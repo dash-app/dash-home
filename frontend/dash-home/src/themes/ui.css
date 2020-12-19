@@ -2,6 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
 .btn:hover {
     color: #9A9A9A;
+    fill: #9A9A9A;
+}
+
+.btn {
+    color: #55595c;
+    fill: #55595c;
 }
 
 .btn-dark {
@@ -11,11 +17,13 @@
 .btn-primary, .btn-gray {
     background-color: #252525;
     color: #FFFFFF;
+    fill: #FFFFFF;
 }
 
 .btn-primary:hover, .btn-gray:hover {
     background-color: #202020;
     color: #FFFFFF;
+    fill: #FFFFFF;
 }
 
 h1 {

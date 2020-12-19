@@ -5,9 +5,10 @@ import List from './template/List';
 import Range from './template/Range';
 import Shot from "./template/Shot";
 import Toggle from './template/Toggle';
-import { TplBase } from './template/TplBase';
+import { ValueSet } from './template/TplBase';
 
 interface SummonProps {
+  title?: any,
   hideTitle?: boolean,
   onChange?: any,
   description: string,
@@ -21,11 +22,20 @@ interface SummonProps {
 export const SummonByTpl = (props: SummonProps) => {
   switch (props.action.type) {
     case "LIST":
+      let values: ValueSet[] = [];
+      props.action.list.values.map((v) => {
+        values.push({
+          value: v,
+          displayComponent: v,
+        })
+      });
+
       return (
         <List
+          title={props.title}
           hideTitle={props.hideTitle}
           description={props.description}
-          values={props.action.list.values}
+          values={values}
           key={props.value}
           status={props.value}
           shot={props.action.list.shot}
@@ -38,6 +48,7 @@ export const SummonByTpl = (props: SummonProps) => {
     case "RANGE":
       return (
         <Range
+          title={props.title}
           hideTitle={props.hideTitle}
           description={props.description}
           key={props.value}

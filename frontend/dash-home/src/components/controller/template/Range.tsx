@@ -8,6 +8,7 @@ import { Button } from '../../atoms/Themed';
 
 interface Props {
     hideTitle?: boolean,
+    title?: any,
     description?: string,
     value: number,
     step: number,
@@ -56,8 +57,8 @@ class Range extends React.Component<Props, State> {
                             <Col>
                                 <H1>
                                     <Span>
-                                        {this.state.value.toFixed(1)}
-                                        {this.props.suffix!}
+                                        {this.props.title && <span style={{ marginRight: "0.5rem" }}>{this.props.title}</span>}
+                                        {this.state.value.toFixed(1) + this.props.suffix!}
                                     </Span>
                                 </H1>
                             </Col>

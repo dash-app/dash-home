@@ -6,7 +6,7 @@ import { Button } from '../atoms/Themed';
 
 interface Props {
   id?: string,
-  title: string,
+  title: any,
   note?: string,
   description?: string,
 }
