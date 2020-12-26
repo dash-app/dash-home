@@ -2,10 +2,6 @@ project_name: "dash-home"
 release:
   prerelease: auto
   draft: false
-  github:
-    owner: dash-app
-    name: dash-home
-before:
   hooks:
     - go mod download
     - make clean frontend statik
@@ -17,12 +13,12 @@ builds:
       - linux
       - windows
       - darwin
+    goarch:
+      - arm
+    goarm:
+      - 6
 archives:
-  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
-    replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
+  - replacements:
       386: i386
       amd64: x86_64
 checksum:
