@@ -15,7 +15,7 @@ jobs:
         with:
           go-version: "^1.15"
       - name: Run Go Releaser (Snapshot)
-        uses: actions/goreleaser-action@v2
+        uses: goreleaser/goreleaser-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
