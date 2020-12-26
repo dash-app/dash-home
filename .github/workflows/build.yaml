@@ -10,5 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Setup Golang
+        uses: actions/setup-go@v2
+        with: "^1.15"
       - name: Make binaries
         run: make clean frontend build
