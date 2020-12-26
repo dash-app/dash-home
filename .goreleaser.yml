@@ -2,6 +2,9 @@ project_name: "dash-home"
 release:
   prerelease: auto
   draft: false
+  github:
+    owner: dash-app
+    name: dash-home
 before:
   hooks:
     - go mod download
