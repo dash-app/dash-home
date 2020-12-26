@@ -21,7 +21,6 @@ jobs:
         with:
           version: latest
           args: release --rm-dist --snapshot
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
