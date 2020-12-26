@@ -23,7 +23,7 @@ export const SummonByTpl = (props: SummonProps) => {
   switch (props.action.type) {
     case "LIST":
       let values: ValueSet[] = [];
-      props.action.list.values.map((v) => {
+      props.action.list.values.forEach((v) => {
         values.push({
           value: v,
           displayComponent: v,

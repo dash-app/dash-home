@@ -112,22 +112,17 @@ const AirconPanel: React.FC<Props> = props => {
   }
 
   const useSendingIcon = () => {
-    const [taskId, setTaskId] = useState<number>(-1);
     const [sending, updateSending] = useState(false);
-
-    const clearTimer = useCallback((taskId) => {
-      clearTimeout(taskId);
-    }, []);
+    const [taskId, setTaskId] = useState<number>(-1);
 
     useEffect(() => {
-      const t = setTimeout(() => {
+      setTaskId(setTimeout(() => {
         updateSending(false)
-      }, 500);
-      setTaskId(t);
+      }, 500));
       return () => {
-        clearTimer(taskId);
-      }
-    }, [sending, clearTimer]);
+        clearTimeout(taskId);
+      };
+    }, [taskId, sending]);
 
     const setSending = () => {
       updateSending(true);
@@ -179,7 +174,7 @@ const AirconPanel: React.FC<Props> = props => {
         <Contents>
           <List description="mode" values={((): ValueSet[] => {
             let values: ValueSet[] = [];
-            [...Array.from(modesTpl.keys())].map((v) => {
+            [...Array.from(modesTpl.keys())].forEach((v) => {
               values.push({
                 value: v,
                 displayComponent: v,
