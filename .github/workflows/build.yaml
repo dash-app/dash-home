@@ -1,0 +1,14 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: build-binaries
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Make binaries
+        run: make clean frontend build
