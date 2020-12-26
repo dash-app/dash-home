@@ -2,6 +2,7 @@ project_name: "dash-home"
 release:
   prerelease: auto
   draft: false
+before:
   hooks:
     - go mod download
     - make clean frontend statik
