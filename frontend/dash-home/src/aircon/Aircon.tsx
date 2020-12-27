@@ -112,17 +112,19 @@ const AirconPanel: React.FC<Props> = props => {
   }
 
   const useSendingIcon = () => {
-    const [sending, updateSending] = useState(false);
     const [taskId, setTaskId] = useState<number>(-1);
-
+    const [sending, updateSending] = useState(false);
     useEffect(() => {
       setTaskId(setTimeout(() => {
         updateSending(false)
       }, 500));
+    }, [sending])
+
+    useEffect(() => {
       return () => {
         clearTimeout(taskId);
       };
-    }, [taskId, sending]);
+    }, [taskId]);
 
     const setSending = () => {
       updateSending(true);
