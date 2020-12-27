@@ -15,6 +15,9 @@ Dashboard for Home, Dash-Home.
 make clean frontend build
 ```
 
+## Install
+> Available on [Fastkit](https://github.com/dash-app/fastkit) for RaspberryPi.
+
 ## Environment Variables
 | Environment Variables | Description      | Default |
 |-----------------------|------------------|---------|
