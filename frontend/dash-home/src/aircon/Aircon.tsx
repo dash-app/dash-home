@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { HR } from '../components/atoms/Themed';
 import { SummonByTpl } from '../components/controller/Template';
 import { MiniPanelInner } from '../components/cards/MiniPanel';
-import { FanIcon, FanStep, HorizontalVaneStep, ThemedIcon } from '../components/atoms/DashIcon';
+import { FanIcon, FanStep, HorizontalVaneStep, ThemedIcon, VerticalVaneStep } from '../components/atoms/DashIcon';
 import { ValueSet } from '../components/controller/template/TplBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -200,7 +200,7 @@ const AirconPanel: React.FC<Props> = props => {
             <SummonByTpl
               title={
                 <ThemedIcon>
-                  <FontAwesomeIcon icon={["fas", "thermometer-three-quarters"]}/>
+                  <FontAwesomeIcon icon={["fas", "thermometer-three-quarters"]} />
                 </ThemedIcon>
               }
               description="temp"
@@ -275,6 +275,13 @@ const AirconPanel: React.FC<Props> = props => {
           <Contents>
             <HR />
             <SummonByTpl
+              title={
+                <ThemedIcon>
+                  <VerticalVaneStep
+                    current={aircon.modes[aircon.mode].vertical_vane}
+                  />
+                </ThemedIcon>
+              }
               description="vertical_vane"
               value={aircon.modes[aircon.mode].vertical_vane}
               setter={(e: any) => aircon.modes[aircon.mode].vertical_vane = e}

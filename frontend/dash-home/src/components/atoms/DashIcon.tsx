@@ -1,18 +1,8 @@
 import React from 'react';
 import { ThemeContext } from '../themes/ThemeProvider';
-import FanSymbol from '../../svg/FanSymbol';
-import Fan1 from '../../svg/Fan1';
-import Fan2 from '../../svg/Fan2';
-import Fan3 from '../../svg/Fan3';
-import Fan4 from '../../svg/Fan4';
-import Fan5 from '../../svg/Fan5';
-import HorizontalVane from '../../svg/HorizontalVane';
-import HorizontalVaneSwing from '../../svg/HorizontalVaneSwing';
-import HorizontalVane51 from '../../svg/HorizontalVane51';
-import HorizontalVane52 from '../../svg/HorizontalVane52';
-import HorizontalVane53 from '../../svg/HorizontalVane53';
-import HorizontalVane54 from '../../svg/HorizontalVane54';
-import HorizontalVane55 from '../../svg/HorizontalVane55';
+import { Fan1, Fan2, Fan3, Fan4, Fan5, FanSymbol } from '../../svg/aircon/fan';
+import { HorizontalVane, HorizontalVane51, HorizontalVane52, HorizontalVane53, HorizontalVane54, HorizontalVane55, HorizontalVaneSwing } from '../../svg/aircon/horizontal_vane';
+import { VerticalVane, VerticalVaneCenter, VerticalVaneCenterLeft, VerticalVaneCenterRight, VerticalVaneLeft, VerticalVaneMidLeft, VerticalVaneMidRight, VerticalVaneRight, VerticalVaneSide, VerticalVaneSwing } from '../../svg/aircon/vertical_vane';
 
 interface DashIconProps {
   icon: "fan",
@@ -24,6 +14,10 @@ interface FanProps {
 }
 
 interface HorizontalVaneProps {
+  current: string,
+}
+
+interface VerticalVaneProps {
   current: string,
 }
 
@@ -69,6 +63,23 @@ export const HorizontalVaneStep = (props: HorizontalVaneProps) => {
     case "5": return (<HorizontalVane55 {...props} />)
     case "swing": return (<HorizontalVaneSwing {...props} />)
     case "keep": return (<HorizontalVane {...props} />)
+    default:
+      return (<>{props.current}</>)
+  }
+}
+
+export const VerticalVaneStep = (props: VerticalVaneProps) => {
+  switch (props.current) {
+    case "left": return (<VerticalVaneLeft {...props} />)
+    case "mid_left": return (<VerticalVaneMidLeft {...props} />)
+    case "center": return (<VerticalVaneCenter {...props} />)
+    case "mid_right": return (<VerticalVaneMidRight {...props} />)
+    case "right": return (<VerticalVaneRight {...props} />)
+    case "center_left": return (<VerticalVaneCenterLeft {...props} />)
+    case "center_right": return (<VerticalVaneCenterRight {...props} />)
+    case "side": return (<VerticalVaneSide {...props} />)
+    case "swing": return (<VerticalVaneSwing {...props} />)
+    case "keep": return (<VerticalVane {...props} />)
     default:
       return (<>{props.current}</>)
   }
