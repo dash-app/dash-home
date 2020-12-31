@@ -164,7 +164,7 @@ const NewController: React.FC<Props> = () => {
             {postResult && postResult.status === PENDING && <Spinner aria-hidden="true" />}
             {/* {postResult && postResult.status === SUCCESS && <Icon icon={["fas", "check"]} />} */}
             {postResult && postResult.status === SUCCESS && <Redirect to="/controllers" />}
-            {postResult && postResult.status === FAILED && <NotifyError title="Failed create controller" message={`${postResult.error!.data.error ? postResult.error!.data.error : postResult.error!.data}`} />}
+            {postResult && postResult.status === FAILED && <NotifyError title="Failed create controller" message={`${postResult.error!.response?.data.error ? postResult.error!.response.data.error : postResult.error!}`} />}
           </Div>
         </Form>
       </Container>

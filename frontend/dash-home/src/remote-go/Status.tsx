@@ -4,3 +4,8 @@ export const SUCCESS = 'SUCCESS';
 export const FAILED = 'FAILED';
 
 export type Status = 'NONE' | 'PENDING' | 'SUCCESS' | 'FAILED';
+
+export interface ErrorResponse {
+  error: any,
+  code?: string,
+}

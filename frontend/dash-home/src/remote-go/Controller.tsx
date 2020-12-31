@@ -1,6 +1,7 @@
 import axios from "../httpClient";
 import { API_ADDRESS } from "../config";
-import { FAILED, PENDING, Status, SUCCESS } from "./Status";
+import { ErrorResponse, FAILED, PENDING, Status, SUCCESS } from "./Status";
+import { AxiosError } from "axios";
 
 export interface Controller {
   id: string,
@@ -30,14 +31,14 @@ export interface SwitchBot {
 export interface ControllersResult {
   status: Status,
   controllers?: Map<string, Controller>,
-  error?: any,
+  error?: AxiosError<ErrorResponse>,
 }
 
 export interface ControllerResult {
   status: Status,
   controller?: Controller,
   response?: any,
-  error?: any,
+  error?: AxiosError<ErrorResponse>,
 }
 
 // --------
@@ -88,7 +89,7 @@ export function fetchControllers(setResult: React.Dispatch<React.SetStateAction<
       status: SUCCESS,
       controllers: response.data,
     }))
-    .catch(error => {
+    .catch((error: AxiosError<ErrorResponse>) => {
       console.error(`*** Controllers > Fetch error:`);
       console.error(error);
       setResult({
@@ -104,7 +105,7 @@ export function fetchController(id: string, setResult: React.Dispatch<React.SetS
       status: SUCCESS,
       controller: response.data,
     }))
-    .catch(error => {
+    .catch((error: AxiosError<ErrorResponse>) => {
       console.error(`*** Controller > Fetch error:`);
       console.error(error);
       setResult({
@@ -125,10 +126,12 @@ export function updateController(id: string, payload: Controller, setResult: Rea
       status: SUCCESS,
       controller: response.data,
     }))
-    .catch(error => setResult({
-      status: FAILED,
-      error: error,
-    }));
+    .catch((error: AxiosError<ErrorResponse>) => {
+      setResult({
+        status: FAILED,
+        error: error,
+      });
+    });
 }
 
 export function createController(payload: Controller, setResult: React.Dispatch<React.SetStateAction<ControllerResult | undefined>>) {
@@ -142,10 +145,12 @@ export function createController(payload: Controller, setResult: React.Dispatch<
       status: SUCCESS,
       controller: response.data,
     }))
-    .catch(error => setResult({
-      status: FAILED,
-      error: error.response,
-    }));
+    .catch((error: AxiosError<ErrorResponse>) => {
+      setResult({
+        status: FAILED,
+        error: error,
+      });
+    });
 }
 
 export function deleteController(id: string, setResult: React.Dispatch<React.SetStateAction<ControllerResult | undefined>>) {
@@ -158,10 +163,12 @@ export function deleteController(id: string, setResult: React.Dispatch<React.Set
     .then(response => setResult({
       status: SUCCESS,
     }))
-    .catch(error => setResult({
-      status: FAILED,
-      error: error.response,
-    }));
+    .catch((error: AxiosError<ErrorResponse>) => {
+      setResult({
+        status: FAILED,
+        error: error,
+      });
+    });
 }
 
 // Emitter

@@ -61,7 +61,7 @@ const DeleteController: React.FC<Props> = (props: Props) => {
       <Modal.Body>
         <h6>Are you sure you want to delete this item?</h6>
         <p style={{ fontWeight: 900 }}>This operation cannot be undone!</p>
-        {deleteResult && deleteResult.status === FAILED && <NotifyError title="Failed delete controller" message={`${deleteResult.error!.data.error ? deleteResult.error!.data.error : deleteResult.error!.data}`} />}
+        {deleteResult && deleteResult.status === FAILED && <NotifyError title="Failed delete controller" message={`${deleteResult.error!.response?.data.error ? deleteResult.error!.response.data.error : deleteResult.error!}`} />}
       </Modal.Body>
       <Modal.Footer>
         {deleteResult && deleteResult.status === PENDING && <Spinner aria-hidden="true" />}
