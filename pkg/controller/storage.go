@@ -92,7 +92,7 @@ func (s *Storage) GetByName(name string) (*Entry, error) {
 			return v, nil
 		}
 	}
-	return nil, errors.New("not found")
+	return nil, ErrNotFound.Error
 }
 
 func (s *Storage) GetByID(id string) (*Entry, error) {
@@ -100,7 +100,7 @@ func (s *Storage) GetByID(id string) (*Entry, error) {
 	if e != nil {
 		return e, nil
 	}
-	return nil, errors.New("not found")
+	return nil, ErrNotFound.Error
 }
 
 // Update - Update Controller
@@ -134,10 +134,10 @@ func (s *Storage) Update(id string, name, kind, t string, opts *Options) (*Entry
 
 // Create - Create new Controller
 func (s *Storage) Create(name, kind, t string, opts *Options) (*Entry, error) {
-	if e, err := s.GetByName(name); err != nil && errors.Is(err, errors.New("not found")) {
+	if e, err := s.GetByName(name); err != nil && errors.Is(err, ErrNotFound.Error) {
 		return nil, err
 	} else if e != nil {
-		return nil, errors.New("already exists")
+		return nil, ErrAlreadyExists.Error
 	}
 
 	id, _ := uuid.NewUUID()
@@ -173,7 +173,7 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 	case "AIRCON", "LIGHT", "SWITCHBOT":
 		entry.Kind = kind
 	default:
-		return nil, errors.New("unsupported kind")
+		return nil, ErrUnsupportedKind.Error
 	}
 
 	// Set Type
@@ -212,7 +212,7 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 		case "PRESS":
 			initialState = "PRESS"
 		default:
-			return nil, ErrInvalidType
+			return nil, ErrInvalidType.Error
 		}
 
 		// Build struct
@@ -224,11 +224,11 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 
 		// Call validate
 		if ok := entry.SwitchBot.ValidateMacAddress(); !ok {
-			return nil, ErrValidateMacAddress
+			return nil, ErrValidateMacAddress.Error
 		}
 
 	default:
-		return nil, errors.New("unsupported type")
+		return nil, ErrUnsupportedType.Error
 	}
 
 	return entry, nil
@@ -250,7 +250,7 @@ func (e *Entry) initRemote(template *template.Template) error {
 			return err
 		}
 	default:
-		return errors.New("unsupported kind")
+		return ErrUnsupportedKind.Error
 	}
 
 	return nil

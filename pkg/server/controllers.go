@@ -116,8 +116,8 @@ func (h *httpServer) getControllerByID(c *gin.Context) {
 	id := c.Param("id")
 	r, err := h.controller.Storage.GetByID(id)
 	if err != nil {
-		if err == errors.New("not found") {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		if err == controller.ErrNotFound.Error {
+			c.JSON(http.StatusNotFound, controller.ErrNotFound)
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
@@ -152,8 +152,8 @@ func (h *httpServer) patchControllerByID(c *gin.Context) {
 
 	e, err := h.controller.Storage.Update(id, req.Name, req.Kind, req.Type, &opts)
 	if err != nil {
-		if err == errors.New("not found") {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		if err == controller.ErrNotFound.Error {
+			c.JSON(http.StatusNotFound, controller.ErrNotFound)
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
@@ -174,8 +174,8 @@ func (h *httpServer) deleteControllerByID(c *gin.Context) {
 
 	err := h.controller.Storage.Remove(id)
 	if err != nil {
-		if err == errors.New("not found") {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		if err == controller.ErrNotFound.Error {
+			c.JSON(http.StatusNotFound, controller.ErrNotFound)
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
@@ -200,8 +200,8 @@ func (h *httpServer) postSwitchBotByID(c *gin.Context) {
 	}
 
 	if err := h.controller.RaiseSwitchBot(id, req.Command); err != nil {
-		if err == errors.New("not found") {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		if err == controller.ErrNotFound.Error {
+			c.JSON(http.StatusNotFound, controller.ErrNotFound)
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
@@ -226,7 +226,7 @@ func (h *httpServer) postAirconByID(c *gin.Context) {
 
 	// Try Push
 	if r, err := h.controller.PushAircon(id, req); err != nil {
-		if err == errors.New("not found") {
+		if err == controller.ErrNotFound.Error {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -252,8 +252,8 @@ func (h *httpServer) postLightByID(c *gin.Context) {
 
 	// Try Push
 	if r, err := h.controller.PushLight(id, req); err != nil {
-		if err == errors.New("not found") {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		if err == controller.ErrNotFound.Error {
+			c.JSON(http.StatusNotFound, controller.ErrNotFound)
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
