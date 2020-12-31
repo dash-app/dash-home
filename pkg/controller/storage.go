@@ -134,7 +134,7 @@ func (s *Storage) Update(id string, name, kind, t string, opts *Options) (*Entry
 
 // Create - Create new Controller
 func (s *Storage) Create(name, kind, t string, opts *Options) (*Entry, error) {
-	if e, err := s.GetByName(name); err != nil && errors.Is(err, ErrNotFound.Error) {
+	if e, err := s.GetByName(name); err != nil && !errors.Is(err, ErrNotFound.Error) {
 		return nil, err
 	} else if e != nil {
 		return nil, ErrAlreadyExists.Error
