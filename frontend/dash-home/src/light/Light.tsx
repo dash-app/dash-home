@@ -6,7 +6,7 @@ import { MiniPanelInner } from '../components/cards/MiniPanel';
 import { SummonByTpl } from '../components/controller/Template';
 import { Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
-import { HR } from '../components/atoms/Themed';
+import { HR, Icon } from '../components/atoms/Themed';
 
 interface Props {
   controller: Controller,
@@ -99,6 +99,9 @@ export const LightPanel: React.FC<Props> = props => {
         {/* Bightness */}
         <Contents>
           <SummonByTpl
+            title={
+              <Icon icon={["fas", "sun"]} />
+            }
             description="brightness"
             value={""}
             setter={(e: any) => light!.action = e}
@@ -110,8 +113,11 @@ export const LightPanel: React.FC<Props> = props => {
         {/* Color */}
         <Contents>
           <SummonByTpl
+            title={
+              <Icon icon={["fas", "adjust"]} />
+            }
             description="color"
-            value={"N/A"}
+            value={""}
             setter={(e: any) => light!.action = e}
             sender={(after: any) => update({ ...light! }, after)}
             action={props.template.light?.color!}

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ButtonGroup, Col, Container, Dropdown, DropdownButton, Row } from 'react-bootstrap';
+import { ButtonGroup, Col, Dropdown, DropdownButton, Row } from 'react-bootstrap';
 import { H1, P } from '../../atoms/Core';
+import { Button } from '../../atoms/Themed';
 import { ValueSet } from './TplBase';
 
 import styled from 'styled-components';
-import { Button } from '../../atoms/Themed';
 
 interface Props {
     hideTitle?: boolean,
@@ -42,7 +42,7 @@ class List extends React.Component<Props, State> {
 
     render() {
         return (
-            <Container fluid>
+            <>
                 {!this.props.hideTitle &&
                     <span>
                         <Row>
@@ -103,13 +103,13 @@ class List extends React.Component<Props, State> {
                         </ButtonGroup>
                     </SlideContents>
                 </Row>
-            </Container>
+            </>
         )
     }
 }
 
 const SlideContents = styled(Col)`
-    // overflow-x: auto;
+    overflow-x: auto;
 `
 
 const Span = styled.span`

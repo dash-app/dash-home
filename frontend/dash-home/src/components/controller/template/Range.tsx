@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ButtonGroup, Col, Container, Row } from 'react-bootstrap';
+import { ButtonGroup, Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { H1, P } from '../../atoms/Core';
 
@@ -50,7 +50,7 @@ class Range extends React.Component<Props, State> {
 
     render() {
         return (
-            <Container fluid>
+            <>
                 {!this.props.hideTitle &&
                     <span>
                         <Row>
@@ -94,7 +94,7 @@ class Range extends React.Component<Props, State> {
                         </ButtonGroup>
                     </Col>
                 </Row>
-            </Container>
+            </>
         )
     }
 }

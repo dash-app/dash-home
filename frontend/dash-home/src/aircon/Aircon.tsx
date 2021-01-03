@@ -226,7 +226,7 @@ const AirconPanel: React.FC<Props> = props => {
           </Contents>
         }
       </Row>
-      <Row>
+      <Row xs={1} md={2}>
         {/* Fan */}
         {modesTpl.get(aircon.mode)?.fan &&
           <Contents>
@@ -248,48 +248,50 @@ const AirconPanel: React.FC<Props> = props => {
             />
           </Contents>
         }
-      </Row>
-      <Row>
-        {/* Horizontal Vane */}
-        {modesTpl.get(aircon.mode)?.horizontal_vane &&
-          <Contents>
-            <HR />
-            <SummonByTpl
-              title={
-                <ThemedIcon>
-                  <HorizontalVaneStep
-                    current={aircon.modes[aircon.mode].horizontal_vane}
-                  />
-                </ThemedIcon>
-              }
-              description="horizontal_vane"
-              value={aircon.modes[aircon.mode].horizontal_vane}
-              setter={(e: any) => aircon.modes[aircon.mode].horizontal_vane = e}
-              sender={(after: any) => update({ ...aircon }, after)}
-              action={modesTpl.get(aircon.mode)?.horizontal_vane!}
-            />
-          </Contents>
-        }
-        {/* Vertical Vane */}
-        {modesTpl.get(aircon.mode)?.vertical_vane &&
-          <Contents>
-            <HR />
-            <SummonByTpl
-              title={
-                <ThemedIcon>
-                  <VerticalVaneStep
-                    current={aircon.modes[aircon.mode].vertical_vane}
-                  />
-                </ThemedIcon>
-              }
-              description="vertical_vane"
-              value={aircon.modes[aircon.mode].vertical_vane}
-              setter={(e: any) => aircon.modes[aircon.mode].vertical_vane = e}
-              sender={(after: any) => update({ ...aircon }, after)}
-              action={modesTpl.get(aircon.mode)?.vertical_vane!}
-            />
-          </Contents>
-        }
+        <Col>
+          <Row>
+            {/* Horizontal Vane */}
+            {modesTpl.get(aircon.mode)?.horizontal_vane &&
+              <Contents>
+                <HR />
+                <SummonByTpl
+                  title={
+                    <ThemedIcon>
+                      <HorizontalVaneStep
+                        current={aircon.modes[aircon.mode].horizontal_vane}
+                      />
+                    </ThemedIcon>
+                  }
+                  description="horizontal_vane"
+                  value={aircon.modes[aircon.mode].horizontal_vane}
+                  setter={(e: any) => aircon.modes[aircon.mode].horizontal_vane = e}
+                  sender={(after: any) => update({ ...aircon }, after)}
+                  action={modesTpl.get(aircon.mode)?.horizontal_vane!}
+                />
+              </Contents>
+            }
+            {/* Vertical Vane */}
+            {modesTpl.get(aircon.mode)?.vertical_vane &&
+              <Contents>
+                <HR />
+                <SummonByTpl
+                  title={
+                    <ThemedIcon>
+                      <VerticalVaneStep
+                        current={aircon.modes[aircon.mode].vertical_vane}
+                      />
+                    </ThemedIcon>
+                  }
+                  description="vertical_vane"
+                  value={aircon.modes[aircon.mode].vertical_vane}
+                  setter={(e: any) => aircon.modes[aircon.mode].vertical_vane = e}
+                  sender={(after: any) => update({ ...aircon }, after)}
+                  action={modesTpl.get(aircon.mode)?.vertical_vane!}
+                />
+              </Contents>
+            }
+          </Row>
+        </Col>
       </Row>
     </AirconCard>
   )

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { H1, P } from '../../atoms/Core';
@@ -39,7 +39,7 @@ class Toggle extends React.Component<Props, State> {
 
     render() {
         return (
-            <Container fluid>
+            <>
                 {!this.props.hideTitle &&
                     <span>
                         <Row>
@@ -72,7 +72,7 @@ class Toggle extends React.Component<Props, State> {
                         }
                     </Col>
                 </Row>
-            </Container>
+            </>
         )
     }
 }

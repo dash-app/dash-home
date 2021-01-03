@@ -28,19 +28,17 @@ class Shot extends React.Component<Props> {
 
     render() {
         return (
-            <span>
+            <>
                 {!this.props.hideTitle &&
-                    <span>
-                        <Row>
-                            <Col>
-                                <H1>
-                                    <Span>{this.props.default}</Span>
-                                </H1>
-                                <H1>
-                                    <Span>{this.props.value}</Span>
-                                </H1>
-                            </Col>
-                        </Row>
+                    <>
+                        <div>
+                            <H1>
+                                <Span>{this.props.default}</Span>
+                            </H1>
+                            <H1>
+                                <Span>{this.props.value}</Span>
+                            </H1>
+                        </div>
                         <Row>
                             <Col>
                                 <P>
@@ -48,18 +46,16 @@ class Shot extends React.Component<Props> {
                                 </P>
                             </Col>
                         </Row>
-                    </span>
+                    </>
                 }
-                <Col>
-                    <Button
-                        type="button"
-                        size="lg"
-                        onClick={() => this.onClick()}
-                    >
-                        {this.props.default}
-                    </Button>
-                </Col>
-            </span>
+                <Button
+                    type="button"
+                    size="lg"
+                    onClick={() => this.onClick()}
+                >
+                    {this.props.value}
+                </Button>
+            </>
         )
     }
 }

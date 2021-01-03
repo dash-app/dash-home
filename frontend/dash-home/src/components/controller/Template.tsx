@@ -1,11 +1,13 @@
-import React from "react";
 import { Action } from '../../remote-go/Template';
 import { Container } from "../atoms/Themed";
+import { H1, P } from '../atoms/Core';
 import List from './template/List';
 import Range from './template/Range';
 import Shot from "./template/Shot";
 import Toggle from './template/Toggle';
 import { ValueSet } from './template/TplBase';
+import styled from 'styled-components';
+import { Row, Col } from "react-bootstrap";
 
 interface SummonProps {
   title?: any,
@@ -14,12 +16,27 @@ interface SummonProps {
   description: string,
   default?: any,
   value: any,
+  wide?: boolean,
   action: Action,
   setter?: any,
   sender?: any,
 }
 
 export const SummonByTpl = (props: SummonProps) => {
+  if (!props.wide) {
+    return (
+      <Container fluid>
+        <Summoner {...props} />
+      </Container>
+    )
+  } else {
+    return (
+      <Summoner {...props} />
+    )
+  }
+}
+
+const Summoner = (props: SummonProps) => {
   switch (props.action.type) {
     case "LIST":
       let values: ValueSet[] = [];
@@ -96,26 +113,48 @@ export const SummonByTpl = (props: SummonProps) => {
       )
     case "MULTIPLE":
       return (
-        <Container fluid>
-          {props.action.multiple.map((v) => {
-            return (
-              <SummonByTpl
-                hideTitle={true}
-                description={props.description}
-                value={props.value}
-                setter={props.setter && ((e: any) => {
-                  props.setter(e);
-                })}
-                sender={props.sender && ((e: any) => {
-                  props.sender(e);
-                })}
-                action={v}
-              />
-            )
-          })}
-        </Container>
+        <Row xs={1}>
+          <Col>
+            <H1>
+              <Span>
+                {
+                  props.title ?
+                    props.title
+                    :
+                    props.value
+                }
+              </Span>
+            </H1>
+            <P>
+              <Span>{props.description}</Span>
+            </P>
+          </Col>
+          <Col>
+            {props.action.multiple.map((v) => {
+              return (
+                <SummonByTpl
+                  hideTitle={true}
+                  description={props.description}
+                  value={props.value}
+                  wide={true}
+                  setter={props.setter && ((e: any) => {
+                    props.setter(e);
+                  })}
+                  sender={props.sender && ((e: any) => {
+                    props.sender(e);
+                  })}
+                  action={v}
+                />
+              )
+            })}
+          </Col>
+        </Row>
       )
     default:
       return (<p>** Unknown **</p>)
   }
 }
+
+const Span = styled.span`
+  display: inline-block;
+`
