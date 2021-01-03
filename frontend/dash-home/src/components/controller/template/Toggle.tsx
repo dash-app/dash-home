@@ -8,83 +8,83 @@ import styled from 'styled-components';
 import { Button } from '../../atoms/Themed';
 
 interface Props {
-    hideTitle?: boolean,
-    description?: string,
-    value: boolean,
-    icon?: IconProp,
-    btnText?: string,
-    onClick?: any,
+  hideTitle?: boolean,
+  description?: string,
+  value: boolean,
+  icon?: IconProp,
+  btnText?: string,
+  onClick?: any,
 }
 
 interface State {
-    value: boolean,
+  value: boolean,
 }
 
 class Toggle extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props)
-        this.state = {
-            value: this.props.value,
-        }
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      value: this.props.value,
     }
+  }
 
-    onToggleEvent = () => {
-        this.setState({
-            value: !this.state.value,
-        })
-        if (this.props.onClick) {
-            this.props.onClick(!this.state.value);
-        }
+  onToggleEvent = () => {
+    this.setState({
+      value: !this.state.value,
+    })
+    if (this.props.onClick) {
+      this.props.onClick(!this.state.value);
     }
+  }
 
-    render() {
-        return (
-            <>
-                {!this.props.hideTitle &&
-                    <span>
-                        <Row>
-                            <Col>
-                                <H1>
-                                    <Span>{this.state.value ? "ON" : "OFF"}</Span>
-                                </H1>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <P>
-                                    <Span>{this.props.description}</Span>
-                                </P>
-                            </Col>
-                        </Row>
-                    </span>
-                }
-                <Row>
-                    <Col>
-                        {(this.props.icon || this.props.btnText) &&
-                            <Button
-                                type="button"
-                                size="lg"
-                                onClick={this.onToggleEvent}
-                            >
-                                {this.props.icon && <Icon icon={this.props.icon} />}
-                                {this.props.btnText}
-                            </Button>
-                        }
-                    </Col>
-                </Row>
-            </>
-        )
-    }
+  render() {
+    return (
+      <>
+        {!this.props.hideTitle &&
+          <span>
+            <Row>
+              <Col>
+                <H1>
+                  <Span>{this.state.value ? "ON" : "OFF"}</Span>
+                </H1>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <P>
+                  <Span>{this.props.description}</Span>
+                </P>
+              </Col>
+            </Row>
+          </span>
+        }
+        <Row>
+          <Col>
+            {(this.props.icon || this.props.btnText) &&
+              <Button
+                type="button"
+                size="lg"
+                onClick={this.onToggleEvent}
+              >
+                {this.props.icon && <Icon icon={this.props.icon} />}
+                {this.props.btnText}
+              </Button>
+            }
+          </Col>
+        </Row>
+      </>
+    )
+  }
 }
 
 const Span = styled.span`
-    display: inline-block;
+  display: inline-block;
 `
 
 const Icon = styled(FontAwesomeIcon)`
-    font-size: 1rem;
-    margin-left: 4px;
-    margin-right: 4px;
+  font-size: 1rem;
+  margin-left: 4px;
+  margin-right: 4px;
 `
 
 export default Toggle;
