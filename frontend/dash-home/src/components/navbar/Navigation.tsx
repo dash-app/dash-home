@@ -27,7 +27,7 @@ const Navigation: React.FC<Props> = props => {
       bg={theme === "CHEEKY_WHITE" ? "light" : "primary"}
       variant={theme === "CHEEKY_WHITE" ? "light" : "dark"}
       theme={theme}
-      expand="lg"
+      expand="md"
     >
       <Row>
         <Col>
