@@ -60,3 +60,23 @@ p {
         transform: translateX(0);
     }
 }
+
+*::-webkit-scrollbar {
+    width: 6px;
+}
+
+*::-webkit-scrollbar:horizontal {
+    height: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #6F6F71;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: #5C5C5E;
+}
+
+* {
+    scrollbar-width: thin;
+}
