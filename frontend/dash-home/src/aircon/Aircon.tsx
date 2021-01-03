@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import { AirconCard } from '../components/cards/Aircon';
 import List from '../components/controller/template/List';
@@ -174,21 +174,23 @@ const AirconPanel: React.FC<Props> = props => {
 
         {/* Mode */}
         <Contents>
-          <List description="mode" values={((): ValueSet[] => {
-            let values: ValueSet[] = [];
-            [...Array.from(modesTpl.keys())].forEach((v) => {
-              values.push({
-                value: v,
-                displayComponent: v,
+          <Container fluid>
+            <List description="mode" values={((): ValueSet[] => {
+              let values: ValueSet[] = [];
+              [...Array.from(modesTpl.keys())].forEach((v) => {
+                values.push({
+                  value: v,
+                  displayComponent: v,
+                })
               })
-            })
-            return values
-          })()}
-            status={aircon.mode} onClick={(e: any) => {
-              aircon.mode = e;
-              update({ ...aircon });
-            }}
-          />
+              return values
+            })()}
+              status={aircon.mode} onClick={(e: any) => {
+                aircon.mode = e;
+                update({ ...aircon });
+              }}
+            />
+          </Container>
         </Contents>
       </Row>
 
