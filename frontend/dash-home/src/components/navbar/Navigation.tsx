@@ -1,4 +1,4 @@
-import { Navbar, Row, Col, Nav, Button } from 'react-bootstrap';
+import { Navbar, Nav, Button } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -27,30 +27,28 @@ const Navigation: React.FC<Props> = props => {
       bg={theme === "CHEEKY_WHITE" ? "light" : "primary"}
       variant={theme === "CHEEKY_WHITE" ? "light" : "dark"}
       theme={theme}
-      expand="md"
+      expand="sm"
     >
-      <Row>
-        <Col>
-          <Title>
-            <FontAwesomeIcon icon={["fas", "home"]} />
-            <span style={{ margin: "0.5em" }}>
-              <span>{room && room.name}</span>
-              {/* TODO: Add house name */}
-              {/* <span style={{ fontSize: "0.5em" }}> // Bedroom</span> */}
-            </span>
-          </Title>
-          <RoomStatus theme={theme}>
-            <StatusBox>
-              <FontAwesomeIcon icon={["fas", "thermometer-three-quarters"]} />
-              <StatusText>{room ? room.ambient.temp.toFixed(1) : "--"} ℃</StatusText>
-            </StatusBox>
-            <StatusBox>
-              <FontAwesomeIcon icon={["fas", "tint"]} />
-              <StatusText>{room ? room.ambient.humid.toFixed(0) : "--"} %</StatusText>
-            </StatusBox>
-          </RoomStatus>
-        </Col>
-      </Row>
+      <div>
+        <Title>
+          <FontAwesomeIcon icon={["fas", "home"]} />
+          <span style={{ margin: "0.5em" }}>
+            <span>{room && room.name}</span>
+            {/* TODO: Add house name */}
+            {/* <span style={{ fontSize: "0.5em" }}> // Bedroom</span> */}
+          </span>
+        </Title>
+        <RoomStatus theme={theme}>
+          <StatusBox>
+            <FontAwesomeIcon icon={["fas", "thermometer-three-quarters"]} />
+            <StatusText>{room ? room.ambient.temp.toFixed(1) : "--"} ℃</StatusText>
+          </StatusBox>
+          <StatusBox>
+            <FontAwesomeIcon icon={["fas", "tint"]} />
+            <StatusText>{room ? room.ambient.humid.toFixed(0) : "--"} %</StatusText>
+          </StatusBox>
+        </RoomStatus>
+      </div>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
