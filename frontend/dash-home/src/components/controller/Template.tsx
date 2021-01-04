@@ -130,9 +130,10 @@ const Summoner = (props: SummonProps) => {
             </P>
           </Col>
           <Col>
-            {props.action.multiple.map((v) => {
+            {props.action.multiple.map((v, i) => {
               return (
                 <SummonByTpl
+                  key={i}
                   hideTitle={true}
                   description={props.description}
                   value={props.value}
