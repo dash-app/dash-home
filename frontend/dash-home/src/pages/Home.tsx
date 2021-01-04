@@ -7,7 +7,7 @@ import { NotifyError } from '../components/atoms/Notify';
 import { Button, Container, Icon } from '../components/atoms/Themed';
 import Basement from '../components/basements/Basement';
 import { CardBase } from '../components/cards/CardBase';
-import SummonPanel from '../components/controller/SummonPanel';
+import { SummonMiniPanel } from '../components/controller/SummonPanel';
 import { Controller, ControllersResult, fetchControllers } from '../remote-go/Controller';
 
 interface Props { }
@@ -70,7 +70,7 @@ const Home: React.FC<Props> = () => {
               {Object.values(controllersResult.controllers!).map((c: Controller) => {
                 return (
                   <Card style={{ minWidth: "18rem", backgroundColor: "initial", margin: "0.5rem" }}>
-                    <SummonPanel controller={c} />
+                    <SummonMiniPanel {...c} />
                   </Card>
                 );
               })}

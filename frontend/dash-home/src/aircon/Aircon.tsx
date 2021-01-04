@@ -4,33 +4,25 @@ import styled from 'styled-components';
 import { AirconCard } from '../components/cards/Aircon';
 import List from '../components/controller/template/List';
 import { Aircon, AirconState, Controller, sendAircon } from '../remote-go/Controller';
-import { AirconModes as TplAirconModes, Template } from '../remote-go/Template';
-import { useCallback, useEffect, useState } from 'react';
+import { AirconModes as TplAirconModes } from '../remote-go/Template';
+import { useState } from 'react';
 import { HR } from '../components/atoms/Themed';
 import { SummonByTpl } from '../components/controller/Template';
 import { MiniPanelInner } from '../components/cards/MiniPanel';
 import { FanIcon, FanStep, HorizontalVaneStep, ThemedIcon, VerticalVaneStep } from '../components/atoms/DashIcon';
 import { ValueSet } from '../components/controller/template/TplBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ControllerProps } from '../components/controller/Controller';
 
-interface Props {
-  controller: Controller,
-  template: Template,
-}
-
-interface MiniProps {
-  controller: Controller,
-}
-
-const AirconMiniPanel: React.FC<MiniProps> = props => {
-  const aircon = props.controller.aircon!;
+const AirconMiniPanel: React.FC<Controller> = controller => {
+  const aircon = controller.aircon!;
   return (
-    <AirconCard name={props.controller.name} mode={aircon.mode}>
+    <AirconCard name={controller.name} mode={aircon.mode}>
       {(() => {
         if (!aircon.operation) {
           return (
             <MiniPanelInner
-              id={props.controller.id}
+              id={controller.id}
               title="OFF"
               note="operation"
               description={aircon.mode}
@@ -41,7 +33,7 @@ const AirconMiniPanel: React.FC<MiniProps> = props => {
         if (aircon.modes[aircon.mode].temp !== undefined) {
           return (
             <MiniPanelInner
-              id={props.controller.id}
+              id={controller.id}
               title={aircon.modes[aircon.mode].temp.toFixed(1)}
               note="temp"
               description={aircon.mode}
@@ -52,7 +44,7 @@ const AirconMiniPanel: React.FC<MiniProps> = props => {
         if (aircon.modes[aircon.mode].humid !== undefined) {
           return (
             <MiniPanelInner
-              id={props.controller.id}
+              id={controller.id}
               title={aircon.modes[aircon.mode].humid}
               note="humid"
               description={aircon.mode}
@@ -63,7 +55,7 @@ const AirconMiniPanel: React.FC<MiniProps> = props => {
         if (aircon.modes[aircon.mode].fan !== undefined) {
           return (
             <MiniPanelInner
-              id={props.controller.id}
+              id={controller.id}
               title={
                 <ThemedIcon style={{ fontSize: "1rem" }}>
                   <FanIcon />
@@ -82,67 +74,16 @@ const AirconMiniPanel: React.FC<MiniProps> = props => {
   )
 }
 
-const AirconPanel: React.FC<Props> = props => {
-  let modesTpl: Map<string, TplAirconModes> = new Map<string, TplAirconModes>(Object.entries(props.template.aircon!.modes));
+const AirconPanel: React.FC<ControllerProps> = props => {
+  let modesTpl: Map<string, TplAirconModes> = new Map<string, TplAirconModes>(Object.entries(props.template!.aircon!.modes));
 
-  // Task - later
-  const useTask = () => {
-    const [taskId, setTaskId] = useState(-1);
-    const callTimer = (f: any, time: number) => {
-      const t = setTimeout(() => {
-        f();
-      }, time);
-
-      console.debug(`:: Task: ${t}`);
-      setTaskId(t);
-    }
-
-    const clearTimer = useCallback((taskId) => {
-      console.debug(`:: Task > Clean: ${taskId}`);
-      clearTimeout(taskId);
-    }, []);
-
-    useEffect(() => {
-      return () => {
-        clearTimer(taskId);
-      }
-    }, [taskId, clearTimer])
-
-    return callTimer;
-  }
-
-  const useSendingIcon = () => {
-    const [taskId, setTaskId] = useState<number>(-1);
-    const [sending, updateSending] = useState(false);
-    useEffect(() => {
-      setTaskId(setTimeout(() => {
-        updateSending(false)
-      }, 500));
-    }, [sending])
-
-    useEffect(() => {
-      return () => {
-        clearTimeout(taskId);
-      };
-    }, [taskId]);
-
-    const setSending = () => {
-      updateSending(true);
-    }
-
-    return { sending, setSending };
-  }
-
-  const { sending, setSending } = useSendingIcon();
-
-  const callTimer = useTask();
   const [aircon, setAircon] = useState<AirconState>(props.controller.aircon!);
   const update = (state: AirconState, after?: any) => {
     setAircon(state);
-    callTimer(() => {
+    props.sendTimer(() => {
+      props.setSending();
       sendAircon(props.controller.id, stateToEntry(state), () => {
         console.debug(stateToEntry(state));
-        setSending();
         if (after) {
           after();
         }
@@ -159,7 +100,7 @@ const AirconPanel: React.FC<Props> = props => {
   }
 
   return (
-    <AirconCard name={props.controller.name} mode={aircon.mode} send={sending}>
+    <AirconCard name={props.controller.name} mode={aircon.mode} send={props.sending}>
       <Row>
         {/* Operation */}
         <Contents>
@@ -168,7 +109,7 @@ const AirconPanel: React.FC<Props> = props => {
             value={aircon.operation}
             setter={(e: any) => aircon.operation = e}
             sender={(after: any) => update({ ...aircon }, after)}
-            action={props.template.aircon?.operation!}
+            action={props.template?.aircon?.operation!}
           />
         </Contents>
 

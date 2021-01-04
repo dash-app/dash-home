@@ -1,29 +1,19 @@
 import * as React from 'react';
 import { LightCard } from '../components/cards/Light';
 import { Controller, Light, LightState, sendLight } from '../remote-go/Controller';
-import { Template } from '../remote-go/Template';
 import { MiniPanelInner } from '../components/cards/MiniPanel';
 import { SummonByTpl } from '../components/controller/Template';
 import { Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import { HR, Icon } from '../components/atoms/Themed';
+import { ControllerProps } from '../components/controller/Controller';
 
-interface Props {
-  controller: Controller,
-  template: Template,
-}
-
-interface MiniProps {
-  controller: Controller,
-}
-
-export const LightMiniPanel: React.FC<MiniProps> = props => {
-  console.log(props.controller)
+export const LightMiniPanel: React.FC<Controller> = controller => {
   return (
-    <LightCard name={props.controller.name}>
+    <LightCard name={controller.name}>
       <MiniPanelInner
-        id={props.controller.id}
-        title={props.controller.light?.last_action ? props.controller.light?.last_action : "N/A"}
+        id={controller.id}
+        title={controller.light?.last_action ? controller.light?.last_action : "N/A"}
         note="Mode"
         description="Light"
       />
@@ -31,47 +21,18 @@ export const LightMiniPanel: React.FC<MiniProps> = props => {
   )
 }
 
-export const LightPanel: React.FC<Props> = props => {
-  // Task - later
-  const useTask = () => {
-    const [taskId, setTaskId] = React.useState(-1);
-    const callTimer = (f: any, time: number) => {
-      const t = setTimeout(() => {
-        f();
-      }, time);
-
-      console.debug(`:: Task: ${t}`);
-      setTaskId(t);
-    }
-
-    const clearTimer = React.useCallback((taskId) => {
-      console.debug(`:: Task > Clean: ${taskId}`);
-      clearTimeout(taskId);
-    }, []);
-
-    React.useEffect(() => {
-      return () => {
-        clearTimer(taskId);
-      }
-    }, [taskId, clearTimer])
-
-    return callTimer;
-  }
-
-
+export const LightPanel: React.FC<ControllerProps> = props => {
   const stateToEntry = (state: LightState): Light => {
     return {
       action: state.last_action,
     }
   }
 
-  // const stateToEntry = (entry: )
-
-  const callTimer = useTask();
   const [light, setLight] = React.useState<Light>(stateToEntry(props.controller.light!));
   const update = (entry: Light, after?: any) => {
     setLight(entry);
-    callTimer(() => {
+    props.sendTimer(() => {
+      props.setSending();
       sendLight(props.controller.id, entry, () => {
         if (after) {
           after();
@@ -81,7 +42,7 @@ export const LightPanel: React.FC<Props> = props => {
   }
 
   return (
-    <LightCard name={props.controller.name}>
+    <LightCard name={props.controller.name} send={props.sending}>
       <Row>
         {/* Mode */}
         <Contents>
@@ -90,7 +51,7 @@ export const LightPanel: React.FC<Props> = props => {
             value={props.controller.light?.last_action}
             setter={(e: any) => light!.action = e}
             sender={(after: any) => update({ ...light! }, after)}
-            action={props.template.light?.mode!}
+            action={props.template?.light?.mode!}
           />
         </Contents>
       </Row>
@@ -106,7 +67,7 @@ export const LightPanel: React.FC<Props> = props => {
             value={""}
             setter={(e: any) => light!.action = e}
             sender={(after: any) => update({ ...light! }, after)}
-            action={props.template.light?.brightness!}
+            action={props.template?.light?.brightness!}
           />
         </Contents>
 
@@ -120,7 +81,7 @@ export const LightPanel: React.FC<Props> = props => {
             value={""}
             setter={(e: any) => light!.action = e}
             sender={(after: any) => update({ ...light! }, after)}
-            action={props.template.light?.color!}
+            action={props.template?.light?.color!}
           />
         </Contents>
       </Row>

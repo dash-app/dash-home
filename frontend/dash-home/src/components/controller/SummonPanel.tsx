@@ -1,60 +1,26 @@
 import * as React from 'react';
-import { Controller } from "../../remote-go/Controller";
-import { Template } from "../../remote-go/Template";
 import { AirconPanel, AirconMiniPanel } from "../../aircon/Aircon";
 import { LightPanel, LightMiniPanel } from "../../light/Light";
+import { Controller } from '../../remote-go/Controller';
 import { H1 } from '../atoms/Core';
+import { ControllerProps } from './Controller';
 
-interface Props {
-  controller: Controller,
-  template?: Template,
-}
-
-const SummonPanel: React.FC<Props> = props => {
-  switch (props.controller.kind) {
-    case "AIRCON":
-      if (props.controller.type === "REMOTE") {
-        return (
-          <span>
-            {props.template ?
-              <AirconPanel
-                controller={props.controller}
-                template={props.template}
-              />
-              :
-              <AirconMiniPanel
-                controller={props.controller}
-              />
-            }
-          </span>
-        )
-      }
-      break;
-    case "LIGHT":
-      if (props.controller.type === "REMOTE") {
-        return (
-          <span>
-            {props.template ?
-              <LightPanel
-                controller={props.controller}
-                template={props.template}
-              />
-              :
-              <LightMiniPanel
-                controller={props.controller}
-              />
-            }
-          </span>
-        )
-      }
-      break;
+export const SummonMiniPanel: React.FC<Controller> = controller => {
+  if (controller.kind === "AIRCON" && controller.type === "REMOTE") {
+    return (<AirconMiniPanel {...controller} />)
+  } else if (controller.kind === "LIGHT" && controller.type === "REMOTE") {
+    return (<LightMiniPanel {...controller} />)
+  } else {
+    return (<H1>Unknown Controller</H1>)
   }
-
-  return (
-    <span>
-      <H1>Unknown</H1>
-    </span>
-  )
 }
 
-export default SummonPanel;
+export const SummonPanel: React.FC<ControllerProps> = props => {
+  if (props.controller.kind === "AIRCON" && props.controller.type === "REMOTE") {
+    return (<AirconPanel {...props} />)
+  } else if (props.controller.kind === "LIGHT" && props.controller.type === "REMOTE") {
+    return (<LightPanel {...props} />)
+  } else {
+    return (<H1>Unknown Controller</H1>)
+  }
+}
