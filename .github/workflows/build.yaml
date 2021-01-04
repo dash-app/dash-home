@@ -21,8 +21,3 @@ jobs:
         with:
           version: latest
           args: release --rm-dist
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dash-home
-          path: dist/*
