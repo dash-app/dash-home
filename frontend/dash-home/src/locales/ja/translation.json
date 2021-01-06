@@ -1,0 +1,26 @@
+{
+  "welcome": "Dashへようこそ",
+  "button": {
+    "next": "次へ"
+  },
+  "dashboard": {
+    "open": "ダッシュボードを開く"
+  },
+  "room": {
+    "error": {
+      "create": "お部屋の作成に失敗しました"
+    },
+    "setup": {
+      "title": "こんにちは",
+      "description": "お部屋の名前を入力してください",
+      "roomName": {
+        "placeholder": "寝室",
+        "ariaLabel": "お部屋の名前"
+      },
+      "welcome": {
+        "title": "じゃーん！",
+        "description": "Dash-Appへようこそ！"
+      }
+    }
+  }
+}

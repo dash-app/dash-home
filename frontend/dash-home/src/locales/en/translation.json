@@ -1,0 +1,26 @@
+{
+  "welcome": "WELCOME TO DASH",
+  "button": {
+    "next": "Next"
+  },
+  "dashboard": {
+    "open": "Open Dashboard"
+  },
+  "room": {
+    "error": {
+      "create": "Failed create room"
+    },
+    "setup": {
+      "title": "Hello",
+      "description": "Please insert room name",
+      "roomName": {
+        "placeholder": "Bed Room",
+        "ariaLabel": "room name"
+      },
+      "welcome": {
+        "title": "Tada!",
+        "description": "Welcome to Dash-App!"
+      }
+    }
+  }
+}
