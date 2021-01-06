@@ -8,23 +8,26 @@ import Basement from '../components/basements/Basement';
 import { NotifyError } from '../components/atoms/Notify';
 import { SummonPanel } from '../components/controller/SummonPanel';
 import { CardBase } from '../components/cards/CardBase';
-import { ControllerContext, ControllerProvider } from '../components/controller/ControllerProvider';
+import { ControllerResult, fetchController } from '../remote-go/Controller';
+import { fetchTemplate, TemplateResult } from '../remote-go/Template';
+import { SUCCESS } from '../remote-go/Status';
 
 interface Props extends RouteComponentProps<{ id: string }> { }
 
 const Controller: React.FC<Props> = props => {
   const id = props.match.params.id;
-  return (
-    <ControllerProvider id={id}>
-      <WrappedController {...props} />
-    </ControllerProvider>
-  )
-}
 
-const WrappedController: React.FC<Props> = props => {
-  const controllerContext = React.useContext(ControllerContext);
-  const controllerResult = controllerContext.controllerResult;
-  const templateResult = controllerContext.templateResult;
+  const [controllerResult, setController] = React.useState<ControllerResult | undefined>(undefined);
+  React.useEffect(() => {
+    fetchController(id, setController);
+  }, [id]);
+
+  const [templateResult, setTemplate] = React.useState<TemplateResult | undefined>(undefined);
+  React.useEffect(() => {
+    if (controllerResult?.status === SUCCESS) {
+      fetchTemplate(id, setTemplate);
+    }
+  }, [id, controllerResult?.status])
 
   // Task
   const useTask = () => {
