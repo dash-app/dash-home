@@ -1,7 +1,15 @@
 {
   "welcome": "WELCOME TO DASH",
   "button": {
-    "next": "Next"
+    "next": "Next",
+    "back": "Back",
+    "add": "Add",
+    "close": "Close",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "status": {
+    "loading": "Loading..."
   },
   "dashboard": {
     "open": "Open Dashboard"
@@ -21,6 +29,41 @@
         "title": "Tada!",
         "description": "Welcome to Dash-App!"
       }
+    }
+  },
+  "controller": {
+    "secret": {
+      "title": "Hey!!!",
+      "description": "DO NOT PUNCH ME!"
+    },
+    "empty": {
+      "title": "Hello?",
+      "description": "There is no any controllers.",
+      "create": "Add New Controller"
+    },
+    "create": {
+      "title": "New Controller..."
+    },
+    "delete": {
+      "title": "Delete Controller:",
+      "question": "Are you sure you want to delete this item?",
+      "confirm": "This operation cannot be undone!",
+      "success": "Removed."
+    },
+    "remote": {
+      "select": "Select Remote..."
+    },
+    "switchbot": {
+      "openSettings": "Open Switchbot Settings..."
+    },
+    "entry": {
+      "name": {
+        "title": "Controller Name",
+        "placeholder": "Bedroom Light"
+      },
+      "kind": "Kind",
+      "type": "Type",
+      "vendor": "Vendor"
     }
   }
 }

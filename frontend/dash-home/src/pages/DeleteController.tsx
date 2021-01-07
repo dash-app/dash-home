@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { NotifyError } from '../components/atoms/Notify';
 import { Spinner } from '../components/atoms/Themed';
 import { Controller, ControllerResult, deleteController } from '../remote-go/Controller';
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const DeleteController: React.FC<Props> = (props: Props) => {
+  const { t } = useTranslation();
   const [deleteResult, setDeleteResult] = React.useState<ControllerResult | undefined>(undefined);
 
   const handleDelete = () => {
@@ -31,14 +33,14 @@ const DeleteController: React.FC<Props> = (props: Props) => {
         onHide={props.handleClose}
       >
         <Modal.Header>
-          <Modal.Title>Delete Controller: {props.controller.name}</Modal.Title>
+          <Modal.Title>{t("controller.delete.title")} {props.controller.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h6>Removed.</h6>
+          <h6>{t("controller.delete.success")}</h6>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={() => { props.handleClose(); props.whenSuccess() }}>
-            Close
+            {t("button.close")}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -56,20 +58,20 @@ const DeleteController: React.FC<Props> = (props: Props) => {
       onHide={props.handleClose}
     >
       <Modal.Header>
-        <Modal.Title>Delete Controller: {props.controller.name}</Modal.Title>
+        <Modal.Title>{t("controller.delete.title")} {props.controller.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h6>Are you sure you want to delete this item?</h6>
-        <p style={{ fontWeight: 900 }}>This operation cannot be undone!</p>
+        <h6>{t("controller.delete.question")}</h6>
+        <p style={{ fontWeight: 900 }}>{t("controller.delete.confirm")}</p>
         {deleteResult && deleteResult.status === FAILED && <NotifyError title="Failed delete controller" message={`${deleteResult.error!.response?.data.error ? deleteResult.error!.response.data.error : deleteResult.error!}`} />}
       </Modal.Body>
       <Modal.Footer>
         {deleteResult && deleteResult.status === PENDING && <Spinner aria-hidden="true" />}
         <Button variant="secondary" onClick={() => props.handleClose()}>
-          Cancel
+          {t("button.cancel")}
         </Button>
         <Button variant="danger" onClick={() => handleDelete()} disabled={deleteResult && deleteResult.status === PENDING}>
-          Delete
+          {t("button.delete")}
         </Button>
       </Modal.Footer>
     </Modal>

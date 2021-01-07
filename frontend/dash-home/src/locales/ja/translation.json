@@ -1,7 +1,15 @@
 {
   "welcome": "Dashへようこそ",
   "button": {
-    "next": "次へ"
+    "next": "次へ",
+    "back": "戻る",
+    "add": "追加",
+    "close": "閉じる",
+    "cancel": "キャンセル",
+    "delete": "削除"
+  },
+  "status": {
+    "loading": "ロード中..."
   },
   "dashboard": {
     "open": "ダッシュボードを開く"
@@ -21,6 +29,41 @@
         "title": "じゃーん！",
         "description": "Dash-Appへようこそ！"
       }
+    }
+  },
+  "controller": {
+    "secret": {
+      "title": "痛っ！",
+      "description": "殴らないでください。"
+    },
+    "empty": {
+      "title": "こんにちは？",
+      "description": "まだなにもないようです。",
+      "create": "コントローラーを追加"
+    },
+    "create": {
+      "title": "コントローラーを追加..."
+    },
+    "delete": {
+      "title": "コントローラーを削除:",
+      "question": "削除してもよろしいですか？",
+      "confirm": "この操作を元に戻すことはできません！",
+      "success": "削除しました。"
+    },
+    "remote": {
+      "select": "リモコンを選択..."
+    },
+    "switchbot": {
+      "openSettings": "Switchbotの設定を開く"
+    },
+    "entry": {
+      "name": {
+        "title": "コントローラーの名前",
+        "placeholder": "寝室の蛍光灯"
+      },
+      "kind": "種類",
+      "type": "タイプ",
+      "vendor": "メーカー・機種"
     }
   }
 }

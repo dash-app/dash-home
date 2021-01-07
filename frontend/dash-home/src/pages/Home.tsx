@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Row, Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Center, Div, P, Span } from '../components/atoms/Core';
@@ -13,6 +14,8 @@ import { Controller, ControllersResult, fetchControllers } from '../remote-go/Co
 interface Props { }
 
 const Home: React.FC<Props> = () => {
+  const { t } = useTranslation();
+
   // useStateで状態の保存場所を定義する。 参考：(https://ja.reactjs.org/docs/hooks-state.html)
   const [controllersResult, setControllers] = useState<ControllersResult | undefined>(undefined);
   const [anger, setAnger] = useState<boolean>(false);
@@ -31,7 +34,7 @@ const Home: React.FC<Props> = () => {
         !controllersResult?.controllers ?
           <Div>
             <CustomSpinner animation="border" aria-hidden="true" />
-            <Span>Loading...</Span>
+            <Span>{t("status.loading")}</Span>
           </Div>
           :
           <Container fluid>
@@ -45,20 +48,20 @@ const Home: React.FC<Props> = () => {
                     {anger ?
                       <Span>
                         <Icon style={{ color: "#FF5555", fontSize: "8rem" }} icon={["fas", "angry"]} className="shake" onClick={() => setAnger(true)}></Icon>
-                        <P style={{ fontSize: "2rem", fontWeight: 900 }}>Hey!!!</P>
-                        <P style={{ fontSize: "1rem", textTransform: "initial" }}>DO NOT PUNCH ME!</P>
+                        <P style={{ fontSize: "2rem", fontWeight: 900 }}>{t("controller.secret.title")}</P>
+                        <P style={{ fontSize: "1rem", textTransform: "initial" }}>{t("controller.secret.description")}</P>
                       </Span>
                       :
                       <Span>
                         <Icon style={{ fontSize: "4rem" }} icon={["fas", "sad-tear"]} onClick={() => setAnger(true)}></Icon>
-                        <P style={{ fontSize: "1.5rem" }}>Hello?</P>
-                        <P style={{ fontSize: "1rem", textTransform: "initial" }}>There is no any controllers.</P>
+                        <P style={{ fontSize: "1.5rem" }}>{t("controller.empty.title")}</P>
+                        <P style={{ fontSize: "1rem", textTransform: "initial" }}>{t("controller.empty.description")}</P>
                       </Span>
                     }
                   </div>
                   <Div>
                     <Link to="/controllers/new">
-                      <Button>Add New Controller</Button>
+                      <Button>{t("controller.empty.create")}</Button>
                     </Link>
                   </Div>
                 </CardBase>

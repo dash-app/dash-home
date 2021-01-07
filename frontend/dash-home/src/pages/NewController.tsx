@@ -9,10 +9,13 @@ import { Spinner, Button } from '../components/atoms/Themed';
 import RemoteChooser from '../components/controller/RemoteChooser';
 import SwitchBotChooser from '../components/controller/SwitchBotChooser';
 import { NotifyError } from '../components/atoms/Notify';
+import { useTranslation } from 'react-i18next';
 
 interface Props { }
 
 const NewController: React.FC<Props> = () => {
+  const { t } = useTranslation();
+  
   const initial: Controller = {
     id: "",
     name: "",
@@ -48,16 +51,16 @@ const NewController: React.FC<Props> = () => {
   return (
     <Basement>
       <Container fluid="lg">
-        <H1>New Controller...</H1>
+        <H1>{t("controller.create.title")}</H1>
 
         {/* Form */}
         <Form onSubmit={handleSubmit}>
           {/* Name */}
           <Form.Group>
-            <Form.Label><P>Controller Name</P></Form.Label>
+            <Form.Label><P>{t("controller.entry.name.title")}</P></Form.Label>
             <Form.Control
-              placeholder="Bedroom Light"
-              aria-label="name"
+              placeholder={t("controller.entry.name.placeholder")}
+              aria-label={t("controller.entry.name.title")}
               onChange={(e: any) => {
                 controller.name = e.currentTarget.value;
                 setController({ ...controller });
@@ -68,7 +71,7 @@ const NewController: React.FC<Props> = () => {
 
           {/* Kind */}
           <Form.Group>
-            <Form.Label><P>Kind: {controller.kind}</P></Form.Label>
+            <Form.Label><P>{t("controller.entry.kind")}: {controller.kind}</P></Form.Label>
             <DropdownButton title={controller.kind} drop="right">
               {["AIRCON", "LIGHT"].map((e) => {
                 return (
@@ -89,7 +92,7 @@ const NewController: React.FC<Props> = () => {
 
           {/* Type */}
           <Form.Group>
-            <Form.Label><P>Type: {controller.type}</P></Form.Label>
+            <Form.Label><P>{t("controller.entry.type")}: {controller.type}</P></Form.Label>
             <DropdownButton title={controller.type} drop="right">
               {["REMOTE", "SWITCHBOT"].map((e) => {
                 return (
@@ -113,13 +116,13 @@ const NewController: React.FC<Props> = () => {
             <Form.Group>
               <Form.Label>
                 {controller.remote ?
-                  (<P>Vendor: {controller.remote?.vendor + "/" + controller.remote?.model}</P>)
+                  (<P>{t("controller.entry.vendor")}: {controller.remote?.vendor + "/" + controller.remote?.model}</P>)
                   :
-                  (<P>Vendor</P>)
+                  (<P>{t("controller.entry.vendor")}</P>)
                 }
               </Form.Label>
               <Div>
-                <Button onClick={() => setOpenChooser(true)}>Select Remote...</Button>
+                <Button onClick={() => setOpenChooser(true)}>{t("controller.remote.select")}</Button>
                 {/* Modal */}
                 <RemoteChooser
                   visible={openChooser}
@@ -139,10 +142,10 @@ const NewController: React.FC<Props> = () => {
             <Form.Group>
               <Form.Label>
                 <P>MAC: {controller.switchbot?.mac !== undefined && controller.switchbot?.mac}</P>
-                <P>Type: {controller.switchbot?.type !== undefined && controller.switchbot?.type}</P>
+                <P>{t("controller.entry.type")}: {controller.switchbot?.type !== undefined && controller.switchbot?.type}</P>
               </Form.Label>
               <Div>
-                <Button onClick={() => setSwitchBotChooser(true)}>Open SwitchBot Settings...</Button>
+                <Button onClick={() => setSwitchBotChooser(true)}>{t("controller.switchbot.openSettings")}</Button>
                 <SwitchBotChooser
                   initialState={controller.switchbot}
                   visible={switchBotChooser}
@@ -156,9 +159,9 @@ const NewController: React.FC<Props> = () => {
             </Form.Group>
           }
 
-          <Button type="submit" disabled={postResult && postResult.status === PENDING}>Update</Button>
+          <Button type="submit" disabled={postResult && postResult.status === PENDING}>{t("button.add")}</Button>
           <Link to="/controllers">
-            <Button variant="secondary">Back</Button>
+            <Button variant="secondary">{t("button.back")}</Button>
           </Link>
           <Div>
             {postResult && postResult.status === PENDING && <Spinner aria-hidden="true" />}
