@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Container, Modal, Form, Col, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Controller } from '../../remote-go/Controller';
 import { FAILED, PENDING, Status, SUCCESS } from '../../remote-go/Status';
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const ControllerEditor: React.FC<Props> = (props: Props) => {
+  const { t } = useTranslation();
   const [controller, setController] = React.useState<Controller>(props.controller);
 
   const handleSubmit = (event: any) => {
@@ -31,16 +33,16 @@ const ControllerEditor: React.FC<Props> = (props: Props) => {
       >
         <Form onSubmit={handleSubmit}>
           <Modal.Header>
-            <Modal.Title>Edit: {controller.name}</Modal.Title>
+            <Modal.Title>{t("controller.edit.title")} {controller.name}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
 
             {/* Name */}
             <Form.Group>
-              <Form.Label>Controller Name</Form.Label>
+              <Form.Label>{t("controller.entry.name.title")}</Form.Label>
               <Form.Control
-                placeholder="Name"
-                aria-label="name"
+                placeholder={t("controller.entry.name.placeholder")}
+                aria-label={t("controller.entry.name.title")}
                 defaultValue={controller.name}
                 onChange={(e: any) => {
                   controller.name = e.currentTarget.value;
@@ -52,10 +54,9 @@ const ControllerEditor: React.FC<Props> = (props: Props) => {
 
             {/* Kind */}
             <Form.Group controlId="formGridKind">
-              <Form.Label>Kind</Form.Label>
+              <Form.Label>{t("controller.entry.kind")}</Form.Label>
               <Form.Control
-                placeholder="Kind"
-                aria-label="kind"
+                aria-label={t("controller.entry.kind")}
                 as="select"
                 defaultValue={controller.kind}
                 onChange={(e: any) => {
@@ -69,10 +70,9 @@ const ControllerEditor: React.FC<Props> = (props: Props) => {
 
             {/* Type */}
             <Form.Group>
-              <Form.Label>Type</Form.Label>
+              <Form.Label>{t("controller.entry.type")}</Form.Label>
               <Form.Control
-                placeholder="Type"
-                aria-label="type"
+                aria-label={t("controller.entry.type")}
                 as="select"
                 defaultValue={controller.type}
                 required
@@ -89,7 +89,7 @@ const ControllerEditor: React.FC<Props> = (props: Props) => {
             <Form.Row>
               <Col>
                 <Form.Control
-                  placeholder="Vendor"
+                  placeholder={t("controller.entry.vendor")}
                   defaultValue={controller.remote?.vendor}
                   onChange={(e: any) => {
                     controller.remote!.vendor = e.currentTarget.value;
@@ -99,7 +99,7 @@ const ControllerEditor: React.FC<Props> = (props: Props) => {
               </Col>
               <Col>
                 <Form.Control
-                  placeholder="Model"
+                  placeholder={t("controller.entry.model")}
                   defaultValue={controller.remote?.model}
                   onChange={(e: any) => {
                     controller.remote!.model = e.currentTarget.value;
@@ -113,9 +113,9 @@ const ControllerEditor: React.FC<Props> = (props: Props) => {
             {props.status === PENDING && <SpinnerInvert aria-hidden="true" />}
             {props.status === SUCCESS && <IconInvert icon={["fas", "check"]} />}
             {props.status === FAILED && <IconInvert icon={["fas", "exclamation-triangle"]} />}
-            <Button type="submit" disabled={props.status === PENDING}>Update</Button>
+            <Button type="submit" disabled={props.status === PENDING}>{t("button.update")}</Button>
             <Link to="/controllers">
-              <Button variant="secondary">Back</Button>
+              <Button variant="secondary">{t("button.back")}</Button>
             </Link>
           </Modal.Footer>
         </Form>

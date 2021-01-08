@@ -5,16 +5,19 @@ import { Button } from '../../atoms/Themed';
 import { ValueSet } from './TplBase';
 
 import styled from 'styled-components';
+import { withTranslation } from 'react-i18next';
 
 interface Props {
   hideTitle?: boolean,
   title?: any,
   description?: string,
   values: ValueSet[],
+  i18nKey?: string,
   status?: string,
   drop?: boolean,
   shot?: boolean,
   onClick?: any,
+  t: any
 }
 interface State {
   status?: string,
@@ -22,7 +25,6 @@ interface State {
 }
 
 class List extends React.Component<Props, State> {
-
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -54,7 +56,10 @@ class List extends React.Component<Props, State> {
                       :
                       this.props.shot ?
                         this.props.description :
-                        this.state.status
+                        this.props.i18nKey ?
+                          this.props.t(`${this.props.i18nKey}.${this.state.status}`, this.state.status)
+                          :
+                          this.state.status
                     }
                   </Span>
                 </H1>
@@ -79,7 +84,9 @@ class List extends React.Component<Props, State> {
                     onClick={() => this.onClick(e.value)}
                     active={!this.props.shot && e.value === this.state.status}
                   >
-                    {e.displayComponent ? e.displayComponent : e.value}
+                    {e.displayComponent ? e.displayComponent :
+                      this.props.t(`${this.props.i18nKey}.${e.value}`, e.value)
+                    }
                   </Dropdown.Item>
                 )
               })}
@@ -96,7 +103,9 @@ class List extends React.Component<Props, State> {
                     selected={this.props.shot ? true : e.value === this.state.status}
                     onClick={() => this.onClick(e.value)}
                   >
-                    {e.displayComponent ? e.displayComponent : e.value}
+                    {e.displayComponent ? e.displayComponent :
+                      this.props.t(`${this.props.i18nKey}.${e.value}`, e.value)
+                    }
                   </Button>
                 )
               })}
@@ -110,10 +119,11 @@ class List extends React.Component<Props, State> {
 
 const SlideContents = styled(Col)`
     overflow-x: auto;
+    word-break: keep-all;
 `
 
 const Span = styled.span`
     display: inline-block;
 `
 
-export default List
+export default withTranslation()(List);

@@ -11,14 +11,17 @@ interface DashIconProps {
 
 interface FanProps {
   current: string,
+  default?: string,
 }
 
 interface HorizontalVaneProps {
   current: string,
+  default?: string,
 }
 
 interface VerticalVaneProps {
   current: string,
+  default?: string,
 }
 
 export const ThemedIcon = (props: any) => {
@@ -50,7 +53,7 @@ export const FanStep = (props: FanProps) => {
     case "4": return (<Fan4 {...props} />)
     case "5": return (<Fan5 {...props} />)
     default:
-      return (<>{props.current}</>)
+      return (<>{props.default}</>)
   }
 }
 
@@ -64,7 +67,7 @@ export const HorizontalVaneStep = (props: HorizontalVaneProps) => {
     case "swing": return (<HorizontalVaneSwing {...props} />)
     case "keep": return (<HorizontalVane {...props} />)
     default:
-      return (<>{props.current}</>)
+      return (<>{props.default}</>)
   }
 }
 
@@ -81,6 +84,6 @@ export const VerticalVaneStep = (props: VerticalVaneProps) => {
     case "swing": return (<VerticalVaneSwing {...props} />)
     case "keep": return (<VerticalVane {...props} />)
     default:
-      return (<>{props.current}</>)
+      return (<>{props.default}</>)
   }
 }

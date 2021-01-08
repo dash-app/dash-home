@@ -1,5 +1,7 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Container, Nav, Table } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Div, H2, Span } from "../components/atoms/Core";
@@ -12,6 +14,7 @@ import DeleteController from "./DeleteController";
 interface Props { }
 
 const Controllers: React.FC<Props> = () => {
+  const { t } = useTranslation();
   const [controllersResult, setControllers] = useState<ControllersResult | undefined>(undefined);
   const [deleteQueue, setDeleteQueue] = React.useState<Controller | null>(null);
 
@@ -37,23 +40,29 @@ const Controllers: React.FC<Props> = () => {
         <Nav>
           <Nav.Item>
             <Link to="/">
-              <Button>Back</Button>
+              <Button>
+                <FontAwesomeIcon icon={["fas", "arrow-left"]} />
+                <span style={{ paddingLeft: "0.5rem" }}>{t("button.back")}</span>
+              </Button>
             </Link>
           </Nav.Item>
           <Nav.Item>
             <Link to="/controllers/new">
-              <Button>New</Button>
+              <Button>
+                <FontAwesomeIcon icon={["fas", "plus"]} />
+                <span style={{ paddingLeft: "0.5rem" }}>{t("button.add")}</span>
+              </Button>
             </Link>
           </Nav.Item>
         </Nav>
-        <H2>Controllers...</H2>
+        <H2>{t("controller.list.title")}</H2>
         {controllersResult?.error ?
-          <NotifyError title="Failed fetch controllers" />
+          <NotifyError title={t("controller.error.fetchControllers")} />
           :
           !controllersResult?.controllers ?
             <Div>
               <CustomSpinner animation="border" aria-hidden="true" />
-              <Span>Loading...</Span>
+              <Span>{t("status.loading")}</Span>
             </Div>
             :
             <Div>
@@ -61,9 +70,9 @@ const Controllers: React.FC<Props> = () => {
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Kind</th>
-                    <th>Options</th>
+                    <th>{t("controller.entry.name.title")}</th>
+                    <th>{t("controller.entry.kind")}</th>
+                    <th>{t("controller.entry.options")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -80,11 +89,17 @@ const Controllers: React.FC<Props> = () => {
                         <td>
                           {/* <Button onClick={() => { setShow(true) }}>Edit</Button> */}
                           <Link to={`/controllers/${controller.id}/edit`}>
-                            <Button>Edit</Button>
+                            <Button>
+                              <FontAwesomeIcon icon={["fas", "edit"]} />
+                              <span style={{ paddingLeft: "0.5rem" }}>{t("button.edit")}</span>
+                            </Button>
                           </Link>
                           <Button variant="danger" onClick={() => {
                             setDeleteQueue(controller)
-                          }}>Delete</Button>
+                          }}>
+                            <FontAwesomeIcon icon={["fas", "trash"]} />
+                            <span style={{ paddingLeft: "0.5rem" }}>{t("button.delete")}</span>
+                          </Button>
                         </td>
                       </tr>
                     )
@@ -95,7 +110,7 @@ const Controllers: React.FC<Props> = () => {
             </Div>
         }
       </Container>
-    </Basement>
+    </Basement >
   )
 }
 

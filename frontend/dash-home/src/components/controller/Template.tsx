@@ -14,6 +14,7 @@ interface SummonProps {
   hideTitle?: boolean,
   onChange?: any,
   description: string,
+  i18nKey?: string,
   default?: any,
   value: any,
   wide?: boolean,
@@ -37,13 +38,13 @@ export const SummonByTpl = (props: SummonProps) => {
 }
 
 const Summoner = (props: SummonProps) => {
+  let values: ValueSet[] = [];
+
   switch (props.action.type) {
     case "LIST":
-      let values: ValueSet[] = [];
       props.action.list.values.forEach((v) => {
         values.push({
           value: v,
-          displayComponent: v,
         })
       });
 
@@ -53,6 +54,7 @@ const Summoner = (props: SummonProps) => {
           hideTitle={props.hideTitle}
           description={props.description}
           values={values}
+          i18nKey={props.i18nKey}
           key={props.value}
           status={props.value}
           shot={props.action.list.shot}

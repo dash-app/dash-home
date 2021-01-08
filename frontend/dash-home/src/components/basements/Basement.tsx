@@ -12,12 +12,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ThemeSwitcher from '../themes/ThemeSwitcher';
 import { RELEASE_VERSION } from '../../config';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   children: React.ReactNode,
 }
 
 const Basement: React.FC<Props> = props => {
+  const { t } = useTranslation();
   const [showMenu, setShowMenu] = React.useState<boolean>(false);
   const [otaku, setOtaku] = React.useState<boolean>(false);
   const [otakuCount, setOtakuCount] = React.useState<number>(0);
@@ -51,19 +53,20 @@ const Basement: React.FC<Props> = props => {
                 >
                   <Modal.Header closeButton>
                     <Modal.Title>
-                      <Icon icon={["fas", "terminal"]} />MENU
+                      <Icon icon={["fas", "terminal"]} />
+                      {"Home"}
                     </Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     <Container fluid>
                       {/* Main Menu */}
-                      <p><Icon icon={["fas", "ellipsis-h"]} />{"Main Menu"}</p>
+                      <p><Icon icon={["fas", "ellipsis-h"]} />{t("menu.main.title")}</p>
                       <CustomRow>
                         <Col>
                           <Link to={"/"}>
                             <Button size="lg" block>
                               <FontAwesomeIcon icon={["fas", "home"]} />
-                              <p>Home</p>
+                              <p>{t("menu.main.home")}</p>
                             </Button>
                           </Link>
                         </Col>
@@ -73,7 +76,7 @@ const Basement: React.FC<Props> = props => {
                           <Link to={"/controllers"}>
                             <Button size="lg" block>
                               <FontAwesomeIcon icon={["fas", "wifi"]} />
-                              <p>Controllers</p>
+                              <p>{t("menu.main.controllers")}</p>
                             </Button>
                           </Link>
                         </Col>
@@ -91,7 +94,7 @@ const Basement: React.FC<Props> = props => {
                       <CustomRow>
                         {/* + */}
                         <Col sm style={{ marginTop: "1rem" }}>
-                          <p><Icon icon={["fas", "server"]} />{"Environment"}</p>
+                          <p><Icon icon={["fas", "server"]} />{t("menu.environment.title")}</p>
                           <Col style={{ paddingLeft: "0", fontSize: "2rem" }}>
                             <Icon fixedWidth style={{ fontSize: "1.5rem" }} icon={["fas", "thermometer-three-quarters"]} />{roomResult?.room?.ambient.temp.toFixed(1)}
                             <span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>℃</span>
@@ -106,7 +109,7 @@ const Basement: React.FC<Props> = props => {
                           </Col>
                         </Col>
                         <Col sm style={{ marginTop: "1rem" }}>
-                          <p onClick={() => { setOtakuCount(otakuCount + 1) }}><Icon icon={["fas", "swatchbook"]} />{"Appearance"}</p>
+                          <p onClick={() => { setOtakuCount(otakuCount + 1) }}><Icon icon={["fas", "swatchbook"]} />{t("menu.theme.title")}</p>
                           <ThemeSwitcher otaku={otaku} />
                         </Col>
                       </CustomRow>

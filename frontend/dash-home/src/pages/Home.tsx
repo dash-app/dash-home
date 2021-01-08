@@ -29,7 +29,7 @@ const Home: React.FC<Props> = () => {
   return (
     <Basement>
       {controllersResult?.error ?
-        <NotifyError title="Failed fetch controllers" />
+        <NotifyError title={t("controller.error.fetch")} />
         :
         !controllersResult?.controllers ?
           <Div>

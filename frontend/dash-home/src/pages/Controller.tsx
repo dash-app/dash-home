@@ -11,10 +11,13 @@ import { CardBase } from '../components/cards/CardBase';
 import { ControllerResult, fetchController } from '../remote-go/Controller';
 import { fetchTemplate, TemplateResult } from '../remote-go/Template';
 import { SUCCESS } from '../remote-go/Status';
+import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props extends RouteComponentProps<{ id: string }> { }
 
 const Controller: React.FC<Props> = props => {
+  const { t } = useTranslation();
   const id = props.match.params.id;
 
   const [controllerResult, setController] = React.useState<ControllerResult | undefined>(undefined);
@@ -91,7 +94,7 @@ const Controller: React.FC<Props> = props => {
               <CardBase color="#2A2A2A">
                 <Span>
                   <Icon style={{ fontSize: "4rem", marginBottom: "1rem" }} icon={["fas", "ghost"]} />
-                  <P style={{ fontSize: "1rem", fontWeight: 800, textTransform: "initial" }}>This controller does not exist...</P>
+                  <P style={{ fontSize: "1rem", fontWeight: 800, textTransform: "initial" }}>{t("controller.error.notfound")}</P>
                 </Span>
               </CardBase>
             </Center>
@@ -106,12 +109,12 @@ const Controller: React.FC<Props> = props => {
       <Container fluid="lg">
         {/* Error Message (Template) */}
         {templateResult?.error &&
-          <NotifyError title="Failed fetch template data" />
+          <NotifyError title={t("controller.error.fetchTemplate")} />
         }
 
         {/* Error Message (Controller) */}
         {controllerResult?.error &&
-          <NotifyError title="Failed fetch controller data" />
+          <NotifyError title={t("controller.error.fetchController")} />
         }
         <Navbar>
           <Navbar.Brand>
@@ -122,12 +125,15 @@ const Controller: React.FC<Props> = props => {
               controllerResult == null ?
               <Div>
                 <CustomSpinner animation="border" aria-hidden="true" />
-                <Span>Loading...</Span>
+                <Span>{t("status.loading")}</Span>
               </Div>
               :
               <Div>
                 <Link to="/">
-                  <Button>{"Back"}</Button>
+                  <Button>
+                    <FontAwesomeIcon icon={["fas", "arrow-left"]} />
+                    <span style={{ paddingLeft: "0.5rem" }}>{t("button.back")}</span>
+                  </Button>
                 </Link>
               </Div>
             }

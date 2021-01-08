@@ -13,8 +13,10 @@ import { FanIcon, FanStep, HorizontalVaneStep, ThemedIcon, VerticalVaneStep } fr
 import { ValueSet } from '../components/controller/template/TplBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ControllerProps } from '../components/controller/Controller';
+import { useTranslation } from 'react-i18next';
 
 const AirconMiniPanel: React.FC<Controller> = controller => {
+  const { t } = useTranslation();
   const aircon = controller.aircon!;
   return (
     <AirconCard name={controller.name} mode={aircon.mode}>
@@ -24,7 +26,7 @@ const AirconMiniPanel: React.FC<Controller> = controller => {
             <MiniPanelInner
               id={controller.id}
               title="OFF"
-              note="operation"
+              note={t("controller.aircon.operation.name")}
               description={aircon.mode}
             />
           )
@@ -35,7 +37,7 @@ const AirconMiniPanel: React.FC<Controller> = controller => {
             <MiniPanelInner
               id={controller.id}
               title={aircon.modes[aircon.mode].temp.toFixed(1)}
-              note="temp"
+              note={t("controller.aircon.temp.name")}
               description={aircon.mode}
             />
           )
@@ -46,7 +48,7 @@ const AirconMiniPanel: React.FC<Controller> = controller => {
             <MiniPanelInner
               id={controller.id}
               title={aircon.modes[aircon.mode].humid}
-              note="humid"
+              note={t("controller.aircon.humid.name")}
               description={aircon.mode}
             />
           )
@@ -64,7 +66,7 @@ const AirconMiniPanel: React.FC<Controller> = controller => {
                   />
                 </ThemedIcon>
               }
-              note="fan"
+              note={t("controller.aircon.fan.name")}
               description={aircon.mode}
             />
           )
@@ -75,6 +77,7 @@ const AirconMiniPanel: React.FC<Controller> = controller => {
 }
 
 const AirconPanel: React.FC<ControllerProps> = props => {
+  const { t } = useTranslation();
   let modesTpl: Map<string, TplAirconModes> = new Map<string, TplAirconModes>(Object.entries(props.template!.aircon!.modes));
 
   const [aircon, setAircon] = useState<AirconState>(props.controller.aircon!);
@@ -105,7 +108,7 @@ const AirconPanel: React.FC<ControllerProps> = props => {
         {/* Operation */}
         <Contents>
           <SummonByTpl
-            description="operation"
+            description={t("controller.aircon.operation.name")}
             value={aircon.operation}
             setter={(e: any) => aircon.operation = e}
             sender={(after: any) => update({ ...aircon }, after)}
@@ -116,16 +119,19 @@ const AirconPanel: React.FC<ControllerProps> = props => {
         {/* Mode */}
         <Contents>
           <Container fluid>
-            <List description="mode" values={((): ValueSet[] => {
-              let values: ValueSet[] = [];
-              [...Array.from(modesTpl.keys())].forEach((v) => {
-                values.push({
-                  value: v,
-                  displayComponent: v,
+            <List
+              description={t("controller.aircon.mode.name")}
+              i18nKey={"controller.aircon.mode"}
+              values={((): ValueSet[] => {
+                let values: ValueSet[] = [];
+                [...Array.from(modesTpl.keys())].forEach((v) => {
+                  values.push({
+                    value: v,
+                    displayComponent: t(`controller.aircon.mode.${v}`),
+                  })
                 })
-              })
-              return values
-            })()}
+                return values
+              })()}
               status={aircon.mode} onClick={(e: any) => {
                 aircon.mode = e;
                 update({ ...aircon });
@@ -146,7 +152,7 @@ const AirconPanel: React.FC<ControllerProps> = props => {
                   <FontAwesomeIcon icon={["fas", "thermometer-three-quarters"]} />
                 </ThemedIcon>
               }
-              description="temp"
+              description={t("controller.aircon.temp.name")}
               value={aircon.modes[aircon.mode].temp}
               setter={(e: any) => aircon.modes[aircon.mode].temp = e}
               sender={(after: any) => update({ ...aircon }, after)}
@@ -160,7 +166,7 @@ const AirconPanel: React.FC<ControllerProps> = props => {
           <Contents>
             <HR />
             <SummonByTpl
-              description="humid"
+              description={t("controller.aircon.humid.name")}
               value={aircon.modes[aircon.mode].humid}
               setter={(e: any) => aircon.modes[aircon.mode].humid = e}
               sender={(after: any) => update({ ...aircon }, after)}
@@ -180,10 +186,12 @@ const AirconPanel: React.FC<ControllerProps> = props => {
                   <FanIcon />
                   <FanStep
                     current={aircon.modes[aircon.mode].fan}
+                    default={t(`controller.aircon.status.${aircon.modes[aircon.mode].fan}`)}
                   />
                 </ThemedIcon>
               }
-              description="fan"
+              description={t("controller.aircon.fan.name")}
+              i18nKey={"controller.aircon.status"}
               value={aircon.modes[aircon.mode].fan}
               setter={(e: any) => aircon.modes[aircon.mode].fan = e}
               sender={(after: any) => update({ ...aircon }, after)}
@@ -202,10 +210,12 @@ const AirconPanel: React.FC<ControllerProps> = props => {
                     <ThemedIcon>
                       <HorizontalVaneStep
                         current={aircon.modes[aircon.mode].horizontal_vane}
+                        default={t(`controller.aircon.status.${aircon.modes[aircon.mode].horizontal_vane}`)}
                       />
                     </ThemedIcon>
                   }
-                  description="horizontal_vane"
+                  description={t("controller.aircon.horizontalVane.name")}
+                  i18nKey={"controller.aircon.status"}
                   value={aircon.modes[aircon.mode].horizontal_vane}
                   setter={(e: any) => aircon.modes[aircon.mode].horizontal_vane = e}
                   sender={(after: any) => update({ ...aircon }, after)}
@@ -225,7 +235,8 @@ const AirconPanel: React.FC<ControllerProps> = props => {
                       />
                     </ThemedIcon>
                   }
-                  description="vertical_vane"
+                  description={t("controller.aircon.verticalVane.name")}
+                  i18nKey={"controller.aircon.status"}
                   value={aircon.modes[aircon.mode].vertical_vane}
                   setter={(e: any) => aircon.modes[aircon.mode].vertical_vane = e}
                   sender={(after: any) => update({ ...aircon }, after)}

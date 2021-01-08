@@ -6,6 +6,8 @@
     "add": "Add",
     "close": "Close",
     "cancel": "Cancel",
+    "update": "Update",
+    "edit": "Edit",
     "delete": "Delete"
   },
   "status": {
@@ -13,6 +15,20 @@
   },
   "dashboard": {
     "open": "Open Dashboard"
+  },
+  "menu": {
+    "title": "Menu",
+    "main": {
+      "title": "Main Menu",
+      "home": "Home",
+      "controllers": "Controllers"
+    },
+    "environment": {
+      "title": "Environment"
+    },
+    "theme": {
+      "title": "Theme"
+    }
   },
   "room": {
     "error": {
@@ -32,6 +48,12 @@
     }
   },
   "controller": {
+    "error": {
+      "notfound": "This controller does not exist...",
+      "fetchTemplate": "Failed fetch template data",
+      "fetchController": "Failed fetch controller data",
+      "fetchControllers": "Failed fetch controllers"
+    },
     "secret": {
       "title": "Hey!!!",
       "description": "DO NOT PUNCH ME!"
@@ -44,11 +66,17 @@
     "create": {
       "title": "New Controller..."
     },
+    "edit": {
+      "title": "Edit Controller:"
+    },
     "delete": {
       "title": "Delete Controller:",
       "question": "Are you sure you want to delete this item?",
       "confirm": "This operation cannot be undone!",
       "success": "Removed."
+    },
+    "list": {
+      "title": "Controllers..."
     },
     "remote": {
       "select": "Select Remote..."
@@ -63,7 +91,41 @@
       },
       "kind": "Kind",
       "type": "Type",
-      "vendor": "Vendor"
+      "vendor": "Vendor",
+      "model": "Model",
+      "options": "Options"
+    },
+    "aircon": {
+      "operation": {
+        "name": "Operation"
+      },
+      "mode": {
+        "name": "Mode",
+        "auto": "Auto",
+        "cool": "Cool",
+        "dry": "Dry",
+        "heat": "Heat",
+        "fan": "Fan"
+      },
+      "temp": {
+        "name": "Temp"
+      },
+      "humid": {
+        "name": "Humid"
+      },
+      "fan": {
+        "name": "Fan"
+      },
+      "horizontalVane": {
+        "name": "Horizontal Vane"
+      },
+      "verticalVane": {
+        "name": "Vertical Vane"
+      },
+      "status": {
+        "auto": "Auto",
+        "swing": "Swing"
+      }
     }
   }
 }

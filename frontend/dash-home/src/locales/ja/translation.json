@@ -6,6 +6,8 @@
     "add": "追加",
     "close": "閉じる",
     "cancel": "キャンセル",
+    "update": "更新",
+    "edit": "編集",
     "delete": "削除"
   },
   "status": {
@@ -13,6 +15,20 @@
   },
   "dashboard": {
     "open": "ダッシュボードを開く"
+  },
+  "menu": {
+    "title": "メニュー",
+    "main": {
+      "title": "メインメニュー",
+      "home": "ホーム",
+      "controllers": "コントローラー"
+    },
+    "environment": {
+      "title": "環境"
+    },
+    "theme": {
+      "title": "テーマ"
+    }
   },
   "room": {
     "error": {
@@ -32,6 +48,12 @@
     }
   },
   "controller": {
+    "error": {
+      "notfound": "このコントローラーは存在しません...",
+      "fetchTemplate": "テンプレートの取得に失敗しました",
+      "fetchController": "コントローラーの取得に失敗しました",
+      "fetchControllers": "コントローラーの取得に失敗しました"
+    },
     "secret": {
       "title": "痛っ！",
       "description": "殴らないでください。"
@@ -44,11 +66,17 @@
     "create": {
       "title": "コントローラーを追加..."
     },
+    "edit": {
+      "title": "コントローラーを編集:"
+    },
     "delete": {
       "title": "コントローラーを削除:",
       "question": "削除してもよろしいですか？",
       "confirm": "この操作を元に戻すことはできません！",
       "success": "削除しました。"
+    },
+    "list": {
+      "title": "コントローラーの一覧..."
     },
     "remote": {
       "select": "リモコンを選択..."
@@ -63,7 +91,41 @@
       },
       "kind": "種類",
       "type": "タイプ",
-      "vendor": "メーカー・機種"
+      "vendor": "メーカー・機種",
+      "model": "機種",
+      "options": "オプション"
+    },
+    "aircon": {
+      "operation": {
+        "name": "運転/停止"
+      },
+      "mode": {
+        "name": "モード",
+        "auto": "自動",
+        "cool": "冷房",
+        "dry": "除湿",
+        "heat": "暖房",
+        "fan": "送風"
+      },
+      "temp": {
+        "name": "温度"
+      },
+      "humid": {
+        "name": "しつど"
+      },
+      "fan": {
+        "name": "風速"
+      },
+      "horizontalVane": {
+        "name": "風向上下"
+      },
+      "verticalVane": {
+        "name": "風向左右"
+      },
+      "status": {
+        "auto": "自動",
+        "swing": "スイング"
+      }
     }
   }
 }

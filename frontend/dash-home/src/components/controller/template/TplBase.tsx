@@ -10,7 +10,7 @@ interface Props {
 
 export interface ValueSet {
   value: any,
-  displayComponent: any,
+  displayComponent?: any,
 }
 
 export const TplBase: React.FC<Props> = props => {
