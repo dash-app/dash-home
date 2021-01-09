@@ -8,7 +8,6 @@ const H1 = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingEleme
             {...props}
             style={{
                 ...props.style,
-                fontFamily: "M PLUS 1p",
                 color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
             {props.children}
@@ -21,7 +20,6 @@ const H2 = (props: any) => {
         <h2
             {...props}
             style={{
-                fontFamily: "M PLUS 1p",
                 color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
             {props.children}
@@ -34,7 +32,6 @@ const H3 = (props: any) => {
         <h3
             {...props}
             style={{
-                fontFamily: "M PLUS 1p",
                 color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFFFFF"
             }}>
             {props.children}
@@ -71,7 +68,6 @@ const Span = (props: any) => {
         <span
             {...props}
             style={{
-                fontFamily: "M PLUS 1p",
                 fontWeight: 400,
                 color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFFFFF",
                 ...props.style

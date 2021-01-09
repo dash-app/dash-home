@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Div, P, Span } from '../atoms/Core';
@@ -12,11 +12,17 @@ interface Props {
 }
 
 export const MiniPanelInner = (props: Props) => {
+  const { t } = useTranslation();
   return (
-    <Div style={{minWidth: "22rem"}}>
+    <Div style={{ minWidth: "22rem" }}>
       <Title>{props.title} {props.note && <Note>{"//"} {props.note}</Note>}</Title>
       <Description>{props.description && props.description}</Description>
-      {props.id && <Link to={`/controllers/${props.id}`}><Button>Click to Edit</Button></Link>}
+      {
+        props.id &&
+        <Link to={`/controllers/${props.id}`}>
+          <span><Button block>{t("button.tapToEdit")}</Button></span>
+        </Link>
+      }
     </Div>
   )
 }

@@ -6,14 +6,17 @@ import { H1, P } from '../../atoms/Core';
 
 import styled from 'styled-components';
 import { Button } from '../../atoms/Themed';
+import { withTranslation } from 'react-i18next';
 
 interface Props {
   hideTitle?: boolean,
   description?: string,
+  i18nKey?: string,
   value: boolean,
   icon?: IconProp,
   btnText?: string,
   onClick?: any,
+  t: any
 }
 
 interface State {
@@ -45,7 +48,12 @@ class Toggle extends React.Component<Props, State> {
             <Row>
               <Col>
                 <H1>
-                  <Span>{this.state.value ? "ON" : "OFF"}</Span>
+                  <Span>{
+                    this.state.value ?
+                      this.props.i18nKey ? this.props.t([`${this.props.i18nKey}.on`, '_'], { value: "on" }) : "on"
+                      :
+                      this.props.i18nKey ? this.props.t([`${this.props.i18nKey}.off`, '_'], { value: "off" }) : "off"
+                  }</Span>
                 </H1>
               </Col>
             </Row>
@@ -87,4 +95,4 @@ const Icon = styled(FontAwesomeIcon)`
   margin-right: 4px;
 `
 
-export default Toggle;
+export default withTranslation()(Toggle);

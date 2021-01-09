@@ -58,7 +58,8 @@ class Range extends React.Component<Props, State> {
                 <H1>
                   <Span>
                     {this.props.title && <span style={{ marginRight: "0.5rem" }}>{this.props.title}</span>}
-                    {this.state.value.toFixed(1) + this.props.suffix!}
+                    {this.state.value.toFixed(1)}
+                    {this.props.suffix && <span style={{ fontSize: "0.5em", fontWeight: 400 }}>{this.props.suffix}</span>}
                   </Span>
                 </H1>
               </Col>

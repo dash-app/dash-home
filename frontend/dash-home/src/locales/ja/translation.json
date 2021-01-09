@@ -1,5 +1,4 @@
 {
-  "welcome": "Dashへようこそ",
   "button": {
     "next": "次へ",
     "back": "戻る",
@@ -8,10 +7,17 @@
     "cancel": "キャンセル",
     "update": "更新",
     "edit": "編集",
-    "delete": "削除"
+    "tapToEdit": "タップして編集",
+    "delete": "削除",
+    "select": "選択"
   },
   "status": {
-    "loading": "ロード中..."
+    "loading": "ロード中...",
+    "error": "エラー"
+  },
+  "error": {
+    "title": "問題が発生しました",
+    "message": "(コンソールを確認してください)"
   },
   "dashboard": {
     "open": "ダッシュボードを開く"
@@ -79,7 +85,13 @@
       "title": "コントローラーの一覧..."
     },
     "remote": {
-      "select": "リモコンを選択..."
+      "select": "リモコンを選択...",
+      "chooser": "リモコンを選択 ({{kind}})...",
+      "test": "テスト (近日公開...)",
+      "error": {
+        "getRemote": "リモコン一覧の取得に失敗しました",
+        "unknownKind": "不明な種類です: {{kind}}"
+      }
     },
     "switchbot": {
       "openSettings": "Switchbotの設定を開く"
@@ -95,9 +107,35 @@
       "model": "機種",
       "options": "オプション"
     },
+    "light": {
+      "name": "照明",
+      "mode": {
+        "name": "モード",
+        "OFF": "消灯",
+        "ON": "全灯",
+        "NIGHT_LIGHT": "常夜灯",
+        "FAV_01": "お気に入り (1)",
+        "FAV_02": "お気に入り (2)",
+        "FAV_03": "お気に入り (3)",
+        "FAV_04": "お気に入り (4)"
+      },
+      "brightness": {
+        "name": "調光",
+        "TO_DIM": "暗く",
+        "TO_BRIGHT": "明るく"
+      },
+      "color": {
+        "name": "調色",
+        "TO_COOL": "寒色",
+        "TO_WARM": "暖色"
+      }
+    },
     "aircon": {
+      "name": "エアコン",
       "operation": {
-        "name": "運転/停止"
+        "name": "運転/停止",
+        "on": "運転",
+        "off": "停止"
       },
       "mode": {
         "name": "モード",
@@ -114,17 +152,27 @@
         "name": "しつど"
       },
       "fan": {
-        "name": "風速"
+        "name": "風速",
+        "auto": "自動"
       },
       "horizontalVane": {
-        "name": "風向上下"
+        "name": "風向上下",
+        "auto": "自動",
+        "keep": "解除",
+        "swing": "スイング",
+        "switch": "変更"
       },
       "verticalVane": {
-        "name": "風向左右"
-      },
-      "status": {
+        "name": "風向左右",
         "auto": "自動",
-        "swing": "スイング"
+        "keep": "解除",
+        "swing": "スイング",
+        "switch": "変更",
+        "left": "左",
+        "mid_left": "やや左",
+        "center": "中央",
+        "mid_right": "やや右",
+        "right": "右"
       }
     }
   }

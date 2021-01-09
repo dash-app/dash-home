@@ -1,5 +1,4 @@
 {
-  "welcome": "WELCOME TO DASH",
   "button": {
     "next": "Next",
     "back": "Back",
@@ -8,10 +7,17 @@
     "cancel": "Cancel",
     "update": "Update",
     "edit": "Edit",
-    "delete": "Delete"
+    "tapToEdit": "Tap to Edit",
+    "delete": "Delete",
+    "select": "Select"
   },
   "status": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "error": "Error"
+  },
+  "error": {
+    "title": "Something went wrong!",
+    "message": "(Please see console.)"
   },
   "dashboard": {
     "open": "Open Dashboard"
@@ -79,7 +85,13 @@
       "title": "Controllers..."
     },
     "remote": {
-      "select": "Select Remote..."
+      "select": "Select Remote...",
+      "chooser": "Select Remote ({{kind}})...",
+      "test": "Test (Coming Soon...)",
+      "error": {
+        "getRemote": "Failed get remote list",
+        "unknownKind": "Unknown kind: {{kind}}"
+      }
     },
     "switchbot": {
       "openSettings": "Open Switchbot Settings..."
@@ -95,9 +107,35 @@
       "model": "Model",
       "options": "Options"
     },
+    "light": {
+      "name": "Light",
+      "mode": {
+        "name": "Mode",
+        "OFF": "OFF",
+        "ON": "ON",
+        "NIGHT_LIGHT": "Night",
+        "FAV_01": "Fav (1)",
+        "FAV_02": "Fav (2)",
+        "FAV_03": "Fav (3)",
+        "FAV_04": "Fav (4)"
+      },
+      "brightness": {
+        "name": "Brightness",
+        "TO_DIM": "Dim",
+        "TO_BRIGHT": "Bright"
+      },
+      "color": {
+        "name": "Color",
+        "TO_COOL": "Cool",
+        "TO_WARM": "Warm"
+      }
+    },
     "aircon": {
+      "name": "Air Conditioner",
       "operation": {
-        "name": "Operation"
+        "name": "Operation",
+        "on": "ON",
+        "off": "OFF"
       },
       "mode": {
         "name": "Mode",
@@ -114,17 +152,27 @@
         "name": "Humid"
       },
       "fan": {
-        "name": "Fan"
+        "name": "Fan",
+        "auto": "Auto"
       },
       "horizontalVane": {
-        "name": "Horizontal Vane"
+        "name": "Horizontal Vane",
+        "auto": "Auto",
+        "keep": "Keep",
+        "swing": "Swing",
+        "switch": "Switch"
       },
       "verticalVane": {
-        "name": "Vertical Vane"
-      },
-      "status": {
+        "name": "Vertical Vane",
         "auto": "Auto",
-        "swing": "Swing"
+        "keep": "Keep",
+        "swing": "Swing",
+        "switch": "Switch",
+        "left": "Left",
+        "mid_left": "Mid Left",
+        "center": "Center",
+        "mid_right": "Mid Right",
+        "right": "Right"
       }
     }
   }

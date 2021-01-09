@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react"
 import { Alert } from "react-bootstrap";
+import { useTranslation } from 'react-i18next';
 
 interface AlertProps {
   title?: string,
@@ -8,13 +8,14 @@ interface AlertProps {
 }
 
 export const NotifyError = (props: AlertProps) => {
+  const { t } = useTranslation();
   return (
     <Alert variant="danger">
       <Alert.Heading>
         <FontAwesomeIcon style={{ marginRight: "4px" }} icon={["fas", "exclamation-triangle"]} />
-        <span>{props.title ? props.title : "Something went wrong!"}</span>
+        <span>{props.title ? props.title : t("error.title")}</span>
       </Alert.Heading>
-      <p>{props.message ? props.message : "(Please see console.)"}</p>
+      <p>{props.message ? props.message : t("error.message")}</p>
     </Alert>
   )
 }

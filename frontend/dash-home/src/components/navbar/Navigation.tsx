@@ -39,13 +39,13 @@ const Navigation: React.FC<Props> = props => {
           </span>
         </Title>
         <RoomStatus theme={theme}>
-          <StatusBox>
+          <StatusBox className={"status-box"}>
             <FontAwesomeIcon icon={["fas", "thermometer-three-quarters"]} />
-            <StatusText>{room ? room.ambient.temp.toFixed(1) : "--"} ℃</StatusText>
+            <StatusText>{room ? room.ambient.temp.toFixed(1) : "--"}<span style={{marginLeft: "0.2rem", fontSize: "1rem"}}>℃</span></StatusText>
           </StatusBox>
           <StatusBox>
             <FontAwesomeIcon icon={["fas", "tint"]} />
-            <StatusText>{room ? room.ambient.humid.toFixed(0) : "--"} %</StatusText>
+            <StatusText>{room ? room.ambient.humid.toFixed(0) : "--"}<span style={{marginLeft: "0.2rem", fontSize: "1rem"}}>%</span></StatusText>
           </StatusBox>
         </RoomStatus>
       </div>
@@ -68,7 +68,7 @@ const Navigation: React.FC<Props> = props => {
           </Link>
         </Nav>
       </Navbar.Collapse>
-    </CustomNavbar>
+    </CustomNavbar >
   );
 }
 
@@ -81,7 +81,6 @@ const CustomNavbar = styled(Navbar)`
 
 const Title = styled(Navbar.Brand) <ThemeProps>`
   color: ${({ theme }) => theme === "CHEEKY_WHITE" ? "black" : "white"};
-  font-family: "M PLUS 1p";
   font-weight: 400;
   font-size: 2em;
 `
@@ -89,14 +88,13 @@ const Title = styled(Navbar.Brand) <ThemeProps>`
 const RoomStatus = styled.div<ThemeProps>`
   color: ${({ theme }) => theme === "CHEEKY_WHITE" ? "black" : "#DBDBDB"};
   font-size: 1.5em;
-  font-family: "M PLUS 1p";
   font-weight: 600;
 `
 
 const StatusBox = styled.span`
   margin-right: 1em;
   font-weight: 400;
-  font-align: center;
+  text-align: center;
 `
 
 const StatusText = styled.span`

@@ -57,7 +57,7 @@ class List extends React.Component<Props, State> {
                       this.props.shot ?
                         this.props.description :
                         this.props.i18nKey ?
-                          this.props.t(`${this.props.i18nKey}.${this.state.status}`, this.state.status)
+                          this.props.t([`${this.props.i18nKey}.${this.state.status}`, '_'], { value: this.state.status })
                           :
                           this.state.status
                     }
@@ -76,7 +76,15 @@ class List extends React.Component<Props, State> {
         }
         <Row>
           <Col className="d-block d-sm-none">
-            <DropdownButton title={this.state.status} size="lg" drop="right">
+            <DropdownButton
+              title={
+                this.props.i18nKey ?
+                  this.props.t([`${this.props.i18nKey}.${this.state.status}`, '_'], { value: this.state.status })
+                  :
+                  this.state.status
+              }
+              size="lg"
+              drop="right">
               {this.props.values.map((e) => {
                 return (
                   <Dropdown.Item
@@ -85,7 +93,7 @@ class List extends React.Component<Props, State> {
                     active={!this.props.shot && e.value === this.state.status}
                   >
                     {e.displayComponent ? e.displayComponent :
-                      this.props.t(`${this.props.i18nKey}.${e.value}`, e.value)
+                      this.props.t([`${this.props.i18nKey}.${e.value}`, '_'], { value: e.value })
                     }
                   </Dropdown.Item>
                 )
@@ -104,7 +112,7 @@ class List extends React.Component<Props, State> {
                     onClick={() => this.onClick(e.value)}
                   >
                     {e.displayComponent ? e.displayComponent :
-                      this.props.t(`${this.props.i18nKey}.${e.value}`, e.value)
+                      this.props.t([`${this.props.i18nKey}.${e.value}`, '_'], { value: e.value })
                     }
                   </Button>
                 )

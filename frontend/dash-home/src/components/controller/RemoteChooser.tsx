@@ -3,6 +3,7 @@ import { Modal, Button, Tabs, Card, Tab } from 'react-bootstrap';
 import { Remote } from '../../remote-go/Controller';
 import { RemotesResult, fetchRemotes } from '../../remote-go/Remotes';
 import { NotifyError } from '../atoms/Notify';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   visible: boolean,
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const RemoteChooser: React.FC<Props> = (props: Props) => {
+  const { t } = useTranslation();
   const [remotesResult, setRemotesResult] = React.useState<RemotesResult | undefined>(undefined);
   // fetch
   React.useEffect(() => {
@@ -21,7 +23,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
   if (!remotesResult?.remotes) {
     if (remotesResult?.error) {
       return (
-        <NotifyError title="Failed get remote list" />
+        <NotifyError title={t("controller.remote.error.getRemote")} />
       )
     } else {
       return (
@@ -44,10 +46,10 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
         onHide={props.handleClose}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Error</Modal.Title>
+          <Modal.Title>{t("status.error")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Unknown kind: {props.kind}</p>
+          <p>{t("controller.remote.error.unknownKind", { kind: props.kind })}</p>
         </Modal.Body>
       </Modal>
     );
@@ -63,7 +65,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
       onHide={props.handleClose}
     >
       <Modal.Header closeButton={props.handleClose && true}>
-        <Modal.Title>Select Remote ({props.kind})...</Modal.Title>
+        <Modal.Title>{t("controller.remote.chooser", { kind: props.kind })}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Tabs defaultActiveKey={remotes[0]} id="tabs">
@@ -85,8 +87,8 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
                             }))()
                           );
                           props.handleClose();
-                        }}>Choose this!</Button>
-                        <Button variant="secondary" disabled>Test (Coming Soon...)</Button>
+                        }}>{t("button.select")}</Button>
+                        <Button variant="secondary" disabled>{t("controller.remote.test")}</Button>
                       </Card.Body>
                     </Card>
                   )

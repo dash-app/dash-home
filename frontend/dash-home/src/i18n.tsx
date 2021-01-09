@@ -11,6 +11,12 @@ import en from './locales/en/translation.json';
 import ja from './locales/ja/translation.json';
 
 const resources = {
+  inject: {
+    translation: {
+      // For replace default value (DO NOT EDIT)
+      "_": "{{value}}"
+    }
+  },
   en: {
     translation: en
   },
@@ -31,11 +37,15 @@ i18n
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
-    fallbackLng: 'en',
-    debug: true,
+    fallbackLng: ['inject', 'en'],
+    debug: process.env.NODE_ENV === 'development',
     resources,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
+    },
+    react: {
+      wait: true,
+      useSuspense: true,
     },
   });
 

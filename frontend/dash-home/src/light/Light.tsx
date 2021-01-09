@@ -7,21 +7,26 @@ import { Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import { HR, Icon } from '../components/atoms/Themed';
 import { ControllerProps } from '../components/controller/Controller';
+import { useTranslation } from 'react-i18next';
 
 export const LightMiniPanel: React.FC<Controller> = controller => {
+  const { t } = useTranslation();
   return (
     <LightCard name={controller.name}>
       <MiniPanelInner
         id={controller.id}
-        title={controller.light?.last_action ? controller.light?.last_action : "N/A"}
-        note="Mode"
-        description="Light"
+        title={
+          controller.light?.last_action ?
+            t([`controller.light.mode.${controller.light?.last_action}`, '_'], { value: controller.light?.last_action }) : "N/A"}
+        note={t("controller.light.mode.name")}
+        description={t("controller.light.name")}
       />
     </LightCard>
   )
 }
 
 export const LightPanel: React.FC<ControllerProps> = props => {
+  const { t } = useTranslation();
   const stateToEntry = (state: LightState): Light => {
     return {
       action: state.last_action,
@@ -47,7 +52,8 @@ export const LightPanel: React.FC<ControllerProps> = props => {
         {/* Mode */}
         <Contents>
           <SummonByTpl
-            description="mode"
+            description={t("controller.light.mode.name")}
+            i18nKey="controller.light.mode"
             value={props.controller.light?.last_action}
             setter={(e: any) => light!.action = e}
             sender={(after: any) => update({ ...light! }, after)}
@@ -63,7 +69,8 @@ export const LightPanel: React.FC<ControllerProps> = props => {
             title={
               <Icon icon={["fas", "sun"]} />
             }
-            description="brightness"
+            description={t("controller.light.brightness.name")}
+            i18nKey="controller.light.brightness"
             value={""}
             setter={(e: any) => light!.action = e}
             sender={(after: any) => update({ ...light! }, after)}
@@ -77,7 +84,8 @@ export const LightPanel: React.FC<ControllerProps> = props => {
             title={
               <Icon icon={["fas", "adjust"]} />
             }
-            description="color"
+            description={t("controller.light.color.name")}
+            i18nKey="controller.light.color"
             value={""}
             setter={(e: any) => light!.action = e}
             sender={(after: any) => update({ ...light! }, after)}

@@ -88,6 +88,7 @@ const Summoner = (props: SummonProps) => {
         <Toggle
           hideTitle={props.hideTitle}
           description={props.description}
+          i18nKey={props.i18nKey}
           key={props.value}
           value={props.value}
           icon={["fas", "power-off"]}
@@ -102,6 +103,7 @@ const Summoner = (props: SummonProps) => {
         <Shot
           hideTitle={props.hideTitle}
           description={props.description}
+          i18nKey={props.i18nKey}
           key={props.value}
           default={props.action.default ? props.action.default : props.action.shot.value}
           value={props.action.shot.value}
@@ -137,6 +139,7 @@ const Summoner = (props: SummonProps) => {
                 <SummonByTpl
                   key={i}
                   hideTitle={true}
+                  i18nKey={props.i18nKey}
                   description={props.description}
                   value={props.value}
                   wide={true}
