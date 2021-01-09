@@ -72,7 +72,7 @@ const Home: React.FC<Props> = () => {
             <Row>
               {Object.values(controllersResult.controllers!).map((c: Controller) => {
                 return (
-                  <Card style={{ minWidth: "18rem", backgroundColor: "initial", margin: "0.5rem" }}>
+                  <Card key={c.id} style={{ minWidth: "18rem", backgroundColor: "initial", margin: "0.5rem" }}>
                     <SummonMiniPanel {...c} />
                   </Card>
                 );
