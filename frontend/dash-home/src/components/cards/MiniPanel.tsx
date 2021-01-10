@@ -38,7 +38,7 @@ const Note = styled(Span)`
 
 const Title = styled(P)`
   font-weight: 200;
-  font-size: 4.5rem;
+  font-size: 4rem;
   margin: 0px;
   text-transform: uppercase;
   line-height: 1;
@@ -46,8 +46,8 @@ const Title = styled(P)`
 `
 
 const Description = styled(P)`
-  font-weight: 100;
+  font-weight: 300;
   font-size: 1.5rem;
-  text-transform: uppercase;
+  text-transform: initial;
   padding-top: 0.5rem;
 `
