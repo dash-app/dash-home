@@ -31,10 +31,6 @@ func (as *agentService) SendIR(ctx context.Context, hex []*hex.HexCode) error {
 		return errors.New("agent not initialized")
 	}
 
-	//もともとforがあった場所（temp)
-
-	// TODO: Request to Pigent (with context)
-
 	// Get Agent from store (must be move...)
 	agent, err := as.store.Get()
 	if err != nil {
