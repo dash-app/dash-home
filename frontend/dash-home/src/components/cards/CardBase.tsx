@@ -8,6 +8,7 @@ interface Props {
   icon?: React.ReactNode,
   title?: string,
   send?: boolean,
+  style?: React.CSSProperties,
   children: React.ReactNode,
 }
 
@@ -15,6 +16,7 @@ export const CardBase = (props: Props) => {
   return (
     <div
       style={{
+        ...props.style,
         borderColor: props.color,
         boxShadow: `0px 0px 2px 0.75px ${props.color}`,
         border: `1px solid ${props.color}`,
@@ -23,14 +25,14 @@ export const CardBase = (props: Props) => {
     >
       <Header style={{ color: props.color }}>
         <Row>
-          <Col style={{verticalAlign: "middle"}}>
+          <Col style={{ verticalAlign: "middle" }}>
             {props.icon &&
               <IconWrapper>
                 {props.icon}
               </IconWrapper>
             }
             {props.title &&
-              <span style={{fontSize: "1rem"}}>
+              <span style={{ fontSize: "1rem" }}>
                 {props.title}
               </span>
             }

@@ -55,8 +55,13 @@ export const P = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadin
 export const Div = (props: any) => {
   return (
     <div
+      {...props}
       style={{
-      }} {...props}>
+        color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFF",
+        backgroundColor: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#FFF" : "#000",
+        ...props.style,
+      }}
+    >
       {props.children}
     </div>
   )

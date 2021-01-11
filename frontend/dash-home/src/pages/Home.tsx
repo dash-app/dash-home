@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Spinner, Container } from 'react-bootstrap';
+import { Row, Col, Spinner, Container, ModalBody, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Center, Div, P, Span } from '../components/atoms/Core';
@@ -10,11 +10,15 @@ import { CardBase } from '../components/cards/CardBase';
 import { SummonMiniPanel } from '../components/controller/SummonPanel';
 import { Controller, ControllersResult, fetchControllers } from '../remote-go/Controller';
 import { LinkContainer } from 'react-router-bootstrap';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
+import { ControllerUI } from '../components/controller/Controller';
 
-interface Props { }
+interface Props extends RouteComponentProps<{ id: string }> { }
 
-const Home: React.FC<Props> = () => {
+const Home: React.FC<Props> = props => {
   const { t } = useTranslation();
+  const id = props.match.params.id;
+  const history = useHistory();
 
   // useStateで状態の保存場所を定義する。 参考：(https://ja.reactjs.org/docs/hooks-state.html)
   const [controllersResult, setControllers] = useState<ControllersResult | undefined>(undefined);
@@ -38,6 +42,24 @@ const Home: React.FC<Props> = () => {
           </Div>
           :
           <Container fluid>
+            {/* Pop-up Controller*/}
+            {id &&
+              <Modal
+                size="xl"
+                show={true}
+                backdroup="static"
+                variant="dark"
+                animation={true}
+                centered
+                style={{ border: "none" }}
+                onHide={() => history.push('/')}
+              >
+                <ModalBody as={Div} style={{ padding: "0" }}>
+                  <ControllerUI id={id} />
+                </ModalBody>
+              </Modal>
+            }
+
             {/* When controlles is empty */}
             {Object.values(controllersResult.controllers).length === 0 &&
               <Center>

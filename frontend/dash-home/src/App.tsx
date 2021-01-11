@@ -42,8 +42,12 @@ const App: React.FC = () => {
 
               {/* Controllers */}
               <Route exact path="/controllers" component={Controllers} />
-              <Route exact path="/controllers/new" component={NewController} />
+
+              {/* Reserved for Modal base controller */}
+              {/* <Route exact path="/controllers/:id" component={Home} /> */}
+
               <Route exact path="/controllers/:id" component={Controller} />
+              <Route exact path="/controllers/new" component={NewController} />
               <Route exact path="/controllers/:id/edit" component={EditController} />
 
               <Route status={404} component={NotFound} />

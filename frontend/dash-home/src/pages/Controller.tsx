@@ -1,19 +1,12 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom'
-import { Center, Div, P, Span } from '../components/atoms/Core';
 import { Container, Navbar } from 'react-bootstrap';
-import styled from 'styled-components';
-import { Button, Icon, Spinner } from '../components/atoms/Themed';
+import { Button } from '../components/atoms/Themed';
 import Basement from '../components/basements/Basement';
-import { NotifyError } from '../components/atoms/Notify';
-import { SummonPanel } from '../components/controller/SummonPanel';
-import { CardBase } from '../components/cards/CardBase';
-import { ControllerResult, fetchController } from '../remote-go/Controller';
-import { fetchTemplate, TemplateResult } from '../remote-go/Template';
-import { SUCCESS } from '../remote-go/Status';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LinkContainer } from 'react-router-bootstrap';
+import { ControllerUI } from '../components/controller/Controller';
 
 interface Props extends RouteComponentProps<{ id: string }> { }
 
@@ -21,144 +14,25 @@ const Controller: React.FC<Props> = props => {
   const { t } = useTranslation();
   const id = props.match.params.id;
 
-  const [controllerResult, setController] = React.useState<ControllerResult | undefined>(undefined);
-  React.useEffect(() => {
-    fetchController(id, setController);
-  }, [id]);
-
-  const [templateResult, setTemplate] = React.useState<TemplateResult | undefined>(undefined);
-  React.useEffect(() => {
-    if (controllerResult?.status === SUCCESS) {
-      fetchTemplate(id, setTemplate);
-    }
-  }, [id, controllerResult?.status])
-
-  // Task
-  const useTask = () => {
-    const [taskId, setTaskId] = React.useState(-1);
-    const callTimer = (f: any, time: number) => {
-      const t = setTimeout(() => {
-        f();
-      }, time);
-
-      console.debug(`:: Task: ${t}`);
-      setTaskId(t);
-    }
-
-    const clearTimer = React.useCallback((taskId) => {
-      console.debug(`:: Task > Clean: ${taskId}`);
-      clearTimeout(taskId);
-    }, []);
-
-    React.useEffect(() => {
-      return () => {
-        clearTimer(taskId);
-      }
-    }, [taskId, clearTimer])
-
-    return callTimer;
-  }
-
-  const sendTimer = useTask();
-
-  // Sending Icon
-  const useSendingIcon = () => {
-    const [taskId, setTaskId] = React.useState<number>(-1);
-    const [sending, updateSending] = React.useState(false);
-    React.useEffect(() => {
-      setTaskId(setTimeout(() => {
-        updateSending(false)
-      }, 500));
-    }, [sending])
-
-    React.useEffect(() => {
-      return () => {
-        clearTimeout(taskId);
-      };
-    }, [taskId]);
-
-    const setSending = () => {
-      updateSending(true);
-    }
-
-    return { sending, setSending };
-  }
-
-  const { sending, setSending } = useSendingIcon();
-
-  if (templateResult !== null && controllerResult !== null) {
-    if (controllerResult?.error?.response?.data?.code === "ERR_CONTROLLER_NOT_FOUND") {
-      return (
-        <Basement>
-          <Container fluid="lg">
-            <Center>
-              <CardBase color="#2A2A2A">
-                <Span>
-                  <Icon style={{ fontSize: "4rem", marginBottom: "1rem" }} icon={["fas", "ghost"]} />
-                  <P style={{ fontSize: "1rem", fontWeight: 800, textTransform: "initial" }}>{t("controller.error.notfound")}</P>
-                </Span>
-              </CardBase>
-            </Center>
-          </Container>
-        </Basement>
-      )
-    }
-  }
-
   return (
     <Basement>
       <Container fluid="lg">
-        {/* Error Message (Template) */}
-        {templateResult?.error &&
-          <NotifyError title={t("controller.error.fetchTemplate")} />
-        }
-
-        {/* Error Message (Controller) */}
-        {controllerResult?.error &&
-          <NotifyError title={t("controller.error.fetchController")} />
-        }
         <Navbar>
-          <Navbar.Brand>
-            {/* Loading Message */}
-            {templateResult?.error == null &&
-              templateResult == null &&
-              controllerResult?.error == null &&
-              controllerResult == null ?
-              <Div>
-                <CustomSpinner animation="border" aria-hidden="true" />
-                <Span>{t("status.loading")}</Span>
-              </Div>
-              :
-              <Div>
-                <LinkContainer to="/">
-                  <Button>
-                    <FontAwesomeIcon icon={["fas", "arrow-left"]} />
-                    <span style={{ paddingLeft: "0.5rem" }}>{t("button.back")}</span>
-                  </Button>
-                </LinkContainer>
-              </Div>
-            }
-          </Navbar.Brand>
+          <LinkContainer to="/">
+            <Button>
+              <FontAwesomeIcon icon={["fas", "arrow-left"]} />
+              <span style={{ paddingLeft: "0.5rem" }}>{t("button.back")}</span>
+            </Button>
+          </LinkContainer>
         </Navbar>
 
-        {(templateResult != null && templateResult?.template != null &&
-          controllerResult != null && controllerResult?.controller != null) &&
-          <SummonPanel
-            controller={controllerResult?.controller}
-            template={templateResult?.template}
-            sending={sending}
-            setSending={setSending}
-            sendTimer={sendTimer}
-          />
-        }
+        {/* Controller */}
+        <div style={{ marginBottom: "1rem" }}>
+          <ControllerUI id={id} />
+        </div>
       </Container>
     </Basement>
   )
 }
-
-const CustomSpinner = styled(Spinner)`
-  margin-left: 4px;
-  margin-right: 4px;
-`
 
 export default Controller;
