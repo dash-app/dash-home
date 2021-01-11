@@ -54,9 +54,9 @@ const Navigation: React.FC<Props> = props => {
           {/* Just Blank... */}
         </Nav>
         <Nav>
-          <span style={{ marginRight: "1rem" }}>
-            <Span>DASH-APP //</Span>
-          </span>
+          <Span style={{ marginRight: "1rem" }}>
+            Dash-App
+          </Span>
         </Nav>
         <Nav>
           <Button onClick={() => { props.menuHandler() }}>
@@ -65,7 +65,7 @@ const Navigation: React.FC<Props> = props => {
           </Button>
         </Nav>
       </Navbar.Collapse>
-    </CustomNavbar >
+    </CustomNavbar>
   );
 }
 
