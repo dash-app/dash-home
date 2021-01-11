@@ -2,8 +2,6 @@ import * as React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { Span } from '../atoms/Core';
 
 interface Props {
   color: string,
