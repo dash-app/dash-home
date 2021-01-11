@@ -1,5 +1,4 @@
 import { Action } from '../../remote-go/Template';
-import { Container } from "../atoms/Themed";
 import { H1, P } from '../atoms/Core';
 import List from './template/List';
 import Range from './template/Range';
@@ -7,7 +6,7 @@ import Shot from "./template/Shot";
 import Toggle from './template/Toggle';
 import { ValueSet } from './template/TplBase';
 import styled from 'styled-components';
-import { Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 interface SummonProps {
   title?: any,

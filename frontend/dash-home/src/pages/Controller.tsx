@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom'
 import { Center, Div, P, Span } from '../components/atoms/Core';
-import { Navbar } from 'react-bootstrap';
+import { Container, Navbar } from 'react-bootstrap';
 import styled from 'styled-components';
-import { Button, Container, Icon, Spinner } from '../components/atoms/Themed';
+import { Button, Icon, Spinner } from '../components/atoms/Themed';
 import Basement from '../components/basements/Basement';
 import { NotifyError } from '../components/atoms/Notify';
 import { SummonPanel } from '../components/controller/SummonPanel';
