@@ -19,7 +19,8 @@ export const CardBase = (props: Props) => {
       style={{
         borderColor: props.color,
         boxShadow: `0.1px 0px 2px 1.5px ${props.color}`,
-        border: `1px solid ${props.color}`
+        border: `1px solid ${props.color}`,
+        backgroundColor: "initial"
       }}
     >
       <Header>

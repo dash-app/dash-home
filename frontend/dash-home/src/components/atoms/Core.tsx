@@ -68,7 +68,6 @@ const Span = (props: any) => {
         <span
             {...props}
             style={{
-                fontWeight: 400,
                 color: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#000" : "#FFFFFF",
                 ...props.style
             }}>

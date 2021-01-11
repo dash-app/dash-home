@@ -39,13 +39,13 @@ const Navigation: React.FC<Props> = props => {
           </span>
         </Title>
         <RoomStatus theme={theme}>
-          <StatusBox className={"status-box"}>
+          <StatusBox>
             <FontAwesomeIcon icon={["fas", "thermometer-three-quarters"]} />
-            <StatusText>{room ? room.ambient.temp.toFixed(1) : "--"}<span style={{marginLeft: "0.2rem", fontSize: "1rem"}}>℃</span></StatusText>
+            <StatusText>{room ? room.ambient.temp.toFixed(1) : "--"}<span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>℃</span></StatusText>
           </StatusBox>
           <StatusBox>
             <FontAwesomeIcon icon={["fas", "tint"]} />
-            <StatusText>{room ? room.ambient.humid.toFixed(0) : "--"}<span style={{marginLeft: "0.2rem", fontSize: "1rem"}}>%</span></StatusText>
+            <StatusText>{room ? room.ambient.humid.toFixed(0) : "--"}<span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>%</span></StatusText>
           </StatusBox>
         </RoomStatus>
       </div>

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Card, Row, Spinner } from 'react-bootstrap';
+import { Row, Col, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Center, Div, P, Span } from '../components/atoms/Core';
 import { NotifyError } from '../components/atoms/Notify';
-import { Button, Container, Icon } from '../components/atoms/Themed';
+import { Button, Icon } from '../components/atoms/Themed';
 import Basement from '../components/basements/Basement';
 import { CardBase } from '../components/cards/CardBase';
 import { SummonMiniPanel } from '../components/controller/SummonPanel';
@@ -37,7 +37,7 @@ const Home: React.FC<Props> = () => {
             <Span>{t("status.loading")}</Span>
           </Div>
           :
-          <Container fluid>
+          <>
             {/* When controlles is empty */}
             {Object.values(controllersResult.controllers).length === 0 &&
               <Center>
@@ -69,16 +69,16 @@ const Home: React.FC<Props> = () => {
             }
 
             {/* Show Controllers */}
-            <Row>
+            <Row xs={1} sm={1} md={2} lg={3} noGutters>
               {Object.values(controllersResult.controllers!).map((c: Controller) => {
                 return (
-                  <Card key={c.id} style={{ minWidth: "18rem", backgroundColor: "initial", margin: "0.5rem" }}>
+                  <Col sm key={c.id} style={{ maxWidth: "28rem", backgroundColor: "initial", padding: "0.5rem", border: "0" }}>
                     <SummonMiniPanel {...c} />
-                  </Card>
+                  </Col>
                 );
               })}
             </Row>
-          </Container>
+          </>
       }
     </Basement>
   )
