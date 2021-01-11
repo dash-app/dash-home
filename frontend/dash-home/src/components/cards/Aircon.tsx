@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CardBase } from './CardBase';
 
 interface AirconProps {
@@ -27,8 +28,8 @@ const AirconCard = (props: AirconProps) => {
   return (
     <CardBase
       color={modeColor}
+      icon={<FontAwesomeIcon icon={["fas", "fan"]} />}
       title={props.name}
-      icon={["fas", "fan"]}
       send={props.send}
     >
       {props.children}

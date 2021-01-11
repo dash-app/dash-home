@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CardBase } from './CardBase';
 
 interface LightProps {
@@ -11,8 +12,8 @@ const LightCard = (props: LightProps) => {
   return (
     <CardBase
       color={"#5A5A5A"}
+      icon={<FontAwesomeIcon icon={["fas", "lightbulb"]} />}
       title={props.name}
-      icon={["fas", "lightbulb"]}
       send={props.send}
     >
       {props.children}

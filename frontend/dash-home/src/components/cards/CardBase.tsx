@@ -7,8 +7,8 @@ import { Span } from '../atoms/Core';
 
 interface Props {
   color: string,
+  icon?: React.ReactNode,
   title?: string,
-  icon?: IconProp,
   send?: boolean,
   children: React.ReactNode,
 }
@@ -18,24 +18,30 @@ export const CardBase = (props: Props) => {
     <div
       style={{
         borderColor: props.color,
-        boxShadow: `0.1px 0px 2px 1.5px ${props.color}`,
+        boxShadow: `0px 0px 2px 1.5px ${props.color}`,
         border: `1px solid ${props.color}`,
         backgroundColor: "initial"
       }}
     >
-      <Header>
+      <Header style={{ color: props.color }}>
         <Row>
-          <Col>
+          <Col style={{verticalAlign: "middle"}}>
             {props.icon &&
-              <Icon icon={props.icon} style={{ color: props.color }} />
+              <IconWrapper>
+                {props.icon}
+              </IconWrapper>
             }
             {props.title &&
-              <Span style={{ color: props.color, verticalAlign: "initial" }}>{props.title}</Span>
+              <span style={{fontSize: "1rem"}}>
+                {props.title}
+              </span>
             }
           </Col>
           {props.send &&
             <Col style={{ textAlign: "right" }}>
-              <Icon icon={["fas", "wifi"]} style={{ color: props.color }} />
+              <IconWrapper>
+                <FontAwesomeIcon icon={["fas", "wifi"]} />
+              </IconWrapper>
             </Col>
           }
         </Row>
@@ -50,10 +56,10 @@ export const CardBase = (props: Props) => {
 const Header = styled(Card.Header)`
   background-color: initial;
   border: none;
+  font-size: 2em;
 `
 
-const Icon = styled(FontAwesomeIcon)`
-  font-size: 2em;
+const IconWrapper = styled.span`
   margin-left: 4px;
   margin-right: 4px;
 `
