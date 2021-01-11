@@ -16,13 +16,13 @@ const AirconCard = (props: AirconProps) => {
       modeColor = "#5A5A5A";
       break;
     case "cool":
-      modeColor = "#0088FF";
+      modeColor = "#007Bff";
       break;
     case "dry":
-      modeColor = "#00AA00";
+      modeColor = "#3CA811";
       break;
     case "heat":
-      modeColor = "#FF5500";
+      modeColor = "#FF650D";
       break;
   }
   return (
