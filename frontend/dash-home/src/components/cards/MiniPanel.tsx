@@ -32,13 +32,13 @@ export const MiniPanelInner = (props: Props) => {
 }
 
 const Note = styled(P)`
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 300;
   margin-left: 0.2rem;
 `
 
 const Title = styled(P)`
-  font-weight: 200;
+  font-weight: 300;
   font-size: 3.3rem;
   text-transform: uppercase;
   line-height: 1em;
