@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Nav, Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { Div, H2, Span } from "../components/atoms/Core";
+import { Div, H1, Span } from "../components/atoms/Core";
 import { NotifyError } from "../components/atoms/Notify";
 import { Button, Spinner } from "../components/atoms/Themed";
 import Basement from "../components/basements/Basement";
@@ -37,6 +37,7 @@ const Controllers: React.FC<Props> = () => {
             visible={deleteQueue != null}
           />
         }
+        <H1>{t("controller.list.title")}</H1>
         <Nav>
           <Nav.Item>
             <LinkContainer to="/">
@@ -55,7 +56,6 @@ const Controllers: React.FC<Props> = () => {
             </LinkContainer>
           </Nav.Item>
         </Nav>
-        <H2>{t("controller.list.title")}</H2>
         {controllersResult?.error ?
           <NotifyError title={t("controller.error.fetchControllers")} />
           :
@@ -66,7 +66,7 @@ const Controllers: React.FC<Props> = () => {
             </Div>
             :
             <Div>
-              <Table hover variant="dark">
+              <Table variant="dark">
                 <thead>
                   <tr>
                     <th>ID</th>
@@ -110,7 +110,7 @@ const Controllers: React.FC<Props> = () => {
             </Div>
         }
       </Container>
-    </Basement >
+    </Basement>
   )
 }
 
