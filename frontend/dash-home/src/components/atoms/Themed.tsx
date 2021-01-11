@@ -4,7 +4,6 @@ import { ThemeContext } from '../themes/ThemeProvider';
 
 import {
     Button as BaseButton,
-    Container as BaseContainer,
     Spinner as BaseSpinner
 } from 'react-bootstrap';
 
@@ -37,22 +36,6 @@ const Button = (props: any) => {
             </BaseButton>
         )
     }
-}
-
-// Container
-const Container = (props: any) => {
-    return (
-        <BaseContainer
-            style={
-                React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ?
-                    { backgroundColor: "#FFFFFF" } :
-                    { backgroundColor: "#111115" }
-            }
-            {...props}
-        >
-            {props.children}
-        </BaseContainer>
-    )
 }
 
 const Icon = (props: any) => {
@@ -124,7 +107,6 @@ const HR = (props: any) => {
 
 export {
     Button,
-    Container,
     Icon,
     IconInvert,
     Spinner,
