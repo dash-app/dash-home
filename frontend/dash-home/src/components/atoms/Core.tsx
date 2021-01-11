@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../themes/ThemeProvider';
 
-const H1 = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
+export const H1 = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
   return (
     <h1
       {...props}
@@ -15,7 +15,7 @@ const H1 = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingEleme
   )
 }
 
-const H2 = (props: any) => {
+export const H2 = (props: any) => {
   return (
     <h2
       {...props}
@@ -27,7 +27,7 @@ const H2 = (props: any) => {
   )
 }
 
-const H3 = (props: any) => {
+export const H3 = (props: any) => {
   return (
     <h3
       {...props}
@@ -39,7 +39,7 @@ const H3 = (props: any) => {
   )
 }
 
-const P = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
+export const P = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
   return (
     <p
       {...props}
@@ -52,7 +52,7 @@ const P = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElemen
   )
 }
 
-const Div = (props: any) => {
+export const Div = (props: any) => {
   return (
     <div
       style={{
@@ -62,7 +62,7 @@ const Div = (props: any) => {
   )
 }
 
-const Span = (props: any) => {
+export const Span = (props: any) => {
   return (
     <span
       {...props}
@@ -75,7 +75,7 @@ const Span = (props: any) => {
   )
 }
 
-const Center = (props: any) => {
+export const Center = (props: any) => {
   const Div = styled.div`
         position: absolute;
         text-align: center;
@@ -92,13 +92,3 @@ const Center = (props: any) => {
     </Div>
   )
 }
-
-export {
-  H1,
-  H2,
-  H3,
-  P,
-  Div,
-  Span,
-  Center
-};

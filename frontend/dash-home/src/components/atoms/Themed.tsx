@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 
 // Button
-const Button = (props: any) => {
+export const Button = (props: any) => {
   const theme = React.useContext(ThemeContext).theme
   // provided current (for Button Group)
   if (props.type === "radio") {
@@ -38,7 +38,7 @@ const Button = (props: any) => {
   }
 }
 
-const Icon = (props: any) => {
+export const Icon = (props: any) => {
   return (
     <FontAwesomeIcon
       style={{
@@ -51,7 +51,7 @@ const Icon = (props: any) => {
   )
 }
 
-const IconInvert = (props: any) => {
+export const IconInvert = (props: any) => {
   return (
     <FontAwesomeIcon
       style={{
@@ -64,7 +64,7 @@ const IconInvert = (props: any) => {
   )
 }
 
-const Spinner = (props: any) => {
+export const Spinner = (props: any) => {
   return (
     <BaseSpinner
       style={{
@@ -79,7 +79,7 @@ const Spinner = (props: any) => {
   )
 }
 
-const SpinnerInvert = (props: any) => {
+export const SpinnerInvert = (props: any) => {
   return (
     <BaseSpinner
       style={{
@@ -94,7 +94,7 @@ const SpinnerInvert = (props: any) => {
   )
 }
 
-const HR = (props: any) => {
+export const HR = (props: any) => {
   return (
     <hr
       style={{
@@ -104,12 +104,3 @@ const HR = (props: any) => {
     />
   )
 }
-
-export {
-  Button,
-  Icon,
-  IconInvert,
-  Spinner,
-  SpinnerInvert,
-  HR,
-};
