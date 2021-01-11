@@ -56,7 +56,6 @@ const Div = (props: any) => {
     return (
         <div
             style={{
-                backgroundColor: React.useContext(ThemeContext).theme === "CHEEKY_WHITE" ? "#FFFFFF" : "#111115"
             }} {...props}>
             {props.children}
         </div>

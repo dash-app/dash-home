@@ -12,7 +12,7 @@ export const ThemeContext = React.createContext({
 export const ThemeProvider: React.FC<Props> = props => {
   const [theme, setTheme] = React.useState<string>(localStorage.getItem("theme") ? localStorage.getItem("theme")! : "CHEEKY_WHITE")
   React.useEffect(() => {
-    document.body.style.backgroundColor = theme === "CHEEKY_WHITE" ? "#FFFFFF" : "#111115";
+    document.body.style.backgroundColor = theme === "CHEEKY_WHITE" ? "#FFFFFF" : "#000000";
     localStorage.setItem('theme', theme);
   });
 

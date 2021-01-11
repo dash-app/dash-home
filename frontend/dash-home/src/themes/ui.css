@@ -36,19 +36,21 @@
 }
 
 .btn-dark {
-    background-color: #2A2A2A;
+    background-color: #0F0F0F;
 }
 
 .btn-primary, .btn-gray {
-    background-color: #252525;
+    background-color: #151515;
     color: #FFFFFF;
     fill: #FFFFFF;
 }
 
-.btn-primary:hover, .btn-gray:hover {
-    background-color: #202020;
-    color: #FFFFFF;
-    fill: #FFFFFF;
+.table-dark {
+    background-color: #111112;
+}
+
+.table-dark td,.table-dark th,.table-dark thead th {
+    border-color: #151515;
 }
 
 body {
@@ -58,7 +60,7 @@ body {
 }
 
 h1 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     font-weight: 300;
 }
 
@@ -104,13 +106,14 @@ p {
 }
 
 *::-webkit-scrollbar-thumb {
-    background: #6F6F71;
+    background: #161616;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-    background: #5C5C5E;
+    background: #1E1E1E;
 }
 
 * {
     scrollbar-width: thin;
+    scrollbar-color: #161616 transparent;
 }

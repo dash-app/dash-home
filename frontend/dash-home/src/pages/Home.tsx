@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Spinner } from 'react-bootstrap';
+import { Row, Col, Spinner, Container } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Center, Div, P, Span } from '../components/atoms/Core';
@@ -37,7 +37,7 @@ const Home: React.FC<Props> = () => {
             <Span>{t("status.loading")}</Span>
           </Div>
           :
-          <>
+          <Container fluid>
             {/* When controlles is empty */}
             {Object.values(controllersResult.controllers).length === 0 &&
               <Center>
@@ -78,7 +78,7 @@ const Home: React.FC<Props> = () => {
                 );
               })}
             </Row>
-          </>
+          </Container>
       }
     </Basement>
   )
