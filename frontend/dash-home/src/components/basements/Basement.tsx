@@ -120,9 +120,7 @@ const Basement: React.FC<Props> = props => {
                     <p>Version: {RELEASE_VERSION}</p>
                   </Modal.Footer>
                 </Modal>
-                <Container fluid>
-                  {props.children}
-                </Container>
+                {props.children}
               </>
             )
           }}
