@@ -6,13 +6,14 @@ import { Button } from '../atoms/Themed';
 import { ThemeContext } from '../themes/ThemeProvider';
 import { RoomContext } from './RoomProvider';
 import { NotifyError } from '../atoms/Notify';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Col, Container, Modal, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ThemeSwitcher from '../themes/ThemeSwitcher';
 import { RELEASE_VERSION } from '../../config';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
+import { LinkContainer } from 'react-router-bootstrap';
 
 interface Props {
   children: React.ReactNode,
@@ -63,31 +64,31 @@ const Basement: React.FC<Props> = props => {
                       <p><Icon icon={["fas", "ellipsis-h"]} />{t("menu.main.title")}</p>
                       <CustomRow>
                         <Col>
-                          <Link to={"/"}>
+                          <LinkContainer to={"/"}>
                             <Button size="lg" block>
                               <FontAwesomeIcon icon={["fas", "home"]} />
                               <p>{t("menu.main.home")}</p>
                             </Button>
-                          </Link>
+                          </LinkContainer>
                         </Col>
                       </CustomRow>
                       <CustomRow>
                         <Col>
-                          <Link to={"/controllers"}>
+                          <LinkContainer to={"/controllers"}>
                             <Button size="lg" block>
                               <FontAwesomeIcon icon={["fas", "wifi"]} />
                               <p>{t("menu.main.controllers")}</p>
                             </Button>
-                          </Link>
+                          </LinkContainer>
                         </Col>
                         {/* TODO: Implements */}
                         {/* <Col>
-                          <Link to={"/settings"}>
+                          <LinkContainer to={"/settings"}>
                             <Button size="lg" block>
                               <FontAwesomeIcon icon={["fas", "cog"]} />
                               <p>Settings</p>
                             </Button>
-                          </Link>
+                          </LinkContainer>
                         </Col> */}
                       </CustomRow>
                       <hr />

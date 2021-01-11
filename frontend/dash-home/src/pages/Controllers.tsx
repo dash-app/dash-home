@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Container, Nav, Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Div, H2, Span } from "../components/atoms/Core";
 import { NotifyError } from "../components/atoms/Notify";
@@ -10,6 +9,7 @@ import { Button, Spinner } from "../components/atoms/Themed";
 import Basement from "../components/basements/Basement";
 import { Controller, ControllersResult, fetchControllers } from "../remote-go/Controller";
 import DeleteController from "./DeleteController";
+import { LinkContainer } from 'react-router-bootstrap';
 
 interface Props { }
 
@@ -39,20 +39,20 @@ const Controllers: React.FC<Props> = () => {
         }
         <Nav>
           <Nav.Item>
-            <Link to="/">
+            <LinkContainer to="/">
               <Button>
                 <FontAwesomeIcon icon={["fas", "arrow-left"]} />
                 <span style={{ paddingLeft: "0.5rem" }}>{t("button.back")}</span>
               </Button>
-            </Link>
+            </LinkContainer>
           </Nav.Item>
           <Nav.Item>
-            <Link to="/controllers/new">
+            <LinkContainer to="/controllers/new">
               <Button>
                 <FontAwesomeIcon icon={["fas", "plus"]} />
                 <span style={{ paddingLeft: "0.5rem" }}>{t("button.add")}</span>
               </Button>
-            </Link>
+            </LinkContainer>
           </Nav.Item>
         </Nav>
         <H2>{t("controller.list.title")}</H2>
@@ -81,19 +81,19 @@ const Controllers: React.FC<Props> = () => {
                       <tr key={controller.id}>
                         <td>{controller.id}</td>
                         <td>
-                          <Link to={`/controllers/${controller.id}`}>
+                          <LinkContainer to={`/controllers/${controller.id}`}>
                             <Button>{controller.name}</Button>
-                          </Link>
+                          </LinkContainer>
                         </td>
                         <td>{controller.kind}</td>
                         <td>
                           {/* <Button onClick={() => { setShow(true) }}>Edit</Button> */}
-                          <Link to={`/controllers/${controller.id}/edit`}>
+                          <LinkContainer to={`/controllers/${controller.id}/edit`}>
                             <Button>
                               <FontAwesomeIcon icon={["fas", "edit"]} />
                               <span style={{ paddingLeft: "0.5rem" }}>{t("button.edit")}</span>
                             </Button>
-                          </Link>
+                          </LinkContainer>
                           <Button variant="danger" onClick={() => {
                             setDeleteQueue(controller)
                           }}>

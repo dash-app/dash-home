@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Center, Div, P, Span } from '../components/atoms/Core';
 import { NotifyError } from '../components/atoms/Notify';
@@ -10,6 +9,7 @@ import Basement from '../components/basements/Basement';
 import { CardBase } from '../components/cards/CardBase';
 import { SummonMiniPanel } from '../components/controller/SummonPanel';
 import { Controller, ControllersResult, fetchControllers } from '../remote-go/Controller';
+import { LinkContainer } from 'react-router-bootstrap';
 
 interface Props { }
 
@@ -60,9 +60,9 @@ const Home: React.FC<Props> = () => {
                     }
                   </div>
                   <Div>
-                    <Link to="/controllers/new">
+                    <LinkContainer to="/controllers/new">
                       <Button>{t("controller.empty.create")}</Button>
-                    </Link>
+                    </LinkContainer>
                   </Div>
                 </CardBase>
               </Center>

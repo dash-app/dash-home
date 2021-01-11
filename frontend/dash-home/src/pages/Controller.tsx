@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { Center, Div, P, Span } from '../components/atoms/Core';
 import { Navbar } from 'react-bootstrap';
 import styled from 'styled-components';
@@ -13,6 +13,7 @@ import { fetchTemplate, TemplateResult } from '../remote-go/Template';
 import { SUCCESS } from '../remote-go/Status';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { LinkContainer } from 'react-router-bootstrap';
 
 interface Props extends RouteComponentProps<{ id: string }> { }
 
@@ -129,12 +130,12 @@ const Controller: React.FC<Props> = props => {
               </Div>
               :
               <Div>
-                <Link to="/">
+                <LinkContainer to="/">
                   <Button>
                     <FontAwesomeIcon icon={["fas", "arrow-left"]} />
                     <span style={{ paddingLeft: "0.5rem" }}>{t("button.back")}</span>
                   </Button>
-                </Link>
+                </LinkContainer>
               </Div>
             }
           </Navbar.Brand>

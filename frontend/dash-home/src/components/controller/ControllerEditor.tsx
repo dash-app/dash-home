@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Container, Modal, Form, Col, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import { Controller } from '../../remote-go/Controller';
 import { FAILED, PENDING, Status, SUCCESS } from '../../remote-go/Status';
 import { IconInvert, SpinnerInvert } from '../atoms/Themed';
+import { LinkContainer } from 'react-router-bootstrap';
 
 interface Props {
   controller: Controller,
@@ -114,9 +114,9 @@ const ControllerEditor: React.FC<Props> = (props: Props) => {
             {props.status === SUCCESS && <IconInvert icon={["fas", "check"]} />}
             {props.status === FAILED && <IconInvert icon={["fas", "exclamation-triangle"]} />}
             <Button type="submit" disabled={props.status === PENDING}>{t("button.update")}</Button>
-            <Link to="/controllers">
+            <LinkContainer to="/controllers">
               <Button variant="secondary">{t("button.back")}</Button>
-            </Link>
+            </LinkContainer>
           </Modal.Footer>
         </Form>
       </Modal>

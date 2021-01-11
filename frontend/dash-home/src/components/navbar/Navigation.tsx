@@ -6,7 +6,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { ThemeContext } from '../themes/ThemeProvider';
-import { Link } from 'react-router-dom';
 import { Span } from '../atoms/Core';
 import { RoomContext } from '../basements/RoomProvider';
 
@@ -64,8 +63,6 @@ const Navigation: React.FC<Props> = props => {
             <FontAwesomeIcon icon={["fas", "ellipsis-v"]} style={{ marginRight: "1rem" }} />
             <span>MENU</span>
           </Button>
-          <Link to="/controllers">
-          </Link>
         </Nav>
       </Navbar.Collapse>
     </CustomNavbar >

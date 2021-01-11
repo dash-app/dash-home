@@ -4,12 +4,13 @@ import { Container, Dropdown, DropdownButton, Form } from 'react-bootstrap';
 import { Div, H1, P } from '../components/atoms/Core';
 import { Controller, ControllerResult, createController, Remote, SwitchBot } from '../remote-go/Controller';
 import { FAILED, PENDING, SUCCESS } from '../remote-go/Status';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Spinner, Button } from '../components/atoms/Themed';
 import RemoteChooser from '../components/controller/RemoteChooser';
 import SwitchBotChooser from '../components/controller/SwitchBotChooser';
 import { NotifyError } from '../components/atoms/Notify';
 import { useTranslation } from 'react-i18next';
+import { LinkContainer } from 'react-router-bootstrap';
 
 interface Props { }
 
@@ -160,9 +161,9 @@ const NewController: React.FC<Props> = () => {
           }
 
           <Button type="submit" disabled={postResult && postResult.status === PENDING}>{t("button.add")}</Button>
-          <Link to="/controllers">
+          <LinkContainer to="/controllers">
             <Button variant="secondary">{t("button.back")}</Button>
-          </Link>
+          </LinkContainer>
           <Div>
             {postResult && postResult.status === PENDING && <Spinner aria-hidden="true" />}
             {/* {postResult && postResult.status === SUCCESS && <Icon icon={["fas", "check"]} />} */}

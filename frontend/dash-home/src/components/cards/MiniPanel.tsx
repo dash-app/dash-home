@@ -1,5 +1,6 @@
+import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap'
 import styled from 'styled-components';
 import { P } from '../atoms/Core';
 import { Button } from '../atoms/Themed';
@@ -22,9 +23,9 @@ export const MiniPanelInner = (props: Props) => {
       </Description>
       {
         props.id &&
-        <Link to={`/controllers/${props.id}`}>
+        <LinkContainer to={`/controllers/${props.id}`}>
           <Button block>{t("button.tapToEdit")}</Button>
-        </Link>
+        </LinkContainer >
       }
     </>
   )
