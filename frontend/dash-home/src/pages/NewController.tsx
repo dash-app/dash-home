@@ -161,7 +161,7 @@ const NewController: React.FC<Props> = () => {
           }
 
           <Button type="submit" disabled={postResult && postResult.status === PENDING}>{t("button.add")}</Button>
-          <LinkContainer to="/controllers">
+          <LinkContainer exact to="/controllers">
             <Button variant="secondary">{t("button.back")}</Button>
           </LinkContainer>
           <Div>

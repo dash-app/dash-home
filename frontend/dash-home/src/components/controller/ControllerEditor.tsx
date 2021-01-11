@@ -114,7 +114,7 @@ const ControllerEditor: React.FC<Props> = (props: Props) => {
             {props.status === SUCCESS && <IconInvert icon={["fas", "check"]} />}
             {props.status === FAILED && <IconInvert icon={["fas", "exclamation-triangle"]} />}
             <Button type="submit" disabled={props.status === PENDING}>{t("button.update")}</Button>
-            <LinkContainer to="/controllers">
+            <LinkContainer exact to="/controllers">
               <Button variant="secondary">{t("button.back")}</Button>
             </LinkContainer>
           </Modal.Footer>
