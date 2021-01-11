@@ -38,7 +38,7 @@ const Controllers: React.FC<Props> = () => {
           />
         }
         <H1>{t("controller.list.title")}</H1>
-        <Nav>
+        <Nav style={{ marginBottom: "1rem" }}>
           <Nav.Item>
             <LinkContainer to="/">
               <Button>
