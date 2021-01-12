@@ -8,8 +8,6 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 
 // Routing Template
 import Home from './pages/Home';
-import Settings from './pages/Settings';
-import About from './pages/About';
 import RoomSetup from './pages/RoomSetup';
 import Controllers from './pages/Controllers';
 import Controller from './pages/Controller';
@@ -34,9 +32,7 @@ const App: React.FC = () => {
           <Router>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/settings" component={Settings} />
-              <Route path="/about" component={About} />
-
+              
               {/* Room */}
               <Route exact path="/room/setup" component={RoomSetup} />
 
