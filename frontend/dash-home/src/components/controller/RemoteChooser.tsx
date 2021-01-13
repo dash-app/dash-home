@@ -55,14 +55,9 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
     );
   }
 
-  console.log(remotes);
-
-  const sortedRemotes = Object.entries(remotes);
-  sortedRemotes.forEach((r) => {
-    r[1].sort().reverse();
-  });
-  console.log(sortedRemotes);
-
+  // Sort entry
+  Object.keys(remotes).forEach((vendor: string) => remotes[vendor].sort())
+  
   return (
     <Modal
       size="lg"
@@ -76,13 +71,13 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
         <Modal.Title>{t("controller.remote.chooser", { kind: props.kind })}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Tabs defaultActiveKey={remotes.values} id="tabs">
+        <Tabs defaultActiveKey={remotes[0]} id="tabs">
           {/* Generate kind of vendor/models array... */}
-          {sortedRemotes.map((r: [string, string[]]) => {
+          {Object.keys(remotes).map((vendor: string) => {
             return (
-              <Tab eventKey={r[0]} title={r[0]}>
+              <Tab eventKey={vendor} title={vendor}>
                 {/* Models Card... */}
-                {r[1].map((model: string) => {
+                {remotes[vendor].map((model: string) => {
                   return (
                     <Card>
                       <Card.Body>
@@ -90,7 +85,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
                         <Button variant="primary" onClick={() => {
                           props.handleUpdate(
                             ((): Remote => ({
-                              vendor: r[0],
+                              vendor: vendor,
                               model: model,
                             }))()
                           );
