@@ -41,3 +41,9 @@ var ErrUnsupportedKind = &status.Error{
 	Error: errors.New("unsupported kind"),
 	Code:  "ERR_UNSUPPORTED_KIND",
 }
+
+// ErrNameTooLong - When name than 20 characters
+var ErrNameTooLong = &status.Error{
+	Error: errors.New("name too long"),
+	Code:  "ERR_NAME_TOO_LONG",
+}

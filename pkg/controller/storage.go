@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/dash-app/dash-home/pkg/agent"
 	"github.com/dash-app/dash-home/pkg/storage"
@@ -138,6 +139,14 @@ func (s *Storage) Create(name, kind, t string, opts *Options) (*Entry, error) {
 		return nil, err
 	} else if e != nil {
 		return nil, ErrAlreadyExists.Error
+	}
+
+	// Trim space of first and end
+	name = strings.TrimSpace(name)
+
+	// name range check
+	if utf8.RuneCountInString(name) > 20 {
+		return nil, ErrNameTooLong.Error
 	}
 
 	id, _ := uuid.NewUUID()
