@@ -32,8 +32,8 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
     }
   }
 
-  const allRemotes: Map<string, { [vendor: string]: string[] }> = new Map<string, { [vendor: string]: string[] }>(Object.entries(remotesResult.remotes));
-  const remotes = allRemotes.get(props.kind.toLowerCase())
+  const allRemotes = remotesResult.remotes;
+  const remotes = allRemotes.get(props.kind.toLowerCase());
   if (!remotes) {
     return (
       <Modal
@@ -55,6 +55,14 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
     );
   }
 
+  console.log(remotes);
+
+  const sortedRemotes = Object.entries(remotes);
+  sortedRemotes.forEach((r) => {
+    r[1].sort().reverse();
+  });
+  console.log(sortedRemotes);
+
   return (
     <Modal
       size="lg"
@@ -68,9 +76,9 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
         <Modal.Title>{t("controller.remote.chooser", { kind: props.kind })}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Tabs defaultActiveKey={remotes[0]} id="tabs">
+        <Tabs defaultActiveKey={remotes.values} id="tabs">
           {/* Generate kind of vendor/models array... */}
-          {Object.entries(remotes).map((r: [string, string[]]) => {
+          {sortedRemotes.map((r: [string, string[]]) => {
             return (
               <Tab eventKey={r[0]} title={r[0]}>
                 {/* Models Card... */}
