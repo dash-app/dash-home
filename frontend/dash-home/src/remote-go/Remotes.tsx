@@ -2,7 +2,6 @@ import axios from "../httpClient";
 import { API_ADDRESS } from "../config";
 import { FAILED, PENDING, Status, SUCCESS } from "./Status";
 
-
 export interface RemotesResult {
   status: Status,
   remotes?: Map<string, { [vendor: string]: string[]}>,
