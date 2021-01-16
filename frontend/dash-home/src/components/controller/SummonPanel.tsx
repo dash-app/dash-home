@@ -5,11 +5,15 @@ import { Controller } from '../../remote-go/Controller';
 import { H1 } from '../atoms/Core';
 import { ControllerProps } from './Controller';
 
-export const SummonMiniPanel: React.FC<Controller> = controller => {
-  if (controller.kind === "AIRCON" && controller.type === "REMOTE") {
-    return (<AirconMiniPanel {...controller} />)
-  } else if (controller.kind === "LIGHT" && controller.type === "REMOTE") {
-    return (<LightMiniPanel {...controller} />)
+interface Props extends Controller {
+  children?: React.ReactNode,
+}
+
+export const SummonMiniPanel: React.FC<Props> = props => {
+  if (props.kind === "AIRCON" && props.type === "REMOTE") {
+    return (<><AirconMiniPanel {...props} />{ props.children }</>)
+  } else if (props.kind === "LIGHT" && props.type === "REMOTE") {
+    return (<><LightMiniPanel {...props} />{ props.children }</>)
   } else {
     return (<H1>Unknown Controller</H1>)
   }

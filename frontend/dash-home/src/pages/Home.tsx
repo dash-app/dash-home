@@ -12,6 +12,7 @@ import { Controller, ControllersResult, fetchControllers } from '../remote-go/Co
 import { LinkContainer } from 'react-router-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { ControllerUI } from '../components/controller/Controller';
+import { MiniPanel } from '../components/cards/MiniPanel';
 
 interface Props extends RouteComponentProps<{ id: string }> { }
 
@@ -95,7 +96,7 @@ const Home: React.FC<Props> = props => {
               {Object.values(controllersResult.controllers!).map((c: Controller) => {
                 return (
                   <Col sm key={c.id} style={{ maxWidth: "28rem", backgroundColor: "initial", padding: "0.5rem", border: "0" }}>
-                    <SummonMiniPanel {...c} />
+                    <MiniPanel id={c.id} controller={c} />
                   </Col>
                 );
               })}
