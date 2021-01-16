@@ -12,16 +12,14 @@ import { useTranslation } from 'react-i18next';
 export const LightMiniPanel: React.FC<Controller> = controller => {
   const { t } = useTranslation();
   return (
-    <LightCard name={controller.name}>
-      <MiniPanelInner
-        id={controller.id}
-        title={
-          controller.light?.last_action ?
-            t([`controller.light.mode.${controller.light?.last_action}`, '_'], { value: controller.light?.last_action }) : "N/A"}
-        note={t("controller.light.mode.name")}
-        description={t("controller.light.name")}
-      />
-    </LightCard>
+    <MiniPanelInner
+      id={controller.id}
+      title={
+        controller.light?.last_action ?
+          t([`controller.light.mode.${controller.light?.last_action}`, '_'], { value: controller.light?.last_action }) : "N/A"}
+      note={t("controller.light.mode.name")}
+      description={t("controller.light.name")}
+    />
   )
 }
 

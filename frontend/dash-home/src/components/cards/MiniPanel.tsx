@@ -10,6 +10,11 @@ import { SummonMiniPanel } from '../controller/SummonPanel';
 interface Props {
   id?: string,
   controller: Controller,
+
+  // Extra options (edit/delete)
+  // TODO: replace type of 'any' to individual function. 
+  onEdit?: any,
+  onDelete?: any,
 }
 
 interface InnerProps {
@@ -34,9 +39,7 @@ export const MiniPanel = (props: Props) => {
             <LinkContainer to={`/controllers/${props.id}/edit`}>
               <Dropdown.Item href="#">{t("button.edit")}</Dropdown.Item>
             </LinkContainer>
-            <LinkContainer to={`/controllers/${props.id}/delete`}>
-              <Dropdown.Item href="#">{t("button.delete")}</Dropdown.Item>
-            </LinkContainer>
+            <Dropdown.Item onClick={props.onDelete}>{t("button.delete")}</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       }

@@ -7,12 +7,12 @@ import { NotifyError } from '../components/atoms/Notify';
 import { Button, Icon } from '../components/atoms/Themed';
 import Basement from '../components/basements/Basement';
 import { CardBase } from '../components/cards/CardBase';
-import { SummonMiniPanel } from '../components/controller/SummonPanel';
 import { Controller, ControllersResult, fetchControllers } from '../remote-go/Controller';
 import { LinkContainer } from 'react-router-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { ControllerUI } from '../components/controller/Controller';
 import { MiniPanel } from '../components/cards/MiniPanel';
+import DeleteController from './DeleteController';
 
 interface Props extends RouteComponentProps<{ id: string }> { }
 
@@ -23,12 +23,17 @@ const Home: React.FC<Props> = props => {
 
   // useStateで状態の保存場所を定義する。 参考：(https://ja.reactjs.org/docs/hooks-state.html)
   const [controllersResult, setControllers] = useState<ControllersResult | undefined>(undefined);
+  const [deleteQueue, setDeleteQueue] = React.useState<Controller | undefined>(undefined);
   const [anger, setAnger] = useState<boolean>(false);
 
   // useEffectでコンポーネントのレンダリング後にfetchControllersを叩いてAPIから取得する。 参考：(https://ja.reactjs.org/docs/hooks-effect.html)
   // 第2引数に空の配列を渡してあげることで、stateが更新されてもレンダリングが走らないようにする。 (無限ループ対策)
+  const fetch = () => {
+    fetchControllers(setControllers);
+  }
+
   React.useEffect(() => {
-    fetchControllers(setControllers);//処理に成功するとcontrollersResultに値が入る    
+    fetch();
   }, []);
 
   return (
@@ -91,12 +96,22 @@ const Home: React.FC<Props> = props => {
               </Center>
             }
 
+            {/* Delete Controller Modal */}
+            {deleteQueue &&
+              <DeleteController
+                controller={deleteQueue}
+                handleClose={() => setDeleteQueue(undefined)}
+                whenSuccess={() => fetch()}
+                visible={deleteQueue != null}
+              />
+            }
+
             {/* Show Controllers */}
             <Row xs={1} sm={1} md={2} lg={3} noGutters>
               {Object.values(controllersResult.controllers!).map((c: Controller) => {
                 return (
                   <Col sm key={c.id} style={{ maxWidth: "28rem", backgroundColor: "initial", padding: "0.5rem", border: "0" }}>
-                    <MiniPanel id={c.id} controller={c} />
+                    <MiniPanel id={c.id} controller={c} onDelete={() => setDeleteQueue(c)} />
                   </Col>
                 );
               })}

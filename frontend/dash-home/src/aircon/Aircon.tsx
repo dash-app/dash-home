@@ -18,62 +18,66 @@ import { useTranslation } from 'react-i18next';
 const AirconMiniPanel: React.FC<Controller> = controller => {
   const { t } = useTranslation();
   const aircon = controller.aircon!;
+
+  if (!aircon.operation) {
+    return (
+      <MiniPanelInner
+        id={controller.id}
+        title={t("controller.aircon.operation.off")}
+        note={t("controller.aircon.operation.name")}
+        description={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
+      />
+    )
+  }
+
+  if (aircon.modes[aircon.mode].temp !== undefined) {
+    return (
+      <MiniPanelInner
+        id={controller.id}
+        title={aircon.modes[aircon.mode].temp.toFixed(1)}
+        note={t("controller.aircon.temp.name")}
+        description={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
+      />
+    )
+  }
+
+  if (aircon.modes[aircon.mode].humid !== undefined) {
+    return (
+      <MiniPanelInner
+        id={controller.id}
+        title={aircon.modes[aircon.mode].humid}
+        note={t("controller.aircon.humid.name")}
+        description={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
+      />
+    )
+  }
+
+  if (aircon.modes[aircon.mode].fan !== undefined) {
+    return (
+      <MiniPanelInner
+        id={controller.id}
+        title={
+          <ThemedIcon style={{ fontSize: "1rem" }}>
+            <FanIcon />
+            <FanStep
+              current={aircon.modes[aircon.mode].fan}
+              default={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
+            />
+          </ThemedIcon>
+        }
+        note={t("controller.aircon.fan.name")}
+        description={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
+      />
+    )
+  }
+
   return (
-    <AirconCard name={controller.name} mode={aircon.mode}>
-      {(() => {
-        if (!aircon.operation) {
-          return (
-            <MiniPanelInner
-              id={controller.id}
-              title={t("controller.aircon.operation.off")}
-              note={t("controller.aircon.operation.name")}
-              description={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
-            />
-          )
-        }
-
-        if (aircon.modes[aircon.mode].temp !== undefined) {
-          return (
-            <MiniPanelInner
-              id={controller.id}
-              title={aircon.modes[aircon.mode].temp.toFixed(1)}
-              note={t("controller.aircon.temp.name")}
-              description={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
-            />
-          )
-        }
-
-        if (aircon.modes[aircon.mode].humid !== undefined) {
-          return (
-            <MiniPanelInner
-              id={controller.id}
-              title={aircon.modes[aircon.mode].humid}
-              note={t("controller.aircon.humid.name")}
-              description={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
-            />
-          )
-        }
-
-        if (aircon.modes[aircon.mode].fan !== undefined) {
-          return (
-            <MiniPanelInner
-              id={controller.id}
-              title={
-                <ThemedIcon style={{ fontSize: "1rem" }}>
-                  <FanIcon />
-                  <FanStep
-                    current={aircon.modes[aircon.mode].fan}
-                    default={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
-                  />
-                </ThemedIcon>
-              }
-              note={t("controller.aircon.fan.name")}
-              description={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
-            />
-          )
-        }
-      })()}
-    </AirconCard>
+    <MiniPanelInner
+      id={controller.id}
+      title={<></>}
+      note={t("controller.aircon.fan.name")}
+      description={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
+    />
   )
 }
 

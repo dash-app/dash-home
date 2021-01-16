@@ -3,6 +3,8 @@ import { AirconPanel, AirconMiniPanel } from "../../aircon/Aircon";
 import { LightPanel, LightMiniPanel } from "../../light/Light";
 import { Controller } from '../../remote-go/Controller';
 import { H1 } from '../atoms/Core';
+import { AirconCard } from '../cards/Aircon';
+import { LightCard } from '../cards/Light';
 import { ControllerProps } from './Controller';
 
 interface Props extends Controller {
@@ -10,12 +12,22 @@ interface Props extends Controller {
 }
 
 export const SummonMiniPanel: React.FC<Props> = props => {
-  if (props.kind === "AIRCON" && props.type === "REMOTE") {
-    return (<><AirconMiniPanel {...props} />{ props.children }</>)
-  } else if (props.kind === "LIGHT" && props.type === "REMOTE") {
-    return (<><LightMiniPanel {...props} />{ props.children }</>)
+  if (props.aircon && props.kind === "AIRCON" && props.type === "REMOTE") {
+    return (
+      <AirconCard name={props.name} mode={props.aircon!.mode}>
+        <AirconMiniPanel {...props} />
+        {props.children}
+      </AirconCard>
+    )
+  } else if (props.light && props.kind === "LIGHT" && props.type === "REMOTE") {
+    return (
+      <LightCard name={props.name}>
+        <LightMiniPanel {...props} />
+        {props.children}
+      </LightCard>
+    )
   } else {
-    return (<H1>Unknown Controller</H1>)
+    return (<H1>Not implemented yet.</H1>)
   }
 }
 
