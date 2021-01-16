@@ -57,7 +57,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
 
   // Sort entry
   Object.keys(remotes).forEach((vendor: string) => remotes[vendor].sort())
-  
+
   return (
     <Modal
       size="lg"
@@ -75,11 +75,11 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
           {/* Generate kind of vendor/models array... */}
           {Object.keys(remotes).map((vendor: string) => {
             return (
-              <Tab eventKey={vendor} title={vendor}>
+              <Tab key={vendor} eventKey={vendor} title={vendor}>
                 {/* Models Card... */}
                 {remotes[vendor].map((model: string) => {
                   return (
-                    <Card>
+                    <Card key={model}>
                       <Card.Body>
                         <Card.Title>{model}</Card.Title>
                         <Button variant="primary" onClick={() => {
