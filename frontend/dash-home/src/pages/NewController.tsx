@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container, Form, Modal, ModalTitle, ModalFooter } from 'react-bootstrap';
+import { Form, Modal, ModalTitle, ModalFooter } from 'react-bootstrap';
 import { Controller, ControllerResult, createController } from '../remote-go/Controller';
 import { FAILED, PENDING, SUCCESS } from '../remote-go/Status';
 import { Redirect } from 'react-router-dom';
