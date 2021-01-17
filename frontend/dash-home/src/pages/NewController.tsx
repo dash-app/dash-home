@@ -9,9 +9,12 @@ import { NotifyError } from '../components/atoms/Notify';
 import { useTranslation } from 'react-i18next';
 import { LinkContainer } from 'react-router-bootstrap';
 
-interface Props { }
+interface Props {
+  show?: boolean,
+  onHide?: () => void,
+}
 
-const NewController: React.FC<Props> = () => {
+const NewController: React.FC<Props> = (props: Props) => {
   const { t } = useTranslation();
 
   const [controller, setController] = React.useState<Controller | undefined>(undefined);
@@ -28,8 +31,13 @@ const NewController: React.FC<Props> = () => {
   return (
     <ThemedModal
       size="lg"
-      show={true}
+      show={props.show !== undefined ? props.show : true}
       keyboard={false}
+      onHide={() => {
+        if (props.onHide) {
+          props.onHide();
+        }
+      }}
     >
       <Form onSubmit={handleSubmit}>
         <Modal.Header closeButton>

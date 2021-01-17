@@ -11,6 +11,8 @@ import { useTranslation } from 'react-i18next';
 
 interface Props extends RouteComponentProps<{ id: string }> {
   controller: Controller,
+  show?: boolean,
+  onHide?: () => void,
 }
 
 const initial: Controller = {
@@ -41,11 +43,16 @@ const EditController: React.FC<Props> = (props: Props) => {
   return (
     <ThemedModal
       size="lg"
-      show={true}
+      show={props.show !== undefined ? props.show : true}
       keyboard={false}
+      onHide={() => {
+        if (props.onHide) {
+          props.onHide();
+        }
+      }}
     >
       <Form onSubmit={handleSubmit}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton={props.onHide !== undefined}>
           <ModalTitle>{t("controller.edit.title")}</ModalTitle>
         </Modal.Header>
         <Modal.Body>
