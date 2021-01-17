@@ -45,6 +45,10 @@
     fill: #FFFFFF;
 }
 
+.close {
+    text-shadow: initial;
+}
+
 .table-dark {
     background-color: #111112;
 }
