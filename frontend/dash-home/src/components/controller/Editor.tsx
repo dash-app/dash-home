@@ -34,7 +34,7 @@ export const Editor: React.FC<Props> = props => {
       setController(props.controller)
     }
     props.onUpdate(controller);
-  }, [props.controller, controller])
+  }, [props, controller])
 
   // Handle window state (remote/switchbot editor...)
   const [openChooser, setOpenChooser] = React.useState<boolean>(false);
