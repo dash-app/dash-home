@@ -1,10 +1,12 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ThemeContext } from '../themes/ThemeProvider';
 
 import {
   Button as BaseButton,
-  Spinner as BaseSpinner
+  Spinner as BaseSpinner,
+  Modal,
 } from 'react-bootstrap';
 
 // Button
@@ -104,3 +106,31 @@ export const HR = (props: any) => {
     />
   )
 }
+
+export const ThemedModal = (props: any) => {
+  switch (React.useContext(ThemeContext).theme) {
+    case "NERD_BLACK":
+      return (<DarkModal {...props} />)
+    default:
+      return (<Modal {...props} />)
+  }
+}
+
+const DarkModal = styled(Modal)`
+  .close {
+    color: #FFF;
+  }
+  .modal-header {
+    border-bottom: 1px solid #2F2F2F;
+  }
+  .modal-footer {
+    border-top: 1px solid #2F2F2F;
+  }
+  .modal-title {
+    color: #FFF;
+  }
+  .modal-content {
+    background-color: #111112;
+    border: none;
+  }
+`;
