@@ -38,86 +38,88 @@ const Home: React.FC<Props> = props => {
 
   return (
     <Basement>
-      {controllersResult?.error ?
-        <NotifyError title={t("controller.error.fetchControllers")} />
-        :
-        !controllersResult?.controllers ?
-          <Div>
-            <CustomSpinner animation="border" aria-hidden="true" />
-            <Span>{t("status.loading")}</Span>
-          </Div>
+      <Container fluid>
+        {controllersResult?.error ?
+          <NotifyError title={t("controller.error.fetchControllers")} />
           :
-          <Container fluid>
-            {/* Pop-up Controller*/}
-            {id &&
-              <Modal
-                size="xl"
-                show={true}
-                backdroup="static"
-                variant="dark"
-                animation={true}
-                centered
-                style={{ border: "none" }}
-                onHide={() => history.push('/')}
-              >
-                <ModalBody as={Div} style={{ padding: "0" }}>
-                  <ControllerUI id={id} />
-                </ModalBody>
-              </Modal>
-            }
-
-            {/* When controlles is empty */}
-            {Object.values(controllersResult.controllers).length === 0 &&
-              <Center>
-                <CardBase
-                  color="#2A2A2A"
+          !controllersResult?.controllers ?
+            <Div>
+              <CustomSpinner animation="border" aria-hidden="true" />
+              <Span>{t("status.loading")}</Span>
+            </Div>
+            :
+            <>
+              {/* Pop-up Controller*/}
+              {id &&
+                <Modal
+                  size="xl"
+                  show={true}
+                  backdroup="static"
+                  variant="dark"
+                  animation={true}
+                  centered
+                  style={{ border: "none" }}
+                  onHide={() => history.push('/')}
                 >
-                  <div>
-                    {anger ?
-                      <Span>
-                        <Icon style={{ color: "#FF5555", fontSize: "8rem" }} icon={["fas", "angry"]} className="shake" onClick={() => setAnger(true)}></Icon>
-                        <P style={{ fontSize: "2rem", fontWeight: 900 }}>{t("controller.secret.title")}</P>
-                        <P style={{ fontSize: "1rem", textTransform: "initial" }}>{t("controller.secret.description")}</P>
-                      </Span>
-                      :
-                      <Span>
-                        <Icon style={{ fontSize: "4rem" }} icon={["fas", "sad-tear"]} onClick={() => setAnger(true)}></Icon>
-                        <P style={{ fontSize: "1.5rem" }}>{t("controller.empty.title")}</P>
-                        <P style={{ fontSize: "1rem", textTransform: "initial" }}>{t("controller.empty.description")}</P>
-                      </Span>
-                    }
-                  </div>
-                  <Div>
-                    <LinkContainer to="/controllers/new">
-                      <Button>{t("controller.empty.create")}</Button>
-                    </LinkContainer>
-                  </Div>
-                </CardBase>
-              </Center>
-            }
+                  <ModalBody as={Div} style={{ padding: "0" }}>
+                    <ControllerUI id={id} />
+                  </ModalBody>
+                </Modal>
+              }
 
-            {/* Delete Controller Modal */}
-            {deleteQueue &&
-              <DeleteController
-                controller={deleteQueue}
-                handleClose={() => setDeleteQueue(undefined)}
-                whenSuccess={() => fetch()}
-                visible={deleteQueue != null}
-              />
-            }
+              {/* When controlles is empty */}
+              {Object.values(controllersResult.controllers).length === 0 &&
+                <Center>
+                  <CardBase
+                    color="#2A2A2A"
+                  >
+                    <div>
+                      {anger ?
+                        <Span>
+                          <Icon style={{ color: "#FF5555", fontSize: "8rem" }} icon={["fas", "angry"]} className="shake" onClick={() => setAnger(true)}></Icon>
+                          <P style={{ fontSize: "2rem", fontWeight: 900 }}>{t("controller.secret.title")}</P>
+                          <P style={{ fontSize: "1rem", textTransform: "initial" }}>{t("controller.secret.description")}</P>
+                        </Span>
+                        :
+                        <Span>
+                          <Icon style={{ fontSize: "4rem" }} icon={["fas", "sad-tear"]} onClick={() => setAnger(true)}></Icon>
+                          <P style={{ fontSize: "1.5rem" }}>{t("controller.empty.title")}</P>
+                          <P style={{ fontSize: "1rem", textTransform: "initial" }}>{t("controller.empty.description")}</P>
+                        </Span>
+                      }
+                    </div>
+                    <Div>
+                      <LinkContainer to="/controllers/new">
+                        <Button>{t("controller.empty.create")}</Button>
+                      </LinkContainer>
+                    </Div>
+                  </CardBase>
+                </Center>
+              }
 
-            {/* Show Controllers */}
-            <Row xs={1} sm={1} md={2} lg={3} noGutters>
-              {Object.values(controllersResult.controllers!).map((c: Controller) => {
-                return (
-                  <Col sm key={c.id} style={{ maxWidth: "28rem", backgroundColor: "initial", padding: "0.5rem", border: "0" }}>
-                    <MiniPanel id={c.id} controller={c} onDelete={() => setDeleteQueue(c)} />
-                  </Col>
-                );
-              })}
-            </Row>
-          </Container>
-      }
+              {/* Delete Controller Modal */}
+              {deleteQueue &&
+                <DeleteController
+                  controller={deleteQueue}
+                  handleClose={() => setDeleteQueue(undefined)}
+                  whenSuccess={() => fetch()}
+                  visible={deleteQueue != null}
+                />
+              }
+
+              {/* Show Controllers */}
+              <Row xs={1} sm={1} md={2} lg={3} noGutters>
+                {Object.values(controllersResult.controllers!).map((c: Controller) => {
+                  return (
+                    <Col sm key={c.id} style={{ maxWidth: "28rem", backgroundColor: "initial", padding: "0.5rem", border: "0" }}>
+                      <MiniPanel id={c.id} controller={c} onDelete={() => setDeleteQueue(c)} />
+                    </Col>
+                  );
+                })}
+              </Row>
+            </>
+        }
+      </Container>
     </Basement>
   )
 }
