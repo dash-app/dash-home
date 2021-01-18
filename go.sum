@@ -18,6 +18,8 @@ github.com/dash-app/remote-go v0.0.0-20210102221717-9066a1107702 h1:q+gjvMFQaGIh
 github.com/dash-app/remote-go v0.0.0-20210102221717-9066a1107702/go.mod h1:NDeDX5ytimaP0cjt4kj7m/3stnbWokHKSgN7cZY5ZdA=
 github.com/dash-app/remote-go v0.0.0-20210104103818-36fced5a06d9 h1:Y9zUcHZxQSRpI6uuYc+L/tJ+UBKeqd5ZdG8cjPFk6p8=
 github.com/dash-app/remote-go v0.0.0-20210104103818-36fced5a06d9/go.mod h1:NDeDX5ytimaP0cjt4kj7m/3stnbWokHKSgN7cZY5ZdA=
+github.com/dash-app/remote-go v0.0.0-20210118155325-4cf24015c0bf h1:OuhsvtEpZpYGFlID0YM35O9yv7AWC2OpcuJI2tva5tE=
+github.com/dash-app/remote-go v0.0.0-20210118155325-4cf24015c0bf/go.mod h1:NDeDX5ytimaP0cjt4kj7m/3stnbWokHKSgN7cZY5ZdA=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
