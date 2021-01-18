@@ -28,7 +28,6 @@ const DeleteController: React.FC<Props> = (props: Props) => {
         show={props.visible}
         backdroup="static"
         variant="dark"
-        animation={false}
         centered
         onHide={props.handleClose}
       >
@@ -53,7 +52,6 @@ const DeleteController: React.FC<Props> = (props: Props) => {
       show={props.visible}
       backdroup="static"
       variant="dark"
-      animation={false}
       centered
       onHide={props.handleClose}
     >
