@@ -61,7 +61,7 @@ const AirconMiniPanel: React.FC<Controller> = controller => {
             <FanIcon />
             <FanStep
               current={aircon.modes[aircon.mode].fan}
-              default={t([`controller.aircon.mode.${aircon.mode}`, '_'], { value: aircon.mode })}
+              default={t([`controller.aircon.fan.${aircon.modes[aircon.mode].fan}`, '_'], { value: aircon.modes[aircon.mode].fan })}
             />
           </ThemedIcon>
         }
