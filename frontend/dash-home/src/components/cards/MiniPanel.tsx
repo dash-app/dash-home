@@ -32,7 +32,7 @@ export const MiniPanel = (props: Props) => {
         props.id &&
         <Dropdown as={CustomButtonGroup}>
           <LinkContainer style={{ marginRight: "1rem" }} to={`/controllers/${props.id}`}>
-            <Button block>{t("button.tapToEdit")}</Button>
+            <Button block>{t("button.tapToOpen")}</Button>
           </LinkContainer>
           <Dropdown.Toggle id="dropdown-split-basic" />
           <Dropdown.Menu>
