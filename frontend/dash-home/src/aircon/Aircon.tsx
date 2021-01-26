@@ -181,7 +181,7 @@ const AirconPanel: React.FC<ControllerProps> = props => {
           </Contents>
         }
       </Row>
-      <Row xs={1} md={2}>
+      <Row>
         {/* Fan */}
         {modesTpl.get(aircon.mode)?.fan &&
           <Contents>
