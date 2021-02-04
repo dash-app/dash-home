@@ -21,18 +21,14 @@ const initial: Controller = {
 
 export const Editor: React.FC<Props> = props => {
   const { t } = useTranslation();
-  const [controller, setController] = React.useState<Controller>(initial);
+  const [controller, setController] = React.useState<Controller>({ ...initial });
 
   React.useEffect(() => {
-    if (!controller) {
-      // Inject provided controller
-      if (props.controller) {
-        setController(props.controller)
-      }
-    }
-    if (props.controller && controller === initial) {
+    // Inject provided controller
+    if (props.controller) {
       setController(props.controller)
     }
+
     props.onUpdate(controller);
   }, [props, controller])
 
