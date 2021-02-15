@@ -2,6 +2,7 @@ package server
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/dash-app/dash-home/internal/logger"
 	"github.com/dash-app/dash-home/pkg/agent"
@@ -55,7 +56,11 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 		controller: subset.Controller,
 	}
 
-	r := gin.Default()
+	if len(os.Getenv("DEBUG")) == 0 {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
+	r := gin.New()
 	r.Use(cors.Default())
 	r.Use(logger.SetLogger())
 
