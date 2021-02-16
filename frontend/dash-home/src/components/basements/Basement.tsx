@@ -2,12 +2,11 @@ import * as React from 'react';
 
 // Navbar
 import Navigation from '../navbar/Navigation';
-import { Button } from '../atoms/Themed';
 import { ThemeContext } from '../themes/ThemeProvider';
 import { RoomContext } from './RoomProvider';
 import { NotifyError } from '../atoms/Notify';
 import { Redirect } from 'react-router-dom';
-import { Col, Container, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ThemeSwitcher from '../themes/ThemeSwitcher';
 import { RELEASE_VERSION } from '../../config';
@@ -64,7 +63,7 @@ const Basement: React.FC<Props> = props => {
                       <p><Icon icon={["fas", "ellipsis-h"]} />{t("menu.main.title")}</p>
                       <CustomRow>
                         <Col>
-                          <LinkContainer to={"/"}>
+                          <LinkContainer exact to={"/"}>
                             <Button size="lg" block>
                               <FontAwesomeIcon icon={["fas", "home"]} />
                               <p>{t("menu.main.home")}</p>
@@ -74,7 +73,7 @@ const Basement: React.FC<Props> = props => {
                       </CustomRow>
                       <CustomRow>
                         <Col>
-                          <LinkContainer to={"/controllers"}>
+                          <LinkContainer exact to={"/controllers"}>
                             <Button size="lg" block>
                               <FontAwesomeIcon icon={["fas", "wifi"]} />
                               <p>{t("menu.main.controllers")}</p>

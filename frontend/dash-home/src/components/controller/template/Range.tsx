@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { ButtonGroup, Col, Row } from 'react-bootstrap';
+import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { H1, P } from '../../atoms/Core';
 
 import styled from 'styled-components';
-import { Button } from '../../atoms/Themed';
 
 interface Props {
   hideTitle?: boolean,

@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { H1, P } from '../../atoms/Core';
 
 import styled from 'styled-components';
-import { Button } from '../../atoms/Themed';
 import { withTranslation } from 'react-i18next';
 
 interface Props {

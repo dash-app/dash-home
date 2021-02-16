@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom'
-import { Container, Navbar } from 'react-bootstrap';
-import { Button } from '../components/atoms/Themed';
+import { Button, Container, Navbar } from 'react-bootstrap';
 import Basement from '../components/basements/Basement';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,7 +17,7 @@ const Controller: React.FC<Props> = props => {
     <Basement>
       <Container fluid="lg">
         <Navbar>
-          <LinkContainer to="/">
+          <LinkContainer exact to="/">
             <Button>
               <FontAwesomeIcon icon={["fas", "arrow-left"]} />
               <span style={{ paddingLeft: "0.5rem" }}>{t("button.back")}</span>

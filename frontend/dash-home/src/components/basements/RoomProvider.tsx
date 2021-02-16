@@ -11,7 +11,7 @@ export const RoomContext = React.createContext<RoomResult | undefined>(undefined
 export const RoomProvider: React.FC<Props> = props => {
   const [roomResult, setRoom] = useState<RoomResult | undefined>(undefined);
 
-  useEffect(() => {
+  const fetch = () => {
     console.debug(`:: Update room...`);
     if (!roomResult) {
       fetchRoom(setRoom);
@@ -19,7 +19,11 @@ export const RoomProvider: React.FC<Props> = props => {
     if (roomResult?.error) {
       console.error(roomResult.error);
     }
-  }, [roomResult]);
+  }
+
+  useEffect(() => {
+    fetch();
+  }, [roomResult, fetch]);
 
   console.debug(`:: Rendering > RoomProvider...`)
 
@@ -27,5 +31,5 @@ export const RoomProvider: React.FC<Props> = props => {
     <RoomContext.Provider value={roomResult}>
       {props.children}
     </RoomContext.Provider>
-  ) 
+  )
 }

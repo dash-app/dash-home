@@ -1,10 +1,9 @@
-import { ButtonGroup, Dropdown } from 'react-bootstrap';
+import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { LinkContainer } from 'react-router-bootstrap'
 import styled from 'styled-components';
 import { Controller } from '../../remote-go/Controller';
 import { P } from '../atoms/Core';
-import { Button } from '../atoms/Themed';
 import { SummonMiniPanel } from '../controller/SummonPanel';
 
 interface Props {

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Center, Div, H1, P } from '../components/atoms/Core';
 import { NotifyError } from '../components/atoms/Notify';
-import { Button, HR } from '../components/atoms/Themed';
+import { HR } from '../components/atoms/Themed';
 import { createRoom, RoomResult } from '../remote-go/Room';
 
 interface Props {

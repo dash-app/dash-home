@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Row, Col, Spinner, Container, ModalBody, Modal } from 'react-bootstrap';
+import { Button, Row, Col, Spinner, Container, ModalBody, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Center, Div, P, Span } from '../components/atoms/Core';
 import { NotifyError } from '../components/atoms/Notify';
-import { Button, Icon } from '../components/atoms/Themed';
+import { Icon } from '../components/atoms/Themed';
 import Basement from '../components/basements/Basement';
 import { CardBase } from '../components/cards/CardBase';
 import { Controller, ControllersResult, fetchControllers } from '../remote-go/Controller';
@@ -89,7 +89,7 @@ const Home: React.FC<Props> = props => {
                       }
                     </div>
                     <Div>
-                      <LinkContainer to="/controllers/new">
+                      <LinkContainer exact to="/controllers/new">
                         <Button>{t("controller.empty.create")}</Button>
                       </LinkContainer>
                     </Div>

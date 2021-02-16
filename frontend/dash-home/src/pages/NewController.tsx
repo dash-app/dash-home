@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Form, Modal, ModalTitle, ModalFooter } from 'react-bootstrap';
+import { Button, Form, Modal, ModalTitle, ModalFooter } from 'react-bootstrap';
 import { Controller, ControllerResult, createController } from '../remote-go/Controller';
 import { FAILED, PENDING, SUCCESS } from '../remote-go/Status';
 import { Redirect } from 'react-router-dom';
-import { Spinner, Button, ThemedModal } from '../components/atoms/Themed';
+import { Spinner, ThemedModal } from '../components/atoms/Themed';
 import { Editor } from '../components/controller/Editor';
 import { NotifyError } from '../components/atoms/Notify';
 import { useTranslation } from 'react-i18next';

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { ButtonGroup, Col, Dropdown, DropdownButton, Row } from 'react-bootstrap';
+import { Button, ButtonGroup, Col, Dropdown, DropdownButton, Row } from 'react-bootstrap';
 import { H1, P } from '../../atoms/Core';
-import { Button } from '../../atoms/Themed';
 import { ValueSet } from './TplBase';
 
 import styled from 'styled-components';
@@ -108,7 +107,7 @@ class List extends React.Component<Props, State> {
                     type="radio"
                     size="lg"
                     key={e.value}
-                    selected={this.props.shot ? true : e.value === this.state.status}
+                    variant={(this.props.shot || e.value === this.state.status) ? "primary" : ""}
                     onClick={() => this.onClick(e.value)}
                   >
                     {e.displayComponent ? e.displayComponent :
@@ -127,6 +126,8 @@ class List extends React.Component<Props, State> {
 
 const SlideContents = styled(Col)`
     overflow-x: auto;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
     word-break: keep-all;
 `
 

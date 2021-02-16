@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { P } from '../components/atoms/Core';
 import { NotifyError } from '../components/atoms/Notify';
-import { Spinner } from '../components/atoms/Themed';
+import {  Spinner, ThemedModal } from '../components/atoms/Themed';
 import { Controller, ControllerResult, deleteController } from '../remote-go/Controller';
 import { PENDING, SUCCESS, FAILED } from '../remote-go/Status';
 
@@ -23,7 +24,7 @@ const DeleteController: React.FC<Props> = (props: Props) => {
 
   if (deleteResult && deleteResult.status === SUCCESS) {
     return (
-      <Modal
+      <ThemedModal
         size="lg"
         show={props.visible}
         backdroup="static"
@@ -35,19 +36,19 @@ const DeleteController: React.FC<Props> = (props: Props) => {
           <Modal.Title>{t("controller.delete.title")} {props.controller.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h6>{t("controller.delete.success")}</h6>
+          <P>{t("controller.delete.success")}</P>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={() => { props.handleClose(); props.whenSuccess() }}>
+          <Button onClick={() => { props.handleClose(); props.whenSuccess() }}>
             {t("button.close")}
           </Button>
         </Modal.Footer>
-      </Modal>
+      </ThemedModal>
     )
   }
 
   return (
-    <Modal
+    <ThemedModal
       size="lg"
       show={props.visible}
       backdroup="static"
@@ -59,8 +60,8 @@ const DeleteController: React.FC<Props> = (props: Props) => {
         <Modal.Title>{t("controller.delete.title")} {props.controller.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h6>{t("controller.delete.question")}</h6>
-        <p style={{ fontWeight: 900 }}>{t("controller.delete.confirm")}</p>
+        <P style={{ fontSize: "1.5rem" }}>{t("controller.delete.question")}</P>
+        <P style={{ fontWeight: 900 }}>{t("controller.delete.confirm")}</P>
         {deleteResult && deleteResult.status === FAILED && <NotifyError title="Failed delete controller" message={`${deleteResult.error!.response?.data.error ? deleteResult.error!.response.data.error : deleteResult.error!}`} />}
       </Modal.Body>
       <Modal.Footer>
@@ -72,7 +73,7 @@ const DeleteController: React.FC<Props> = (props: Props) => {
           {t("button.delete")}
         </Button>
       </Modal.Footer>
-    </Modal>
+    </ThemedModal>
   )
 }
 

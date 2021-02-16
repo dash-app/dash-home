@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { Container, Nav, Table } from "react-bootstrap";
+import { Button, Container, Nav, Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Div, H1, Span } from "../components/atoms/Core";
 import { NotifyError } from "../components/atoms/Notify";
-import { Button, Spinner } from "../components/atoms/Themed";
+import { Spinner } from "../components/atoms/Themed";
 import Basement from "../components/basements/Basement";
 import { Controller, ControllersResult, fetchControllers } from "../remote-go/Controller";
 import DeleteController from "./DeleteController";
@@ -40,7 +40,7 @@ const Controllers: React.FC<Props> = () => {
         <H1>{t("controller.list.title")}</H1>
         <Nav style={{ marginBottom: "1rem" }}>
           <Nav.Item>
-            <LinkContainer to="/">
+            <LinkContainer exact to="/">
               <Button>
                 <FontAwesomeIcon icon={["fas", "arrow-left"]} />
                 <span style={{ paddingLeft: "0.5rem" }}>{t("button.back")}</span>

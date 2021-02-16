@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Controller, Remote, SwitchBot } from '../../remote-go/Controller';
-import { Dropdown, DropdownButton, Form } from 'react-bootstrap';
+import {  Controller, Remote, SwitchBot } from '../../remote-go/Controller';
+import { Button, Dropdown, DropdownButton, Form } from 'react-bootstrap';
 import { P } from '../atoms/Core';
-import { Button } from '../atoms/Themed';
 import RemoteChooser from '../controller/RemoteChooser';
 import SwitchBotChooser from './SwitchBotChooser';
 import { useTranslation } from 'react-i18next';

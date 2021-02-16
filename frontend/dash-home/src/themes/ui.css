@@ -25,18 +25,20 @@
     font-weight: 600;
     src: url('./fonts/mplus-1p-medium.woff2');
 }
-.btn:hover {
+
+.btn-primary:hover {
     color: #9A9A9A;
     fill: #9A9A9A;
+    background-color: #1A1A1A;
 }
 
-.btn {
-    color: #55595c;
-    fill: #55595c;
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    background-color: #1E1E1E;
 }
 
-.btn-dark {
-    background-color: #0F0F0F;
+.btn-primary:focus {
+    background-color: #1A1A1A;
+    /* box-shadow: initial; */
 }
 
 .btn-primary, .btn-gray {
