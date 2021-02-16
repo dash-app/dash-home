@@ -11,7 +11,7 @@ export const RoomContext = React.createContext<RoomResult | undefined>(undefined
 export const RoomProvider: React.FC<Props> = props => {
   const [roomResult, setRoom] = useState<RoomResult | undefined>(undefined);
 
-  const fetch = () => {
+  const fetch = React.useCallback(() => {
     console.debug(`:: Update room...`);
     if (!roomResult) {
       fetchRoom(setRoom);
@@ -19,7 +19,7 @@ export const RoomProvider: React.FC<Props> = props => {
     if (roomResult?.error) {
       console.error(roomResult.error);
     }
-  }
+  }, [roomResult]);
 
   useEffect(() => {
     fetch();
