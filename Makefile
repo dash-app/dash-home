@@ -17,8 +17,8 @@ clean_frontend:
 
 frontend: clean_frontend
 	@cd ./frontend/dash-home && \
-	yarn install && \
-	yarn run build && \
+	NODE_ENV=production yarn install && \
+	NODE_ENV=production yarn run build && \
 	cp -rv build ../../public
 
 #
