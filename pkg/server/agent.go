@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	_ "github.com/dash-app/dash-home/pkg/agent"
 	"github.com/gin-gonic/gin"
 )
 

@@ -41,7 +41,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/storage.Agent"
+                            "$ref": "#/definitions/agent.Agent"
                         }
                     }
                 }
@@ -72,7 +72,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/storage.Agent"
+                            "$ref": "#/definitions/agent.Agent"
                         }
                     }
                 }
@@ -177,7 +177,9 @@ var doc = `{
                 ],
                 "summary": "Delete controller by ID",
                 "responses": {
-                    "200": {}
+                    "200": {
+                        "description": ""
+                    }
                 }
             },
             "patch": {
@@ -246,7 +248,9 @@ var doc = `{
                 ],
                 "summary": "Post SwitchBot by ID",
                 "responses": {
-                    "200": {}
+                    "200": {
+                        "description": ""
+                    }
                 }
             }
         },
@@ -354,6 +358,28 @@ var doc = `{
         }
     },
     "definitions": {
+        "agent.Agent": {
+            "type": "object",
+            "required": [
+                "address"
+            ],
+            "properties": {
+                "address": {
+                    "description": "Address - Agent Address (ex. ` + "`" + `localhost:8081` + "`" + `)",
+                    "type": "string",
+                    "example": "localhost:8081"
+                },
+                "id": {
+                    "description": "ID - Agent ID",
+                    "type": "string",
+                    "default": "\u003cUNIQUE_ID\u003e"
+                },
+                "online": {
+                    "description": "Online - Check online",
+                    "type": "boolean"
+                }
+            }
+        },
         "agent.Ambient": {
             "type": "object",
             "properties": {
@@ -694,28 +720,6 @@ var doc = `{
                 }
             }
         },
-        "storage.Agent": {
-            "type": "object",
-            "required": [
-                "address"
-            ],
-            "properties": {
-                "address": {
-                    "description": "Address - Agent Address (ex. ` + "`" + `localhost:8081` + "`" + `)",
-                    "type": "string",
-                    "example": "localhost:8081"
-                },
-                "id": {
-                    "description": "ID - Agent ID",
-                    "type": "string",
-                    "default": "\u003cUNIQUE_ID\u003e"
-                },
-                "online": {
-                    "description": "Online - Check online",
-                    "type": "boolean"
-                }
-            }
-        },
         "template.Action": {
             "type": "object",
             "properties": {
@@ -723,10 +727,7 @@ var doc = `{
                     "type": "object"
                 },
                 "list": {
-                    "type": "array",
-                    "items": {
-                        "type": "object"
-                    }
+                    "$ref": "#/definitions/template.List"
                 },
                 "multiple": {
                     "type": "array",
@@ -793,6 +794,20 @@ var doc = `{
                 },
                 "mode": {
                     "$ref": "#/definitions/template.Action"
+                }
+            }
+        },
+        "template.List": {
+            "type": "object",
+            "properties": {
+                "shot": {
+                    "type": "boolean"
+                },
+                "values": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
                 }
             }
         },

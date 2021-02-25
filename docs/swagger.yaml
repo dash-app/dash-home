@@ -1,4 +1,20 @@
 definitions:
+  agent.Agent:
+    properties:
+      address:
+        description: Address - Agent Address (ex. `localhost:8081`)
+        example: localhost:8081
+        type: string
+      id:
+        default: <UNIQUE_ID>
+        description: ID - Agent ID
+        type: string
+      online:
+        description: Online - Check online
+        type: boolean
+    required:
+    - address
+    type: object
   agent.Ambient:
     properties:
       humid:
@@ -245,30 +261,12 @@ definitions:
     required:
     - address
     type: object
-  storage.Agent:
-    properties:
-      address:
-        description: Address - Agent Address (ex. `localhost:8081`)
-        example: localhost:8081
-        type: string
-      id:
-        default: <UNIQUE_ID>
-        description: ID - Agent ID
-        type: string
-      online:
-        description: Online - Check online
-        type: boolean
-    required:
-    - address
-    type: object
   template.Action:
     properties:
       default:
         type: object
       list:
-        items:
-          type: object
-        type: array
+        $ref: '#/definitions/template.List'
       multiple:
         items:
           $ref: '#/definitions/template.Action'
@@ -312,6 +310,15 @@ definitions:
         $ref: '#/definitions/template.Action'
       mode:
         $ref: '#/definitions/template.Action'
+    type: object
+  template.List:
+    properties:
+      shot:
+        type: boolean
+      values:
+        items:
+          type: object
+        type: array
     type: object
   template.Range:
     properties:
@@ -375,7 +382,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/storage.Agent'
+            $ref: '#/definitions/agent.Agent'
       summary: Get Agent entry
       tags:
       - agent
@@ -395,7 +402,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/storage.Agent'
+            $ref: '#/definitions/agent.Agent'
       summary: Add Agent entry
       tags:
       - agent
@@ -450,7 +457,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200": {}
+        "200":
+          description: ""
       summary: Delete controller by ID
       tags:
       - controller
@@ -505,7 +513,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200": {}
+        "200":
+          description: ""
       summary: Post SwitchBot by ID
       tags:
       - controller
