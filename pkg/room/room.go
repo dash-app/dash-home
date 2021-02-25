@@ -4,7 +4,7 @@ import "github.com/dash-app/dash-home/pkg/agent"
 
 type RoomService struct {
 	Storage *Storage
-	Agent   agent.Agent
+	Agent   *agent.AgentService
 }
 
 type Room struct {
@@ -18,7 +18,7 @@ type Room struct {
 	Ambient *agent.Ambient `json:"ambient"`
 }
 
-func New(basePath string, agent agent.Agent) (*RoomService, error) {
+func New(basePath string, agent *agent.AgentService) (*RoomService, error) {
 	store, err := NewStorage(basePath)
 	if err != nil {
 		return nil, err

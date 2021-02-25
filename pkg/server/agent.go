@@ -17,7 +17,7 @@ type UpdateAgentRequest struct {
 // @Summary Get Agent entry
 // @Router /api/v1/agent [get]
 // @tags agent
-// @Success 200 {object} storage.Agent
+// @Success 200 {object} agent.Agent
 // @Produce json
 func (h *httpServer) getAgent(c *gin.Context) {
 	agent, err := h.agent.Get()
@@ -33,7 +33,7 @@ func (h *httpServer) getAgent(c *gin.Context) {
 // @Router /api/v1/agent [post]
 // @tags agent
 // @Param entry body UpdateAgentRequest true "Add new agent"
-// @Success 200 {object} storage.Agent
+// @Success 200 {object} agent.Agent
 // @Accept json
 // @Produce json
 func (h *httpServer) postAgent(c *gin.Context) {

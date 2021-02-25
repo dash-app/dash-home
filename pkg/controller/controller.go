@@ -15,11 +15,11 @@ import (
 
 type Controller struct {
 	Storage *Storage
-	Agent   agent.Agent
+	Agent   *agent.AgentService
 	Remotes *remotego.Remote
 }
 
-func New(basePath string, agent agent.Agent) (*Controller, error) {
+func New(basePath string, agent *agent.AgentService) (*Controller, error) {
 	// Initialize remotes
 	remotes := remotego.Init()
 

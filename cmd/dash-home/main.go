@@ -8,11 +8,10 @@ import (
 	"github.com/dash-app/dash-home/pkg/controller"
 	"github.com/dash-app/dash-home/pkg/room"
 	"github.com/dash-app/dash-home/pkg/server"
-	"github.com/dash-app/dash-home/pkg/storage"
 	"github.com/sirupsen/logrus"
 )
 
-func startHTTPServer(port string, agent agent.Agent, room *room.RoomService, controller *controller.Controller) error {
+func startHTTPServer(port string, agent *agent.AgentService, room *room.RoomService, controller *controller.Controller) error {
 	logrus.Infof("[HTTP] HTTP Listening on %s...", port)
 	return server.NewHTTPServer(&server.Subset{
 		Agent:      agent,
@@ -35,16 +34,17 @@ func main() {
 		path = dir + "/local"
 	}
 
-	storage, err := storage.New(path)
-	if err != nil {
-		logrus.Fatalf("[Storage] Failed ensure storage: %v", err)
-		return
-	}
+	// storage, err := storage.New(path)
+	// if err != nil {
+	// 	logrus.Fatalf("[Storage] Failed ensure storage: %v", err)
+	// 	return
+	// }
 
 	// Initialize Agent process...
-	agent := agent.New(&agent.Subset{
-		Store: storage.AgentStore,
-	})
+	agent, err := agent.New(path)
+	if err != nil {
+		panic(err)
+	}
 	agent.InitPoll()
 
 	// Room

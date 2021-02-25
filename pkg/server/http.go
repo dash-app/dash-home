@@ -17,13 +17,13 @@ import (
 
 // Subset - HTTP Subset
 type Subset struct {
-	Agent      agent.Agent
+	Agent      *agent.AgentService
 	Room       *room.RoomService
 	Controller *controller.Controller
 }
 
 type httpServer struct {
-	agent      agent.Agent
+	agent      *agent.AgentService
 	room       *room.RoomService
 	controller *controller.Controller
 }

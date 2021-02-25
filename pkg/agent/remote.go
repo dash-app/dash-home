@@ -23,16 +23,16 @@ type Payload struct {
 	Interval int   `json:"interval,omitempty"`
 }
 
-func (as *agentService) SendIR(ctx context.Context, hex []*hex.HexCode) error {
+func (as *AgentService) SendIR(ctx context.Context, hex []*hex.HexCode) error {
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
-	if as.store.Agent == nil {
+	if as.Storage.Agent == nil {
 		return errors.New("agent not initialized")
 	}
 
 	// Get Agent from store (must be move...)
-	agent, err := as.store.Get()
+	agent, err := as.Storage.Get()
 	if err != nil {
 		return err
 	}

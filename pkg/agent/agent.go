@@ -9,8 +9,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dash-app/dash-home/pkg/storage"
-	"github.com/dash-app/remote-go/hex"
 	"github.com/k0kubun/pp"
 	"github.com/sirupsen/logrus"
 )
@@ -20,40 +18,39 @@ const (
 	PollingPeriod = 5000
 )
 
-// Subset - Agent subset
-type Subset struct {
-	Store *storage.AgentStore
+// AgentService - Provide Agent calls
+type AgentService struct {
+	Storage *Storage
+	Ambient *Ambient
 }
 
-type Agent interface {
-	Get() (*storage.Agent, error)
-	Create(string) (*storage.Agent, error)
-	InitPoll()
-	Poll(context.Context) error
+// Agent - Store of Agent
+type Agent struct {
+	// ID - Agent ID
+	ID string `json:"id" default:"<UNIQUE_ID>"`
 
-	// Sensors
-	GetAmbient() (*Ambient, error)
+	// Address - Agent Address (ex. `localhost:8081`)
+	Address string `json:"address" validate:"required" example:"localhost:8081"`
 
-	// Remote
-	SendIR(context.Context, []*hex.HexCode) error
-
-	// SwitchBot
-	PostSwitch(context.Context, string, string) error
+	// Online - Check online
+	Online bool `json:"online,omitempty"`
 }
 
-type agentService struct {
-	store   *storage.AgentStore
-	ambient *Ambient
-}
-
-func New(subset *Subset) Agent {
-	return &agentService{
-		store: subset.Store,
+// New - Initialize agent service
+func New(basePath string) (*AgentService, error) {
+	store, err := NewStorage(basePath)
+	if err != nil {
+		return nil, err
 	}
+
+	return &AgentService{
+		Storage: store,
+	}, nil
 }
 
-func (as *agentService) Get() (*storage.Agent, error) {
-	r, err := as.store.Get()
+// Get - Get agent entry
+func (as *AgentService) Get() (*Agent, error) {
+	r, err := as.Storage.Get()
 	if err != nil {
 		return nil, err
 	}
@@ -61,8 +58,9 @@ func (as *agentService) Get() (*storage.Agent, error) {
 	return r, nil
 }
 
-func (as *agentService) Create(address string) (*storage.Agent, error) {
-	r, err := as.store.Create(address)
+// Create - Create agent entry
+func (as *AgentService) Create(address string) (*Agent, error) {
+	r, err := as.Storage.Create(address)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +68,8 @@ func (as *agentService) Create(address string) (*storage.Agent, error) {
 	return r, nil
 }
 
-func (as *agentService) InitPoll() {
+// InitPoll - Start Poll task
+func (as *AgentService) InitPoll() {
 	// NOTE: Must be use context
 
 	go func() {
@@ -100,15 +99,15 @@ func (as *agentService) InitPoll() {
 	}()
 }
 
-// TODO: Add polling task
-func (as *agentService) Poll(c context.Context) error {
+// Poll - Execute Poll
+func (as *AgentService) Poll(c context.Context) error {
 	ctx, cancel := context.WithCancel(c)
 	defer cancel()
-	if as.store.Agent == nil {
+	if as.Storage.Agent == nil {
 		return errors.New("agent not found")
 	}
 
-	address := as.store.Agent.Address
+	address := as.Storage.Agent.Address
 	req, err := http.NewRequest(
 		"GET",
 		fmt.Sprintf("http://%s/api/v1/sensors", address),
@@ -136,7 +135,7 @@ func (as *agentService) Poll(c context.Context) error {
 			return
 		}
 		entry.LastFetch = time.Now().UTC()
-		as.ambient = entry
+		as.Ambient = entry
 		logrus.Debugf("[Poll] Fetched: %v", pp.Sprint(entry))
 		errCh <- nil
 	}()
@@ -156,10 +155,10 @@ func (as *agentService) Poll(c context.Context) error {
 	return nil
 }
 
-func (as *agentService) GetAmbient() (*Ambient, error) {
-	if as.ambient == nil {
+func (as *AgentService) GetAmbient() (*Ambient, error) {
+	if as.Ambient == nil {
 		return nil, errors.New("ambient not fetched")
 	}
 
-	return as.ambient, nil
+	return as.Ambient, nil
 }

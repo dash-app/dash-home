@@ -23,14 +23,14 @@ type postPayload struct {
 	Command string `json:"command" example:"ON"`
 }
 
-func (as *agentService) PostSwitch(ctx context.Context, mac, command string) error {
+func (as *AgentService) PostSwitch(ctx context.Context, mac, command string) error {
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
-	if as.store.Agent == nil {
+	if as.Storage.Agent == nil {
 		return errors.New("agent not initialized")
 	}
-	agent, err := as.store.Get()
+	agent, err := as.Storage.Get()
 	if err != nil {
 		return err
 	}
