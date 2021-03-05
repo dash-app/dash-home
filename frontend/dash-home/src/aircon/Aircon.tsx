@@ -155,7 +155,7 @@ const AirconPanel: React.FC<ControllerProps> = props => {
             <SummonByTpl
               title={
                 <ThemedIcon>
-                  <FontAwesomeIcon icon={["fas", "thermometer-three-quarters"]} />
+                  <FontAwesomeIcon style={{ marginRight: "0.5rem" }} icon={["fas", "thermometer-three-quarters"]} />
                 </ThemedIcon>
               }
               description={t("controller.aircon.temp.name")}
@@ -172,6 +172,12 @@ const AirconPanel: React.FC<ControllerProps> = props => {
           <Contents>
             <HR />
             <SummonByTpl
+              title={
+                <ThemedIcon>
+                  <FontAwesomeIcon style={{ marginRight: "0.1rem" }} icon={["fas", "tint"]} />
+                  <span style={{ paddingLeft: "0.1em" }}>{aircon.modes[aircon.mode].humid}</span>
+                </ThemedIcon>
+              }
               description={t("controller.aircon.humid.name")}
               value={aircon.modes[aircon.mode].humid}
               setter={(e: any) => aircon.modes[aircon.mode].humid = e}
