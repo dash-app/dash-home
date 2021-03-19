@@ -94,7 +94,9 @@
       }
     },
     "switchbot": {
-      "openSettings": "Switchbotの設定を開く"
+      "openSettings": "Switchbotの設定を開く",
+      "chooser": "Switchbotの設定",
+      "mac": "MACアドレス"
     },
     "entry": {
       "name": {

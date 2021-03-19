@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { SwitchBot } from '../../remote-go/Controller';
+import { P } from '../atoms/Core';
+import { ThemedModal } from '../atoms/Themed';
 
 interface Props {
   initialState?: SwitchBot,
@@ -10,6 +13,8 @@ interface Props {
 }
 
 const SwitchBotChooser: React.FC<Props> = (props: Props) => {
+  const { t } = useTranslation();
+
   // TODO: Macアドレスの記入とコマンドの設定(ドロップダウンで 'press', 'on', 'off' の設定を行えるようにする)
   const [switchBot, setSwitchBot] = React.useState<SwitchBot>(() => {
     return {
@@ -31,7 +36,7 @@ const SwitchBotChooser: React.FC<Props> = (props: Props) => {
 
 
   return (
-    <Modal
+    <ThemedModal
       size="lg"
       show={props.visible}
       onHide={props.handleClose}
@@ -39,12 +44,12 @@ const SwitchBotChooser: React.FC<Props> = (props: Props) => {
     >
       <Form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
-          <Modal.Title>SwitchBot Settings...</Modal.Title>
+          <Modal.Title>{t("controller.switchbot.chooser")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* Mac Address */}
           <Form.Group>
-            <Form.Label>MAC Address</Form.Label>
+            <Form.Label><P>{t("controller.switchbot.mac")}</P></Form.Label>
             <Form.Control
               type="text"
               placeholder="xx:xx:xx:xx:xx:xx"
@@ -59,7 +64,7 @@ const SwitchBotChooser: React.FC<Props> = (props: Props) => {
 
           {/* Type */}
           <Form.Group>
-            <Form.Label>Type</Form.Label>
+            <Form.Label><P>Type</P></Form.Label>
             <Form.Control
               type="select"
               as="select"
@@ -77,11 +82,11 @@ const SwitchBotChooser: React.FC<Props> = (props: Props) => {
         </Modal.Body>
         <Modal.Footer>
           <Button type="submit">
-            Update
+            {t("button.update")}
           </Button>
         </Modal.Footer>
       </Form>
-    </Modal>
+    </ThemedModal>
   )
 }
 

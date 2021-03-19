@@ -94,7 +94,9 @@
       }
     },
     "switchbot": {
-      "openSettings": "Open Switchbot Settings..."
+      "openSettings": "Open Switchbot Settings...",
+      "chooser": "Switchbot Settings",
+      "mac": "MAC Address"
     },
     "entry": {
       "name": {

@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { Modal, Button, Tabs, Card, Tab } from 'react-bootstrap';
+import { Modal, Button, Card, Tab } from 'react-bootstrap';
 import { Remote } from '../../remote-go/Controller';
 import { RemotesResult, fetchRemotes } from '../../remote-go/Remotes';
 import { NotifyError } from '../atoms/Notify';
 import { useTranslation } from 'react-i18next';
+import { ThemedModal, Tabs } from '../atoms/Themed';
+import { P } from '../atoms/Core';
 
 interface Props {
   visible: boolean,
@@ -36,7 +38,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
   const remotes = allRemotes.get(props.kind.toLowerCase());
   if (!remotes) {
     return (
-      <Modal
+      <ThemedModal
         size="lg"
         show={props.visible}
         backdrop="static"
@@ -51,7 +53,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
         <Modal.Body>
           <p>{t("controller.remote.error.unknownKind", { kind: props.kind })}</p>
         </Modal.Body>
-      </Modal>
+      </ThemedModal>
     );
   }
 
@@ -59,7 +61,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
   Object.keys(remotes).forEach((vendor: string) => remotes[vendor].sort())
 
   return (
-    <Modal
+    <ThemedModal
       size="lg"
       show={props.visible}
       backdrop="static"
@@ -71,7 +73,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
         <Modal.Title>{t("controller.remote.chooser", { kind: props.kind })}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Tabs defaultActiveKey={remotes[0]} id="tabs">
+        <Tabs variant={"tabs"} defaultActiveKey={remotes[0]} id="tabs">
           {/* Generate kind of vendor/models array... */}
           {Object.keys(remotes).map((vendor: string) => {
             return (
@@ -79,9 +81,9 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
                 {/* Models Card... */}
                 {remotes[vendor].map((model: string) => {
                   return (
-                    <Card key={model}>
+                    <div key={model}>
                       <Card.Body>
-                        <Card.Title>{model}</Card.Title>
+                        <P>{model}</P>
                         <Button variant="primary" onClick={() => {
                           props.handleUpdate(
                             ((): Remote => ({
@@ -93,7 +95,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
                         }}>{t("button.select")}</Button>
                         <Button variant="secondary" disabled>{t("controller.remote.test")}</Button>
                       </Card.Body>
-                    </Card>
+                    </div>
                   )
                 })}
               </Tab>
@@ -101,7 +103,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
           })}
         </Tabs>
       </Modal.Body>
-    </Modal >
+    </ThemedModal>
   )
 }
 
