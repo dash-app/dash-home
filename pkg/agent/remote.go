@@ -23,7 +23,7 @@ type Payload struct {
 	Interval int   `json:"interval,omitempty"`
 }
 
-func (as *AgentService) SendIR(ctx context.Context, hex []*hex.HexCode) error {
+func (as *AgentService) SendIR(ctx context.Context, h []*hex.HexCode) error {
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -42,11 +42,21 @@ func (as *AgentService) SendIR(ctx context.Context, hex []*hex.HexCode) error {
 	//	return errors.New("agent is not online")
 	//}
 	var payload []Payload
-	for _, code := range hex {
-		payload = append(payload, Payload{
-			Signal:   aeha.SignalToCode(430, code.Code, 13300),
-			Interval: code.Interval,
-		})
+	for _, code := range h {
+		switch code.Format {
+		default:
+			fallthrough
+		case hex.AEHA:
+			payload = append(payload, Payload{
+				Signal:   aeha.SignalToCode(430, code.Code, 13300),
+				Interval: code.Interval,
+			})
+		case hex.RAW:
+			payload = append(payload, Payload{
+				Signal:   code.Raw,
+				Interval: code.Interval,
+			})
+		}
 	}
 
 	// Marshal codes

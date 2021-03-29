@@ -62,34 +62,37 @@ export const LightPanel: React.FC<ControllerProps> = props => {
       <HR />
       <Row>
         {/* Bightness */}
-        <Contents>
-          <SummonByTpl
-            title={
-              <Icon icon={["fas", "sun"]} />
-            }
-            description={t("controller.light.brightness.name")}
-            i18nKey="controller.light.brightness"
-            value={""}
-            setter={(e: any) => light!.action = e}
-            sender={(after: any) => update({ ...light! }, after)}
-            action={props.template?.light?.brightness!}
-          />
-        </Contents>
-
+        {props.template?.light?.brightness &&
+          <Contents>
+            <SummonByTpl
+              title={
+                <Icon icon={["fas", "sun"]} />
+              }
+              description={t("controller.light.brightness.name")}
+              i18nKey="controller.light.brightness"
+              value={""}
+              setter={(e: any) => light!.action = e}
+              sender={(after: any) => update({ ...light! }, after)}
+              action={props.template?.light?.brightness!}
+            />
+          </Contents>
+        }
         {/* Color */}
-        <Contents>
-          <SummonByTpl
-            title={
-              <Icon icon={["fas", "adjust"]} />
-            }
-            description={t("controller.light.color.name")}
-            i18nKey="controller.light.color"
-            value={""}
-            setter={(e: any) => light!.action = e}
-            sender={(after: any) => update({ ...light! }, after)}
-            action={props.template?.light?.color!}
-          />
-        </Contents>
+        {props.template?.light?.color &&
+          <Contents>
+            <SummonByTpl
+              title={
+                <Icon icon={["fas", "adjust"]} />
+              }
+              description={t("controller.light.color.name")}
+              i18nKey="controller.light.color"
+              value={""}
+              setter={(e: any) => light!.action = e}
+              sender={(after: any) => update({ ...light! }, after)}
+              action={props.template?.light?.color!}
+            />
+          </Contents>
+        }
       </Row>
     </LightCard>
   )
