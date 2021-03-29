@@ -13,6 +13,7 @@ import { RELEASE_VERSION } from '../../config';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { LinkContainer } from 'react-router-bootstrap';
+import { MenuTitle, ThemedModal } from '../atoms/Themed';
 
 interface Props {
   children: React.ReactNode,
@@ -43,12 +44,13 @@ const Basement: React.FC<Props> = props => {
                     :
                     <NotifyError title="Failed fetch room data" />
                 )}
-                <Modal
+                <ThemedModal
                   size="lg"
                   show={showMenu}
                   onHide={() => setShowMenu(false)}
                   // backdrop="static"
                   variant="dark"
+                  animate={false}
                 // centered={true}
                 >
                   <Modal.Header closeButton>
@@ -60,7 +62,7 @@ const Basement: React.FC<Props> = props => {
                   <Modal.Body>
                     <Container fluid>
                       {/* Main Menu */}
-                      <p><Icon icon={["fas", "ellipsis-h"]} />{t("menu.main.title")}</p>
+                      <MenuTitle><Icon icon={["fas", "ellipsis-h"]} />{t("menu.main.title")}</MenuTitle>
                       <CustomRow>
                         <Col>
                           <LinkContainer exact to={"/"}>
@@ -94,22 +96,25 @@ const Basement: React.FC<Props> = props => {
                       <CustomRow>
                         {/* + */}
                         <Col sm style={{ marginTop: "1rem" }}>
-                          <p><Icon icon={["fas", "server"]} />{t("menu.environment.title")}</p>
-                          <Col style={{ paddingLeft: "0", fontSize: "2rem" }}>
-                            <Icon fixedWidth style={{ fontSize: "1.5rem" }} icon={["fas", "thermometer-three-quarters"]} />{roomResult?.room?.ambient.temp.toFixed(1)}
+                          <MenuTitle><Icon icon={["fas", "server"]} />{t("menu.environment.title")}</MenuTitle>
+                          <EnvStatus>
+                            <Icon fixedWidth style={{ fontSize: "1.5rem" }} icon={["fas", "thermometer-three-quarters"]} />
+                            <span>{roomResult?.room?.ambient.temp.toFixed(1)}</span>
                             <span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>℃</span>
-                          </Col>
-                          <Col style={{ paddingLeft: "0", fontSize: "2rem" }}>
-                            <Icon fixedWidth style={{ fontSize: "1.5rem" }} icon={["fas", "tint"]} />{roomResult?.room?.ambient.humid.toFixed(0)}
+                          </EnvStatus>
+                          <EnvStatus>
+                            <Icon fixedWidth style={{ fontSize: "1.5rem" }} icon={["fas", "tint"]} />
+                            <span>{roomResult?.room?.ambient.humid.toFixed(0)}</span>
                             <span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>%</span>
-                          </Col>
-                          <Col style={{ paddingLeft: "0", fontSize: "2rem" }}>
-                            <Icon fixedWidth style={{ fontSize: "1.5rem" }} icon={["fas", "wind"]} />{roomResult?.room?.ambient.pressure.toFixed(1)}
+                          </EnvStatus>
+                          <EnvStatus>
+                            <Icon fixedWidth style={{ fontSize: "1.5rem" }} icon={["fas", "wind"]} />
+                            <span>{roomResult?.room?.ambient.pressure.toFixed(1)}</span>
                             <span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>hPa</span>
-                          </Col>
+                          </EnvStatus>
                         </Col>
                         <Col sm style={{ marginTop: "1rem" }}>
-                          <p onClick={() => { setOtakuCount(otakuCount + 1) }}><Icon icon={["fas", "swatchbook"]} />{t("menu.theme.title")}</p>
+                          <MenuTitle onClick={() => { setOtakuCount(otakuCount + 1) }}><Icon icon={["fas", "swatchbook"]} />{t("menu.theme.title")}</MenuTitle>
                           <ThemeSwitcher otaku={otaku} />
                         </Col>
                       </CustomRow>
@@ -118,7 +123,7 @@ const Basement: React.FC<Props> = props => {
                   <Modal.Footer>
                     <p>Version: {RELEASE_VERSION}</p>
                   </Modal.Footer>
-                </Modal>
+                </ThemedModal>
                 {props.children}
               </>
             )
@@ -136,6 +141,11 @@ const Icon = styled(FontAwesomeIcon)`
 const CustomRow = styled(Row)`
   margin-top: 1rem;
   margin-bottom: 1rem;
+`
+
+const EnvStatus = styled(Col)`
+  padding-left: 0;
+  font-size: 2rem;
 `
 
 export default Basement;

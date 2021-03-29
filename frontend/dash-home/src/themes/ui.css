@@ -49,6 +49,9 @@
 
 .close {
     text-shadow: initial;
+    font-size: 1.5rem;
+    font-weight: initial;
+    opacity: initial;
 }
 
 .table-dark {
@@ -77,6 +80,10 @@ h2 {
 
 .modal-title {
     font-weight: 400;
+}
+
+.modal-content {
+    border: none;
 }
 
 p {

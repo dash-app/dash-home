@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ThemeContext } from '../themes/ThemeProvider';
 
@@ -78,33 +77,41 @@ export const HR = (props: any) => {
 }
 
 export const ThemedModal = (props: any) => {
-  switch (React.useContext(ThemeContext).theme) {
-    case "NERD_BLACK":
-      return (<DarkModal {...props} />)
-    default:
-      return (<Modal {...props} />)
-  }
+  const theme = React.useContext(ThemeContext).theme;
+  return (
+    <>
+      <style type="text/css">
+        {theme === "NERD_BLACK" &&
+          `
+            .close {
+              color: #FFF;
+            }
+            .close:hover {
+              color: #5A5A5A;
+            }
+            .modal-header {
+              border-bottom: 1px solid #2F2F2F;
+            }
+            .modal-content {
+              background-color: #0E0E0E;
+              color: #DDD;
+            }
+            .modal-footer {
+              border-top: 1px solid #2F2F2F;
+            }
+            .modal-title {
+              color: #FFF;
+            }
+            .modal-section-title {
+              color: #FFF;
+            }
+          `
+        }
+      </style>
+      <Modal {...props} />
+    </>
+  )
 }
-
-const DarkModal = styled(Modal)`
-  .close {
-    color: #FFF;
-  }
-  .modal-header {
-    border-bottom: 1px solid #2F2F2F;
-  }
-  .modal-footer {
-    border-top: 1px solid #2F2F2F;
-  }
-  .modal-title {
-    color: #FFF;
-  }
-  .modal-content {
-    background-color: #111112;
-    border: none;
-  }
-`;
-
 export const Tabs = (props: TabsProps) => {
   const theme = React.useContext(ThemeContext).theme;
   return (
@@ -135,4 +142,8 @@ export const Tabs = (props: TabsProps) => {
       />
     </>
   )
+}
+
+export const MenuTitle = (props: any) => {
+  return (<p className={"modal-section-title"}>{props.children}</p>)
 }
