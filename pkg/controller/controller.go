@@ -50,8 +50,14 @@ func (c *Controller) RaiseSwitchBot(id string, command string) error {
 		return errors.New("that controller does not setup for switchbot")
 	}
 
+	// Get Agent
+	agentID := entry.AgentID
+	if agentID == "" {
+		agentID = c.Agent.Storage.GetDefaultAgent().ID
+	}
+
 	// Get SwitchBot Provider
-	if err := c.Agent.PostSwitch(ctx, entry.SwitchBot.Mac, strings.ToLower(command)); err != nil {
+	if err := c.Agent.PostSwitch(ctx, agentID, entry.SwitchBot.Mac, strings.ToLower(command)); err != nil {
 		return err
 	}
 
@@ -99,7 +105,12 @@ func (c *Controller) PushAircon(id string, ac *aircon.Entry) (*aircon.Entry, err
 		}
 
 		// Send
-		if err := c.Agent.SendIR(ctx, code); err != nil {
+		agentID := entry.AgentID
+		if agentID == "" {
+			agentID = c.Agent.Storage.GetDefaultAgent().ID
+		}
+
+		if err := c.Agent.SendIR(ctx, agentID, code); err != nil {
 			logrus.WithError(err).Errorf("[Send] Failed Send IR")
 			return nil, err
 		}
@@ -149,8 +160,13 @@ func (c *Controller) PushLight(id string, l *light.Entry) (*light.State, error) 
 			return nil, err
 		}
 
+		agentID := entry.AgentID
+		if agentID == "" {
+			agentID = c.Agent.Storage.GetDefaultAgent().ID
+		}
+
 		// Send
-		if err := c.Agent.SendIR(ctx, code); err != nil {
+		if err := c.Agent.SendIR(ctx, agentID, code); err != nil {
 			logrus.WithError(err).Errorf("[Send] Failed Send IR")
 			return nil, err
 		}

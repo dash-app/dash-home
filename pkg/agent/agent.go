@@ -3,7 +3,6 @@ package agent
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -32,6 +31,12 @@ type Agent struct {
 	// Address - Agent Address (ex. `localhost:8081`)
 	Address string `json:"address" validate:"required" example:"localhost:8081"`
 
+	// Default - Agent to use by mainly
+	Default bool `json:"default,omitempty"`
+
+	// Label - Name of Agent (ex. `Bedroom`)
+	Label string `json:"label,omitempty" example:"Bedroom"`
+
 	// Online - Check online
 	Online bool `json:"online,omitempty"`
 }
@@ -48,9 +53,9 @@ func New(basePath string) (*AgentService, error) {
 	}, nil
 }
 
-// Get - Get agent entry
-func (as *AgentService) Get() (*Agent, error) {
-	r, err := as.Storage.Get()
+// GetAll - Get all agents
+func (as *AgentService) GetAll() ([]Agent, error) {
+	r, err := as.Storage.GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -58,9 +63,9 @@ func (as *AgentService) Get() (*Agent, error) {
 	return r, nil
 }
 
-// Create - Create agent entry
-func (as *AgentService) Create(address string) (*Agent, error) {
-	r, err := as.Storage.Create(address)
+// Add - Add agent
+func (as *AgentService) Add(address string, label string) (*Agent, error) {
+	r, err := as.Storage.Add(address, false, label)
 	if err != nil {
 		return nil, err
 	}
@@ -103,11 +108,11 @@ func (as *AgentService) InitPoll() {
 func (as *AgentService) Poll(c context.Context) error {
 	ctx, cancel := context.WithCancel(c)
 	defer cancel()
-	if as.Storage.Agent == nil {
-		return errors.New("agent not found")
+	if as.Storage.Agents == nil || len(as.Storage.Agents) == 0 {
+		return ErrNotFound.Error
 	}
 
-	address := as.Storage.Agent.Address
+	address := as.Storage.GetDefaultAgent().Address
 	req, err := http.NewRequest(
 		"GET",
 		fmt.Sprintf("http://%s/api/v1/sensors", address),
@@ -157,7 +162,7 @@ func (as *AgentService) Poll(c context.Context) error {
 
 func (as *AgentService) GetAmbient() (*Ambient, error) {
 	if as.Ambient == nil {
-		return nil, errors.New("ambient not fetched")
+		return nil, ErrAmbientNotFetched.Error
 	}
 
 	return as.Ambient, nil

@@ -25,6 +25,9 @@ type Entry struct {
 	// ID - Generated ID
 	ID string `json:"id,omitempty" example:"<UNIQUE_ID>"`
 
+	// AgentID - Use for another agent
+	AgentID string `json:"agent_id,omitempty" example:"<AGENT_ID>"`
+
 	// Name - ex. Bedroom Airconditioner
 	Name string `json:"name" validate:"required" example:"Bedroom Airconditioner"`
 
@@ -53,6 +56,9 @@ type Options struct {
 
 	// Switch....
 	SwitchBot *agent.SwitchBot `json:"switchbot,omitempty"`
+
+	// AgentID
+	AgentID string `json:"agent_id,omitempty"`
 }
 
 func NewStorage(basePath string, remotes *remotego.Remote) (*Storage, error) {
@@ -187,6 +193,11 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 
 	// Set Type
 	entry.Type = t
+
+	// Set Agent ID (when provided)
+	if opts.AgentID != "" {
+		entry.AgentID = opts.AgentID
+	}
 
 	switch t {
 	case "REMOTE":

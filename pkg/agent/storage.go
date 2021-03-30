@@ -2,7 +2,6 @@ package agent
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"os"
 
@@ -10,18 +9,18 @@ import (
 )
 
 type Storage struct {
-	Path  string
-	Agent *Agent
+	Path   string
+	Agents []Agent
 }
 
 func NewStorage(basePath string) (*Storage, error) {
 	store := &Storage{
-		Path: basePath + "/" + "agent.json",
+		Path: basePath + "/" + "agents.json",
 	}
 
 	if _, err := os.Stat(store.Path); os.IsNotExist(err) {
-		// Create default agent
-		if _, err := store.Create("localhost:8081"); err != nil {
+		// Add default agent
+		if _, err := store.Add("localhost:8081", true, ""); err != nil {
 			return nil, err
 		}
 	} else if err == nil {
@@ -36,29 +35,64 @@ func NewStorage(basePath string) (*Storage, error) {
 	return store, nil
 }
 
-func (s *Storage) Create(address string) (*Agent, error) {
-	if s.Agent != nil {
-		return nil, errors.New("agent already exists")
+func (s *Storage) Add(address string, isDefault bool, label string) (*Agent, error) {
+	if s.GetByAddress(address) != nil {
+		return nil, ErrAlreadyExists.Error
 	}
 
-	s.Agent = &Agent{
+	newAgent := Agent{
 		ID: func() string {
 			r, _ := uuid.NewUUID()
 			return r.String()
 		}(),
 		Address: address,
+		Default: isDefault,
+		Label:   label,
 		Online:  false,
 	}
 
-	return s.Agent, s.save()
+	s.Agents = append(s.Agents, newAgent)
+
+	return &newAgent, s.save()
 }
 
-func (s *Storage) Get() (*Agent, error) {
-	if s.Agent == nil {
-		return nil, errors.New("agent not found")
+// GetByAddress - Return agent by Address
+func (s *Storage) GetByAddress(address string) *Agent {
+	for _, a := range s.Agents {
+		if a.Address == address {
+			return &a
+		}
+	}
+	return nil
+}
+
+// GetByID - Return agent by ID
+func (s *Storage) GetByID(id string) *Agent {
+	for _, a := range s.Agents {
+		if a.ID == id {
+			return &a
+		}
+	}
+	return nil
+}
+
+// GetDefaultAgent - Return default agent
+func (s *Storage) GetDefaultAgent() *Agent {
+	for _, a := range s.Agents {
+		if a.Default {
+			return &a
+		}
+	}
+	return nil
+}
+
+// GetAll - Get all agents
+func (s *Storage) GetAll() ([]Agent, error) {
+	if s.Agents == nil || len(s.Agents) == 0 {
+		return nil, ErrNoAgent.Error
 	}
 
-	return s.Agent, nil
+	return s.Agents, nil
 }
 
 // Load - load from local storage
@@ -67,7 +101,7 @@ func (s *Storage) load() error {
 	if err != nil {
 		return err
 	}
-	if err := json.Unmarshal(b, &s.Agent); err != nil {
+	if err := json.Unmarshal(b, &s.Agents); err != nil {
 		return err
 	}
 	return nil
@@ -75,7 +109,7 @@ func (s *Storage) load() error {
 
 // Save - sync to local storage
 func (s *Storage) save() error {
-	b, err := json.Marshal(s.Agent)
+	b, err := json.Marshal(s.Agents)
 	if err != nil {
 		return err
 	}
