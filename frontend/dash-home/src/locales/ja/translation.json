@@ -103,6 +103,10 @@
         "title": "コントローラーの名前",
         "placeholder": "寝室の蛍光灯"
       },
+      "agent_id": {
+        "title": "エージェントID",
+        "placeholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      },
       "kind": "種類",
       "type": "タイプ",
       "vendor": "メーカー・機種",

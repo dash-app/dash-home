@@ -5,6 +5,7 @@ import { AxiosError } from "axios";
 
 export interface Controller {
   id: string,
+  agent_id?: string,
   name: string,
   kind: string, // "AIRCON", "LIGHT"...
   type: string, // "REMOTE"...

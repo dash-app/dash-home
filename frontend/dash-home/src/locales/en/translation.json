@@ -103,6 +103,10 @@
         "title": "Controller Name",
         "placeholder": "Bedroom Light"
       },
+      "agent_id": {
+        "title": "Agent ID",
+        "placeholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      },
       "kind": "Kind",
       "type": "Type",
       "vendor": "Vendor",

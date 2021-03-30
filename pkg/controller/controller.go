@@ -23,7 +23,7 @@ func New(basePath string, agent *agent.AgentService) (*Controller, error) {
 	// Initialize remotes
 	remotes := remotego.Init()
 
-	store, err := NewStorage(basePath, remotes)
+	store, err := NewStorage(basePath, remotes, agent.Storage)
 	if err != nil {
 		return nil, err
 	}

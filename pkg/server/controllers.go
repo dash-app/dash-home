@@ -9,12 +9,17 @@ import (
 	"github.com/dash-app/remote-go/aircon"
 	"github.com/dash-app/remote-go/light"
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
+	"github.com/sirupsen/logrus"
 )
 
 // SetControllerRequest - Create / Update controller request
 type SetControllerRequest struct {
 	// Name - ex. Bedroom Airconditioner
 	Name string `json:"name" validate:"required" example:"Bedroom Airconditioner"`
+
+	// AgentID - Agent ID (optional)
+	AgentID string `json:"agent_id,omitempty" example:"<AGENT_ID>"`
 
 	// Kind - AIRCON, LIGHT, SWITCHBOT...
 	Kind string `json:"kind" validate:"required" example:"AIRCON"`
@@ -74,6 +79,13 @@ func (h *httpServer) postControllers(c *gin.Context) {
 
 	// Set Options
 	var opts controller.Options
+
+	// AgentID
+	if req.AgentID != "" {
+		opts.AgentID = req.AgentID
+	}
+
+	// Remote/Switchbot
 	if req.Type == "REMOTE" {
 
 		//Remoteにデータが登録されていない場合エラーを返す処理(nil処理)
@@ -141,8 +153,15 @@ func (h *httpServer) patchControllerByID(c *gin.Context) {
 		return
 	}
 
+	logrus.Debugf("[Controllers] Patch payload: %v", pp.Sprint(req))
+
 	// Set Options
 	var opts controller.Options
+
+	// AgentID
+	opts.AgentID = req.AgentID
+
+	// Remote
 	if req.Type == "REMOTE" {
 		opts.Remote = &controller.Remote{
 			Vendor: req.Remote.Vendor,

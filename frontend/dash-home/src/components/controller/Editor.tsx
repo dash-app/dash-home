@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {  Controller, Remote, SwitchBot } from '../../remote-go/Controller';
+import { Controller, Remote, SwitchBot } from '../../remote-go/Controller';
 import { Button, Dropdown, DropdownButton, Form } from 'react-bootstrap';
 import { P } from '../atoms/Core';
 import RemoteChooser from '../controller/RemoteChooser';
@@ -141,6 +141,22 @@ export const Editor: React.FC<Props> = props => {
           </div>
         </Form.Group>
       }
+
+      {/* Extra: Agent option */}
+      <Form.Group>
+        <Form.Label>
+          <P>{t("controller.entry.agent_id.title")}: {controller.agent_id}</P>
+        </Form.Label>
+        <Form.Control
+          value={controller.agent_id}
+          placeholder={t("controller.entry.agent_id.placeholder")}
+          aria-label={t("controller.entry.agent_id.title")}
+          onChange={(e: any) => {
+            controller.agent_id = e.currentTarget.value;
+            setController({ ...controller });
+          }}
+        />
+      </Form.Group>
     </>
   )
 }

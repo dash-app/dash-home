@@ -16,9 +16,10 @@ import (
 )
 
 type Storage struct {
-	Path    string
-	Entries map[string]*Entry
-	Remotes *remotego.Remote
+	Path       string
+	Entries    map[string]*Entry
+	Remotes    *remotego.Remote
+	AgentStore *agent.Storage
 }
 
 type Entry struct {
@@ -61,11 +62,12 @@ type Options struct {
 	AgentID string `json:"agent_id,omitempty"`
 }
 
-func NewStorage(basePath string, remotes *remotego.Remote) (*Storage, error) {
+func NewStorage(basePath string, remotes *remotego.Remote, agents *agent.Storage) (*Storage, error) {
 	store := &Storage{
-		Path:    basePath + "/" + "controllers.json",
-		Entries: make(map[string]*Entry),
-		Remotes: remotes,
+		Path:       basePath + "/" + "controllers.json",
+		Entries:    make(map[string]*Entry),
+		Remotes:    remotes,
+		AgentStore: agents,
 	}
 	if _, err := os.Stat(store.Path); os.IsNotExist(err) {
 		return store, store.Save()
@@ -196,7 +198,11 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 
 	// Set Agent ID (when provided)
 	if opts.AgentID != "" {
-		entry.AgentID = opts.AgentID
+		if s.AgentStore.GetByID(opts.AgentID) != nil {
+			entry.AgentID = opts.AgentID
+		} else {
+			return nil, agent.ErrNotFound.Error
+		}
 	}
 
 	switch t {
