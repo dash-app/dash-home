@@ -9,8 +9,9 @@ import (
 )
 
 type Storage struct {
-	Path   string
-	Agents []Agent
+	Path         string
+	Agents       []Agent
+	DefaultAgent *Agent
 }
 
 func NewStorage(basePath string) (*Storage, error) {
@@ -40,7 +41,7 @@ func (s *Storage) Add(address string, isDefault bool, label string) (*Agent, err
 		return nil, ErrAlreadyExists.Error
 	}
 
-	newAgent := Agent{
+	newAgent := &Agent{
 		ID: func() string {
 			r, _ := uuid.NewUUID()
 			return r.String()
@@ -51,9 +52,9 @@ func (s *Storage) Add(address string, isDefault bool, label string) (*Agent, err
 		Online:  false,
 	}
 
-	s.Agents = append(s.Agents, newAgent)
+	s.Agents = append(s.Agents, *newAgent)
 
-	return &newAgent, s.save()
+	return newAgent, s.save()
 }
 
 // GetByAddress - Return agent by Address
@@ -78,12 +79,16 @@ func (s *Storage) GetByID(id string) *Agent {
 
 // GetDefaultAgent - Return default agent
 func (s *Storage) GetDefaultAgent() *Agent {
-	for _, a := range s.Agents {
-		if a.Default {
-			return &a
+	if s.DefaultAgent == nil {
+		for _, a := range s.Agents {
+			if a.Default {
+				s.DefaultAgent = &a
+				return &a
+			}
 		}
+		return nil
 	}
-	return nil
+	return s.DefaultAgent
 }
 
 // GetAll - Get all agents
