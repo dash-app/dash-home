@@ -21,7 +21,7 @@ func NewStorage(basePath string) (*Storage, error) {
 
 	if _, err := os.Stat(store.Path); os.IsNotExist(err) {
 		// Add default agent
-		if _, err := store.Add("localhost:8081", true, ""); err != nil {
+		if _, err := store.Add("localhost:8081", true, "default"); err != nil {
 			return nil, err
 		}
 	} else if err == nil {

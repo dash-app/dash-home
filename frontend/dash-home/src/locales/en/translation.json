@@ -13,7 +13,9 @@
   },
   "status": {
     "loading": "Loading...",
-    "error": "Error"
+    "error": "Error",
+    "online": "Online",
+    "offline": "Offline"
   },
   "error": {
     "title": "Something went wrong!",
@@ -27,7 +29,8 @@
     "main": {
       "title": "Main Menu",
       "home": "Home",
-      "controllers": "Controllers"
+      "controllers": "Controllers",
+      "agents": "Agents"
     },
     "environment": {
       "title": "Environment"
@@ -52,6 +55,13 @@
         "description": "Welcome to Dash-App!"
       }
     }
+  },
+  "agent": {
+    "agent": "Agent",
+    "id": "Agent ID",
+    "label": "Label",
+    "address": "Address",
+    "status": "Status"
   },
   "controller": {
     "error": {

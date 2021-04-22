@@ -82,6 +82,14 @@ const Basement: React.FC<Props> = props => {
                             </Button>
                           </LinkContainer>
                         </Col>
+                        <Col>
+                          <LinkContainer to={"/agent"}>
+                            <Button size="lg" block>
+                              <FontAwesomeIcon icon={["fas", "link"]} />
+                              <p>{t("menu.main.agents")}</p>
+                            </Button>
+                          </LinkContainer>
+                        </Col> 
                         {/* TODO: Implements */}
                         {/* <Col>
                           <LinkContainer to={"/settings"}>

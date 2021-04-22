@@ -13,7 +13,9 @@
   },
   "status": {
     "loading": "ロード中...",
-    "error": "エラー"
+    "error": "エラー",
+    "online": "オンライン",
+    "offline": "オフライン"
   },
   "error": {
     "title": "問題が発生しました",
@@ -27,7 +29,8 @@
     "main": {
       "title": "メインメニュー",
       "home": "ホーム",
-      "controllers": "コントローラー"
+      "controllers": "コントローラー",
+      "agents": "エージェント"
     },
     "environment": {
       "title": "環境"
@@ -52,6 +55,13 @@
         "description": "Dash-Appへようこそ！"
       }
     }
+  },
+  "agent": {
+    "agent": "エージェント",
+    "id": "エージェントID",
+    "label": "ラベル",
+    "address": "アドレス",
+    "status": "状態"
   },
   "controller": {
     "error": {
