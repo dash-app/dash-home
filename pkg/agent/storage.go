@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"reflect"
 
 	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 )
 
 type Storage struct {
@@ -57,6 +59,29 @@ func (s *Storage) Add(address string, isDefault bool, label string) (*Agent, err
 	return newAgent, s.save()
 }
 
+// Update - Update agent settings
+func (s *Storage) Update(id string, entry *Agent) (*Agent, error) {
+	oldEntry := s.GetByID(id)
+	if oldEntry == nil {
+		return nil, ErrNotFound.Error
+	}
+
+	for i := range s.Agents {
+		if s.Agents[i].ID != id {
+			continue
+		}
+
+		// Run Update
+		if ok := reflect.DeepEqual(s.Agents[i], *entry); !ok {
+			logrus.Debugf("[Agent] Update Agent entry")
+			s.Agents[i] = *entry
+			return entry, s.save()
+		}
+	}
+
+	return entry, nil
+}
+
 // GetByAddress - Return agent by Address
 func (s *Storage) GetByAddress(address string) *Agent {
 	for _, a := range s.Agents {
@@ -78,17 +103,17 @@ func (s *Storage) GetByID(id string) *Agent {
 }
 
 // GetDefaultAgent - Return default agent
-func (s *Storage) GetDefaultAgent() *Agent {
+func (s *Storage) GetDefaultAgent() (Agent, error) {
 	if s.DefaultAgent == nil {
 		for _, a := range s.Agents {
 			if a.Default {
 				s.DefaultAgent = &a
-				return &a
+				return a, nil
 			}
 		}
-		return nil
+		return Agent{}, ErrNotFound.Error
 	}
-	return s.DefaultAgent
+	return *s.DefaultAgent, nil
 }
 
 // GetAll - Get all agents

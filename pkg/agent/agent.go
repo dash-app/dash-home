@@ -76,43 +76,44 @@ func (as *AgentService) Add(address string, label string) (*Agent, error) {
 // InitPoll - Start Poll task
 func (as *AgentService) InitPoll() {
 	// NOTE: Must be use context
-
-	go func() {
-		// First Polling
-		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-		if err := as.Poll(ctx); err != nil {
-			logrus.WithError(err).Errorf("[Poll]")
-		}
-		cancel()
-
-		// Loop Polling
-		ticker := time.NewTicker(PollingPeriod * time.Millisecond)
-		quit := make(chan struct{})
-		for {
-			select {
-			case <-ticker.C:
-				ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-				if err := as.Poll(ctx); err != nil {
-					logrus.WithError(err).Errorf("[Poll]")
-				}
-				cancel()
-			case <-quit:
-				ticker.Stop()
-				return
+	for _, agent := range as.Storage.Agents {
+		go func(agent Agent) {
+			// First Polling
+			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+			if err := as.Poll(ctx, agent); err != nil {
+				logrus.WithError(err).Errorf("[Poll]")
 			}
-		}
-	}()
+			cancel()
+
+			// Loop Polling
+			ticker := time.NewTicker(PollingPeriod * time.Millisecond)
+			quit := make(chan struct{})
+			for {
+				select {
+				case <-ticker.C:
+					ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+					if err := as.Poll(ctx, agent); err != nil {
+						logrus.WithError(err).Errorf("[Poll]")
+					}
+					cancel()
+				case <-quit:
+					ticker.Stop()
+					return
+				}
+			}
+		}(agent)
+	}
 }
 
 // Poll - Execute Poll
-func (as *AgentService) Poll(c context.Context) error {
+func (as *AgentService) Poll(c context.Context, agent Agent) error {
 	ctx, cancel := context.WithCancel(c)
 	defer cancel()
 	if as.Storage.Agents == nil || len(as.Storage.Agents) == 0 {
 		return ErrNotFound.Error
 	}
 
-	address := as.Storage.GetDefaultAgent().Address
+	address := agent.Address
 	req, err := http.NewRequest(
 		"GET",
 		fmt.Sprintf("http://%s/api/v1/sensors", address),
@@ -129,19 +130,35 @@ func (as *AgentService) Poll(c context.Context) error {
 	go func() {
 		resp, err := client.Do(req)
 		if err != nil {
+			agent.Online = false
+			if _, err := as.Storage.Update(agent.ID, &agent); err != nil {
+				errCh <- err
+				return
+			}
 			errCh <- err
 			return
 		}
 		defer resp.Body.Close()
-		b, _ := ioutil.ReadAll(resp.Body)
-		var entry *Ambient
-		if err := json.Unmarshal(b, &entry); err != nil {
+		if agent.Default {
+			b, _ := ioutil.ReadAll(resp.Body)
+			var entry *Ambient
+			if err := json.Unmarshal(b, &entry); err != nil {
+				errCh <- err
+				return
+			}
+			entry.LastFetch = time.Now().UTC()
+			as.Ambient = entry
+			logrus.Debugf("[Poll] Fetched: %v", pp.Sprint(entry))
+		}
+
+		// Update Online status
+		as.Storage.Update(agent.ID, &agent)
+		agent.Online = true
+		if _, err := as.Storage.Update(agent.ID, &agent); err != nil {
 			errCh <- err
 			return
 		}
-		entry.LastFetch = time.Now().UTC()
-		as.Ambient = entry
-		logrus.Debugf("[Poll] Fetched: %v", pp.Sprint(entry))
+
 		errCh <- nil
 	}()
 

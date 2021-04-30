@@ -14,6 +14,9 @@ type UpdateAgentRequest struct {
 	// Address of Pigent
 	Address string `json:"address" validate:"required" example:"localhost:8081"`
 
+	// Default - Agent to use by mainly
+	Default bool `json:"default,omitempty"`
+
 	// Label - Agent label (optional)
 	Label string `json:"label" example:"Bedroom"`
 }
@@ -73,4 +76,35 @@ func (h *httpServer) postAgent(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"error": errors.New("address is not provided").Error()})
 	}
+}
+
+// Patch Agent By ID
+// @Summary Update agent by ID
+// @Router /api/v1/agents/:id [patch]
+// @tags agent
+// @Success 200 {object} agent.Agent
+// @Produce json
+func (h *httpServer) patchAgentByID(c *gin.Context) {
+	id := c.Param("id")
+
+	var req *UpdateAgentRequest
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Get old Entry
+	oldEntry := h.agent.Storage.GetByID(id)
+	if oldEntry == nil {
+		c.JSON(http.StatusNotFound, agent.ErrNotFound)
+	}
+
+	oldEntry.Label = req.Label
+	res, err := h.agent.Storage.Update(id, oldEntry)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }

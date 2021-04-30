@@ -53,7 +53,11 @@ func (c *Controller) RaiseSwitchBot(id string, command string) error {
 	// Get Agent
 	agentID := entry.AgentID
 	if agentID == "" {
-		agentID = c.Agent.Storage.GetDefaultAgent().ID
+		agent, err := c.Agent.Storage.GetDefaultAgent()
+		if err != nil {
+			return err
+		}
+		agentID = agent.ID
 	}
 
 	// Get SwitchBot Provider
@@ -107,7 +111,11 @@ func (c *Controller) PushAircon(id string, ac *aircon.Entry) (*aircon.Entry, err
 		// Send
 		agentID := entry.AgentID
 		if agentID == "" {
-			agentID = c.Agent.Storage.GetDefaultAgent().ID
+			agent, err := c.Agent.Storage.GetDefaultAgent()
+			if err != nil {
+				return nil, err
+			}
+			agentID = agent.ID
 		}
 
 		if err := c.Agent.SendIR(ctx, agentID, code); err != nil {
@@ -162,7 +170,11 @@ func (c *Controller) PushLight(id string, l *light.Entry) (*light.State, error) 
 
 		agentID := entry.AgentID
 		if agentID == "" {
-			agentID = c.Agent.Storage.GetDefaultAgent().ID
+			agent, err := c.Agent.Storage.GetDefaultAgent()
+			if err != nil {
+				return nil, err
+			}
+			agentID = agent.ID
 		}
 
 		// Send

@@ -71,6 +71,7 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 	apiGroup.GET("agents", h.getAgents)
 	apiGroup.POST("agents", h.postAgent)
 	apiGroup.GET("agents/:id", h.getAgentByID)
+	apiGroup.PATCH("agents/:id", h.patchAgentByID)
 
 	// Room
 	apiGroup.GET("room", h.getRoom)
