@@ -61,7 +61,11 @@
     "id": "エージェントID",
     "label": "ラベル",
     "address": "アドレス",
-    "status": "状態"
+    "status": "状態",
+    "default": "デフォルト",
+    "edit": {
+      "title": "エージェントを編集"
+    }
   },
   "controller": {
     "error": {

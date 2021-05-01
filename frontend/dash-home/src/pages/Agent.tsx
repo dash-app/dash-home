@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom'
 import { Button, Container, Navbar } from 'react-bootstrap';
 import Basement from '../components/basements/Basement';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +18,7 @@ const Agent: React.FC<Props> = props => {
         <Navbar>
           <LinkContainer exact to="/">
             <Button>
-              <FontAwesomeIcon icon={["fas", "arrow-left"]}/>
+              <FontAwesomeIcon icon={["fas", "arrow-left"]} />
               <span style={{ paddingLeft: "0.5rem" }}>{t("button.back")}</span>
             </Button>
           </LinkContainer>

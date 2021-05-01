@@ -61,7 +61,11 @@
     "id": "Agent ID",
     "label": "Label",
     "address": "Address",
-    "status": "Status"
+    "status": "Status",
+    "default": "Default",
+    "edit": {
+      "title": "Edit Agent"
+    }
   },
   "controller": {
     "error": {
