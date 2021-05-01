@@ -29,3 +29,9 @@ var ErrAmbientNotFetched = &status.Error{
 	Error: errors.New("ambient not fetched"),
 	Code:  "ERR_AMBIENT_NOT_FETCHED",
 }
+
+// ErrDefaultAgentRequired - When try turn off last default agent
+var ErrDefaultAgentRequired = &status.Error{
+	Error: errors.New("default agent required"),
+	Code:  "ERR_DEFAULT_AGENT_REQUIRED",
+}

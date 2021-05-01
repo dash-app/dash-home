@@ -75,38 +75,41 @@ func (as *AgentService) Add(address string, label string) (*Agent, error) {
 
 // InitPoll - Start Poll task
 func (as *AgentService) InitPoll() {
-	// NOTE: Must be use context
-	for _, agent := range as.Storage.Agents {
-		go func(agent Agent) {
-			// First Polling
+	go func() {
+		// First Polling
+		for _, agent := range as.Storage.Agents {
 			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 			if err := as.Poll(ctx, agent); err != nil {
 				logrus.WithError(err).Errorf("[Poll]")
 			}
 			cancel()
+		}
 
-			// Loop Polling
-			ticker := time.NewTicker(PollingPeriod * time.Millisecond)
-			quit := make(chan struct{})
-			for {
-				select {
-				case <-ticker.C:
-					ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-					if err := as.Poll(ctx, agent); err != nil {
-						logrus.WithError(err).Errorf("[Poll]")
-					}
-					cancel()
-				case <-quit:
-					ticker.Stop()
-					return
+		// Loop Polling
+		ticker := time.NewTicker(PollingPeriod * time.Millisecond)
+		quit := make(chan struct{})
+		for {
+			select {
+			case <-ticker.C:
+				for _, agent := range as.Storage.Agents {
+					go func(agent *Agent) {
+						ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+						if err := as.Poll(ctx, agent); err != nil {
+							logrus.WithError(err).Errorf("[Poll]")
+						}
+						cancel()
+					}(agent)
 				}
+			case <-quit:
+				ticker.Stop()
+				return
 			}
-		}(agent)
-	}
+		}
+	}()
 }
 
 // Poll - Execute Poll
-func (as *AgentService) Poll(c context.Context, agent Agent) error {
+func (as *AgentService) Poll(c context.Context, agent *Agent) error {
 	ctx, cancel := context.WithCancel(c)
 	defer cancel()
 	if as.Storage.Agents == nil || len(as.Storage.Agents) == 0 {
@@ -131,7 +134,7 @@ func (as *AgentService) Poll(c context.Context, agent Agent) error {
 		resp, err := client.Do(req)
 		if err != nil {
 			agent.Online = false
-			if _, err := as.Storage.Update(agent.ID, &agent); err != nil {
+			if _, err := as.Storage.Update(agent.ID, agent); err != nil {
 				errCh <- err
 				return
 			}
@@ -152,13 +155,11 @@ func (as *AgentService) Poll(c context.Context, agent Agent) error {
 		}
 
 		// Update Online status
-		as.Storage.Update(agent.ID, &agent)
 		agent.Online = true
-		if _, err := as.Storage.Update(agent.ID, &agent); err != nil {
+		if _, err := as.Storage.Update(agent.ID, agent); err != nil {
 			errCh <- err
 			return
 		}
-
 		errCh <- nil
 	}()
 
