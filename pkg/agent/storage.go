@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"reflect"
 
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
@@ -66,15 +67,24 @@ func (s *Storage) Update(id string, entry *Agent) (*Agent, error) {
 	}
 
 	// Check another default agent exists
-	if !entry.Default {
+	if oldEntry.Default && !entry.Default {
 		foundDefault := false
-		for _, agent := range s.Agents {
-			if agent.Default {
+		for i := range s.Agents {
+			if s.Agents[i].ID != id && s.Agents[i].Default {
 				foundDefault = true
 			}
 		}
 		if !foundDefault {
 			return nil, ErrDefaultAgentRequired.Error
+		}
+	}
+
+	// Turn off another default agent
+	if !oldEntry.Default && entry.Default {
+		for i := range s.Agents {
+			if s.Agents[i].Default {
+				s.Agents[i].Default = false
+			}
 		}
 	}
 
@@ -84,12 +94,11 @@ func (s *Storage) Update(id string, entry *Agent) (*Agent, error) {
 		}
 
 		// Run Update
-		//if ok := reflect.DeepEqual(s.Agents[i], entry); !ok {
-		//}
-		logrus.Debugf("[Agent] Update Agent entry")
-		s.Agents[i] = entry
+		if ok := reflect.DeepEqual(s.Agents[i], entry); !ok {
+			logrus.Debugf("[Agent] Update Agent entry")
+			s.Agents[i] = entry
+		}
 		return entry, s.save()
-
 	}
 
 	return entry, nil
