@@ -63,6 +63,9 @@
     "address": "Address",
     "status": "Status",
     "default": "Default",
+    "add": {
+      "title": "Add Agent"
+    },
     "edit": {
       "title": "Edit Agent"
     },

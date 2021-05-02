@@ -44,6 +44,26 @@ export function fetchAgents(setResult: React.Dispatch<React.SetStateAction<Agent
     });
 }
 
+export function addAgent(payload: Agent, setResult: React.Dispatch<React.SetStateAction<AgentResult | undefined>>) {
+  setResult({
+    status: PENDING,
+  })
+
+  axios.post<Agent>(`${API_ADDRESS}/api/v1/agents`, payload)
+    .then(response => setResult({
+      status: SUCCESS,
+      agent: response.data,
+    }))
+    .catch((error: AxiosError<ErrorResponse>) => {
+      console.error(`*** Agents > Add error:`);
+      console.error(error);
+      setResult({
+        status: FAILED,
+        error: error,
+      });
+    });
+}
+
 export function updateAgent(id: string, payload: Agent, setResult: React.Dispatch<React.SetStateAction<AgentResult | undefined>>) {
   setResult({
     status: PENDING,

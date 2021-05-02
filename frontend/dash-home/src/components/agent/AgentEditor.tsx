@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
-import { Agent, AgentResult, updateAgent } from '../../remote-go/Agents';
+import { Agent, AgentResult, updateAgent, addAgent } from '../../remote-go/Agents';
 import { FAILED, PENDING, SUCCESS } from '../../remote-go/Status';
 import { P } from '../atoms/Core';
 import { NotifyError } from '../atoms/Notify';
@@ -38,9 +38,10 @@ export const AgentEditor: React.FC<Props> = props => {
   const [postResult, setPostResult] = React.useState<AgentResult | undefined>(undefined);
 
   const handleSubmit = (event: any) => {
-    console.log(`:: Execute submit...`)
     if (props.agent) {
       updateAgent(props.agent?.id, agent, setPostResult)
+    } else if (props.action === 'ADD') {
+      addAgent(agent, setPostResult)
     }
     event.preventDefault();
     event.stopPropagation();
@@ -50,7 +51,10 @@ export const AgentEditor: React.FC<Props> = props => {
     <Modal show={props.show} onHide={props.handleClose && props.handleClose}>
       <Form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
-          <Modal.Title>{t("agent.edit.title")}</Modal.Title>
+          <Modal.Title>
+            {props.action === 'ADD' && t("agent.add.title")}
+            {props.action === 'EDIT' && t("agent.edit.title")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* Address */}
@@ -109,7 +113,8 @@ export const AgentEditor: React.FC<Props> = props => {
         <Modal.Footer>
           {postResult && postResult.status === PENDING && <Spinner animation="border" aria-hidden="true" />}
           {postResult && postResult.status === SUCCESS && <Redirect to="/agent" />}
-          <Button type="submit" disabled={postResult && postResult.status === PENDING}>{t("button.edit")}</Button>
+          {props.action === 'ADD' && <Button type="submit" disabled={postResult && postResult.status === PENDING}>{t("button.add")}</Button>}
+          {props.action === 'EDIT' && <Button type="submit" disabled={postResult && postResult.status === PENDING}>{t("button.edit")}</Button>}
           <Button variant="secondary" onClick={props.handleClose && props.handleClose}>{t("button.back")}</Button>
         </Modal.Footer>
       </Form>
