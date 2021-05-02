@@ -86,6 +86,10 @@ h2 {
     border: none;
 }
 
+.modal-backdrop-2 {
+    z-index: 1050;
+}
+
 p {
     font-weight: 400;
 }

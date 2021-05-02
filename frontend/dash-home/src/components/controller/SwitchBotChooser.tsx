@@ -41,6 +41,7 @@ const SwitchBotChooser: React.FC<Props> = (props: Props) => {
       show={props.visible}
       onHide={props.handleClose}
       backdrop="static"
+      backdropClassName="modal-backdrop-2"
     >
       <Form onSubmit={handleSubmit}>
         <Modal.Header closeButton>

@@ -42,8 +42,8 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
         size="lg"
         show={props.visible}
         backdrop="static"
+        backdropClassName="modal-backdrop-2"
         variant="dark"
-        animation={false}
         centered
         onHide={props.handleClose}
       >
@@ -64,9 +64,8 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
     <ThemedModal
       size="lg"
       show={props.visible}
-      backdrop="static"
+      backdropClassName="modal-backdrop-2"
       variant="dark"
-      animation={false}
       onHide={props.handleClose}
     >
       <Modal.Header closeButton={props.handleClose && true}>
