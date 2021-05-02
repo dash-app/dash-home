@@ -28,7 +28,7 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/agent": {
+        "/api/v1/agents": {
             "get": {
                 "produces": [
                     "application/json"
@@ -36,7 +36,7 @@ var doc = `{
                 "tags": [
                     "agent"
                 ],
-                "summary": "Get Agent entry",
+                "summary": "Get all agents",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -78,7 +78,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/agent/sensors": {
+        "/api/v1/agents/:id": {
             "get": {
                 "produces": [
                     "application/json"
@@ -86,12 +86,51 @@ var doc = `{
                 "tags": [
                     "agent"
                 ],
-                "summary": "Get Sensors status form agent",
+                "summary": "Get agent by ID",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/agent.Ambient"
+                            "$ref": "#/definitions/agent.Agent"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "agent"
+                ],
+                "summary": "Delete agent by ID",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "agent"
+                ],
+                "summary": "Update agent by ID",
+                "parameters": [
+                    {
+                        "description": "Update agent",
+                        "name": "entry",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/server.UpdateAgentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/agent.Agent"
                         }
                     }
                 }
@@ -369,10 +408,19 @@ var doc = `{
                     "type": "string",
                     "example": "localhost:8081"
                 },
+                "default": {
+                    "description": "Default - Agent to use by mainly",
+                    "type": "boolean"
+                },
                 "id": {
                     "description": "ID - Agent ID",
                     "type": "string",
                     "default": "\u003cUNIQUE_ID\u003e"
+                },
+                "label": {
+                    "description": "Label - Name of Agent (ex. ` + "`" + `Bedroom` + "`" + `)",
+                    "type": "string",
+                    "example": "Bedroom"
                 },
                 "online": {
                     "description": "Online - Check online",
@@ -505,6 +553,11 @@ var doc = `{
                 "type"
             ],
             "properties": {
+                "agent_id": {
+                    "description": "AgentID - Use for another agent",
+                    "type": "string",
+                    "example": "\u003cAGENT_ID\u003e"
+                },
                 "aircon": {
                     "description": "Aircon - State of Aircon",
                     "$ref": "#/definitions/aircon.State"
@@ -665,6 +718,11 @@ var doc = `{
                 "type"
             ],
             "properties": {
+                "agent_id": {
+                    "description": "AgentID - Agent ID (optional)",
+                    "type": "string",
+                    "example": "\u003cAGENT_ID\u003e"
+                },
                 "kind": {
                     "description": "Kind - AIRCON, LIGHT, SWITCHBOT...",
                     "type": "string",
@@ -717,6 +775,15 @@ var doc = `{
                     "description": "Address of Pigent",
                     "type": "string",
                     "example": "localhost:8081"
+                },
+                "default": {
+                    "description": "Default - Agent to use by mainly",
+                    "type": "boolean"
+                },
+                "label": {
+                    "description": "Label - Agent label (optional)",
+                    "type": "string",
+                    "example": "Bedroom"
                 }
             }
         },

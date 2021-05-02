@@ -5,9 +5,16 @@ definitions:
         description: Address - Agent Address (ex. `localhost:8081`)
         example: localhost:8081
         type: string
+      default:
+        description: Default - Agent to use by mainly
+        type: boolean
       id:
         default: <UNIQUE_ID>
         description: ID - Agent ID
+        type: string
+      label:
+        description: Label - Name of Agent (ex. `Bedroom`)
+        example: Bedroom
         type: string
       online:
         description: Online - Check online
@@ -101,6 +108,10 @@ definitions:
     type: object
   controller.Entry:
     properties:
+      agent_id:
+        description: AgentID - Use for another agent
+        example: <AGENT_ID>
+        type: string
       aircon:
         $ref: '#/definitions/aircon.State'
         description: Aircon - State of Aircon
@@ -217,6 +228,10 @@ definitions:
     type: object
   server.SetControllerRequest:
     properties:
+      agent_id:
+        description: AgentID - Agent ID (optional)
+        example: <AGENT_ID>
+        type: string
       kind:
         description: Kind - AIRCON, LIGHT, SWITCHBOT...
         example: AIRCON
@@ -257,6 +272,13 @@ definitions:
       address:
         description: Address of Pigent
         example: localhost:8081
+        type: string
+      default:
+        description: Default - Agent to use by mainly
+        type: boolean
+      label:
+        description: Label - Agent label (optional)
+        example: Bedroom
         type: string
     required:
     - address
@@ -374,7 +396,7 @@ info:
   title: Dash-Home API
   version: "1.0"
 paths:
-  /api/v1/agent:
+  /api/v1/agents:
     get:
       produces:
       - application/json
@@ -383,7 +405,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/agent.Agent'
-      summary: Get Agent entry
+      summary: Get all agents
       tags:
       - agent
     post:
@@ -406,7 +428,14 @@ paths:
       summary: Add Agent entry
       tags:
       - agent
-  /api/v1/agent/sensors:
+  /api/v1/agents/:id:
+    delete:
+      responses:
+        "200":
+          description: ""
+      summary: Delete agent by ID
+      tags:
+      - agent
     get:
       produces:
       - application/json
@@ -414,8 +443,26 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/agent.Ambient'
-      summary: Get Sensors status form agent
+            $ref: '#/definitions/agent.Agent'
+      summary: Get agent by ID
+      tags:
+      - agent
+    patch:
+      parameters:
+      - description: Update agent
+        in: body
+        name: entry
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateAgentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/agent.Agent'
+      summary: Update agent by ID
       tags:
       - agent
   /api/v1/controllers:

@@ -103,6 +103,7 @@ func (h *httpServer) postAgent(c *gin.Context) {
 // @Summary Update agent by ID
 // @Router /api/v1/agents/:id [patch]
 // @tags agent
+// @Param entry body UpdateAgentRequest true "Update agent"
 // @Success 200 {object} agent.Agent
 // @Produce json
 func (h *httpServer) patchAgentByID(c *gin.Context) {
