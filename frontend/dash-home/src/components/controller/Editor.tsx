@@ -42,7 +42,6 @@ export const Editor: React.FC<Props> = props => {
     <>
       {/* Name */}
       <Form.Group>
-        {t("agent.useDefault")}
         <Form.Label><P>{t("controller.entry.name.title")}</P></Form.Label>
         <Form.Control
           value={controller.name}
