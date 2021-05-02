@@ -64,6 +64,25 @@ export function addAgent(payload: Agent, setResult: React.Dispatch<React.SetStat
     });
 }
 
+export function deleteAgent(id: string, setResult: React.Dispatch<React.SetStateAction<AgentResult | undefined>>) {
+  setResult({
+    status: PENDING,
+  })
+
+  axios.delete(`${API_ADDRESS}/api/v1/agents/${id}`)
+    .then(() => setResult({
+      status: SUCCESS,
+    }))
+    .catch((error: AxiosError<ErrorResponse>) => {
+      console.error(`*** Agents > Delete error:`);
+      console.error(error);
+      setResult({
+        status: FAILED,
+        error: error,
+      });
+    });
+}
+
 export function updateAgent(id: string, payload: Agent, setResult: React.Dispatch<React.SetStateAction<AgentResult | undefined>>) {
   setResult({
     status: PENDING,

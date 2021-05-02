@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
-import { Agent, AgentResult, updateAgent, addAgent } from '../../remote-go/Agents';
+import { Agent, AgentResult, updateAgent, addAgent, deleteAgent } from '../../remote-go/Agents';
 import { FAILED, PENDING, SUCCESS } from '../../remote-go/Status';
 import { P } from '../atoms/Core';
 import { NotifyError } from '../atoms/Notify';
@@ -22,7 +22,7 @@ const initial: Agent = {
   label: "",
 }
 
-export type ActionType = 'ADD' | 'EDIT';
+export type ActionType = 'ADD' | 'EDIT' | 'DELETE';
 
 export const AgentEditor: React.FC<Props> = props => {
   console.log(props.agent)
@@ -37,14 +37,80 @@ export const AgentEditor: React.FC<Props> = props => {
 
   const [postResult, setPostResult] = React.useState<AgentResult | undefined>(undefined);
 
+  const handleDelete = () => {
+    if (props.agent) {
+      deleteAgent(props.agent?.id, setPostResult)
+    }
+  }
+
   const handleSubmit = (event: any) => {
     if (props.agent) {
-      updateAgent(props.agent?.id, agent, setPostResult)
+      if (props.action === 'EDIT') {
+        updateAgent(props.agent?.id, agent, setPostResult)
+      }
     } else if (props.action === 'ADD') {
       addAgent(agent, setPostResult)
     }
     event.preventDefault();
     event.stopPropagation();
+  }
+
+  if (props.action === 'DELETE') {
+    // Return Error dialog when try default agent...
+    if (props.agent?.default) {
+      return (
+        <Modal show={props.show} onHide={props.handleClose && props.handleClose} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{t("agent.delete.title")}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <P>{t("agent.delete.error.defaultAgent")}</P>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={props.handleClose && props.handleClose}>{t("button.close")}</Button>
+          </Modal.Footer>
+        </Modal>
+      )
+    }
+
+    // Confirm
+    if (postResult?.status !== SUCCESS) {
+      return (
+        <Modal show={props.show} onHide={props.handleClose && props.handleClose} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{t("agent.delete.title")}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <P>{t("agent.delete.question")}</P>
+            <P>{t("agent.delete.confirm")}</P>
+            <div>
+              {postResult && postResult.status === FAILED && <NotifyError title="Failed send request" message={`${postResult.error!.response?.data.error ? postResult.error!.response.data.error : postResult.error!}`} />}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={props.handleClose && props.handleClose}>{t("button.cancel")}</Button>
+            <Button variant="danger" onClick={() => handleDelete()}>{t("button.delete")}</Button>
+          </Modal.Footer>
+        </Modal>
+      )
+    }
+
+    // Success
+    if (postResult?.status === SUCCESS) {
+      return (
+        <Modal show={props.show} onHide={props.handleClose && props.handleClose} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{t("agent.delete.title")}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <P>{t("agent.delete.success")}</P>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={props.handleClose && props.handleClose}>{t("button.close")}</Button>
+          </Modal.Footer>
+        </Modal>
+      )
+    }
   }
 
   return (

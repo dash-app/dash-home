@@ -69,6 +69,15 @@
     "edit": {
       "title": "Edit Agent"
     },
+    "delete": {
+      "title": "Delete Agent",
+      "question": "Are you sure you want to delete this item?",
+      "confirm": "This operation cannot be undone!",
+      "success": "Removed.",
+      "error": {
+        "defaultAgent": "The default agent cannot be deleted."
+      }
+    },
     "chooser": "Select Agent...",
     "useDefault": "Use Default"
   },

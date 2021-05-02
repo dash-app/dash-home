@@ -35,3 +35,9 @@ var ErrDefaultAgentRequired = &status.Error{
 	Error: errors.New("default agent required"),
 	Code:  "ERR_DEFAULT_AGENT_REQUIRED",
 }
+
+// ErrRemoveDefaultAgent - When try remove default agent
+var ErrRemoveDefaultAgent = &status.Error{
+	Error: errors.New("can't delete default agent"),
+	Code:  "ERR_REMOVE_DEFAULT_AGENT",
+}

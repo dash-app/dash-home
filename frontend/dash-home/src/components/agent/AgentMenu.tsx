@@ -25,6 +25,7 @@ const AgentMenu: React.FC<Props> = props => {
 
   const [create, setCreate] = React.useState<boolean>(false);
   const [edit, setEdit] = React.useState<Agent | null>(null);
+  const [remove, setRemove] = React.useState<Agent | null>(null);
 
   if (agentsResult === undefined || !agentsResult.agents) {
     return (
@@ -95,6 +96,10 @@ const AgentMenu: React.FC<Props> = props => {
                     <FontAwesomeIcon icon={["fas", "edit"]} />
                     <span style={{ paddingLeft: "0.5rem" }}>{t("button.edit")}</span>
                   </Button>
+                  <Button variant="danger" onClick={() => { setRemove(agent) }}>
+                    <FontAwesomeIcon icon={["fas", "trash"]} />
+                    <span style={{ paddingLeft: "0.5rem" }}>{t("button.delete")}</span>
+                  </Button>
                   <AgentEditor
                     key={agent.id}
                     agent={agent}
@@ -103,6 +108,15 @@ const AgentMenu: React.FC<Props> = props => {
                     handleClose={() => {
                       fetch();
                       setEdit(null);
+                    }} />
+                  <AgentEditor
+                    key={agent.id}
+                    agent={agent}
+                    show={remove?.id === agent.id}
+                    action={'DELETE'}
+                    handleClose={() => {
+                      fetch();
+                      setRemove(null);
                     }} />
                 </td>
               </tr>

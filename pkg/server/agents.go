@@ -51,6 +51,27 @@ func (h *httpServer) getAgentByID(c *gin.Context) {
 	c.JSON(http.StatusOK, r)
 }
 
+// Delete Agent By ID
+// @Summary Delete agent by ID
+// @Router /api/v1/agents/:id [delete]
+// @tags agent
+// @Success 200
+func (h *httpServer) deleteAgentByID(c *gin.Context) {
+	id := c.Param("id")
+	r := h.agent.Storage.GetByID(id)
+	if r == nil {
+		c.JSON(http.StatusNotFound, agent.ErrNotFound)
+		return
+	}
+
+	if err := h.agent.Storage.Remove(id); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, nil)
+}
+
 // Add Agent
 // @Summary Add Agent entry
 // @Router /api/v1/agents [post]

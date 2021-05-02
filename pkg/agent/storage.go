@@ -59,6 +59,29 @@ func (s *Storage) Add(address string, isDefault bool, label string) (*Agent, err
 	return newAgent, s.save()
 }
 
+// Remove - Remove agent
+func (s *Storage) Remove(id string) error {
+	// Get By ID
+	if agent := s.GetByID(id); agent == nil {
+		return ErrNotFound.Error
+	} else if agent.Default {
+		return ErrRemoveDefaultAgent.Error
+	}
+
+	targetPos := -1
+	for i := range s.Agents {
+		if s.Agents[i].ID == id {
+			targetPos = i
+		}
+	}
+
+	s.Agents = append(s.Agents[:targetPos], s.Agents[targetPos+1:]...)
+	newAgents := make([]*Agent, len(s.Agents))
+	copy(newAgents, s.Agents)
+
+	return s.save()
+}
+
 // Update - Update agent settings
 func (s *Storage) Update(id string, entry *Agent) (*Agent, error) {
 	oldEntry := s.GetByID(id)
