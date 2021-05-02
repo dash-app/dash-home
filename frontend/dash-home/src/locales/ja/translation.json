@@ -65,7 +65,9 @@
     "default": "デフォルト",
     "edit": {
       "title": "エージェントを編集"
-    }
+    },
+    "chooser": "エージェントを選択...",
+    "useDefault": "デフォルトを使用"
   },
   "controller": {
     "error": {

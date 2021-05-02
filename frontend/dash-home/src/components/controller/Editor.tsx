@@ -4,7 +4,9 @@ import { Button, Dropdown, DropdownButton, Form } from 'react-bootstrap';
 import { P } from '../atoms/Core';
 import RemoteChooser from '../controller/RemoteChooser';
 import SwitchBotChooser from './SwitchBotChooser';
+import AgentChooser from '../agent/AgentChooser';
 import { useTranslation } from 'react-i18next';
+import { Agent } from '../../remote-go/Agents';
 
 interface Props {
   controller?: Controller,
@@ -34,11 +36,13 @@ export const Editor: React.FC<Props> = props => {
   // Handle window state (remote/switchbot editor...)
   const [openChooser, setOpenChooser] = React.useState<boolean>(false);
   const [switchBotChooser, setSwitchBotChooser] = React.useState<boolean>(false);
+  const [agentChooser, setAgentChooser] = React.useState<boolean>(false);
 
   return (
     <>
       {/* Name */}
       <Form.Group>
+        {t("agent.useDefault")}
         <Form.Label><P>{t("controller.entry.name.title")}</P></Form.Label>
         <Form.Control
           value={controller.name}
@@ -145,17 +149,27 @@ export const Editor: React.FC<Props> = props => {
       {/* Extra: Agent option */}
       <Form.Group>
         <Form.Label>
-          <P>{t("controller.entry.agent_id.title")}: {controller.agent_id}</P>
+          <P>{t("controller.entry.agent_id.title")}: {controller.agent_id ? controller.agent_id : t("agent.useDefault")}</P>
         </Form.Label>
-        <Form.Control
-          value={controller.agent_id}
-          placeholder={t("controller.entry.agent_id.placeholder")}
-          aria-label={t("controller.entry.agent_id.title")}
-          onChange={(e: any) => {
-            controller.agent_id = e.currentTarget.value;
-            setController({ ...controller });
-          }}
-        />
+        <div>
+          <Button onClick={() => setAgentChooser(true)}>
+            {t("agent.chooser")}
+          </Button>
+          <AgentChooser
+            visible={agentChooser}
+            checkedId={controller.agent_id && controller.agent_id}
+            handleClose={() => setAgentChooser(false)}
+            handleUpdate={(agent?: Agent) => {
+              if (agent != null) {
+                controller.agent_id = agent.id;
+              } else {
+                controller.agent_id = undefined;
+              }
+              setController({ ...controller });
+              setAgentChooser(false);
+            }}
+          />
+        </div>
       </Form.Group>
     </>
   )

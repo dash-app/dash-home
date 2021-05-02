@@ -65,7 +65,9 @@
     "default": "Default",
     "edit": {
       "title": "Edit Agent"
-    }
+    },
+    "chooser": "Select Agent...",
+    "useDefault": "Use Default"
   },
   "controller": {
     "error": {
