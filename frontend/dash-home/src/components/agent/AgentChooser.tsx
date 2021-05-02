@@ -37,7 +37,7 @@ const AgentChooser: React.FC<Props> = props => {
           <div key={agent.id}>
             <Card.Body>
               <P style={{ fontWeight: "bold" }}>
-                {props.checkedId == agent.id && <FontAwesomeIcon icon={["fas", "check"]} style={{ marginRight: "0.2rem" }} />}
+                {props.checkedId === agent.id && <FontAwesomeIcon icon={["fas", "check"]} style={{ marginRight: "0.2rem" }} />}
                 <span>{agent.address}</span>
               </P>
               <div style={{ backgroundColor: "#0A0A0A", padding: "1rem" }}>
