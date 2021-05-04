@@ -34,6 +34,13 @@ func main() {
 		path = dir + "/local"
 	}
 
+	// Mkdir when not exists
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		if err := os.Mkdir(path, 0700); err != nil {
+			panic(err)
+		}
+	}
+
 	// storage, err := storage.New(path)
 	// if err != nil {
 	// 	logrus.Fatalf("[Storage] Failed ensure storage: %v", err)
