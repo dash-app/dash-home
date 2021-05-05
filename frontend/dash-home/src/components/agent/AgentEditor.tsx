@@ -178,7 +178,7 @@ export const AgentEditor: React.FC<Props> = props => {
         </Modal.Body>
         <Modal.Footer>
           {postResult && postResult.status === PENDING && <Spinner animation="border" aria-hidden="true" />}
-          {postResult && postResult.status === SUCCESS && <Redirect to="/agent" />}
+          {postResult && postResult.status === SUCCESS && props.handleClose()}
           {props.action === 'ADD' && <Button type="submit" disabled={postResult && postResult.status === PENDING}>{t("button.add")}</Button>}
           {props.action === 'EDIT' && <Button type="submit" disabled={postResult && postResult.status === PENDING}>{t("button.edit")}</Button>}
           <Button variant="secondary" onClick={props.handleClose && props.handleClose}>{t("button.back")}</Button>
