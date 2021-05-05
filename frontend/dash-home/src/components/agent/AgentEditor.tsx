@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { Redirect } from 'react-router-dom';
 import { Agent, AgentResult, updateAgent, addAgent, deleteAgent } from '../../remote-go/Agents';
 import { FAILED, PENDING, SUCCESS } from '../../remote-go/Status';
 import { P } from '../atoms/Core';
