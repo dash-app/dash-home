@@ -34,7 +34,7 @@ const Basement: React.FC<Props> = props => {
     <ThemeContext.Consumer>
       {({ theme }) => (
         <RoomContext.Consumer>
-          {(roomResult) => {
+          {({roomResult, fetchRoom}) => {
             return (
               <>
                 <Navigation menuHandler={() => setShowMenu(true)} />

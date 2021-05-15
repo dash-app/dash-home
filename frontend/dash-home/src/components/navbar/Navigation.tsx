@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { ThemeContext } from '../themes/ThemeProvider';
 import { Span } from '../atoms/Core';
 import { RoomContext } from '../basements/RoomProvider';
+import { SUCCESS } from '../../remote-go/Status';
 
 interface Props {
   menuHandler: any,
@@ -18,7 +19,8 @@ interface ThemeProps {
 }
 
 const Navigation: React.FC<Props> = props => {
-  const room = React.useContext(RoomContext)?.room;
+  const roomContext = React.useContext(RoomContext);
+  const roomResult = roomContext.roomResult;
   const theme = React.useContext(ThemeContext).theme;
 
   return (
@@ -32,7 +34,7 @@ const Navigation: React.FC<Props> = props => {
         <Title>
           <FontAwesomeIcon icon={["fas", "home"]} />
           <span style={{ margin: "0.5em" }}>
-            <span>{room && room.name}</span>
+            <span>{roomResult?.room && roomResult.room.name}</span>
             {/* TODO: Add house name */}
             {/* <span style={{ fontSize: "0.5em" }}> // Bedroom</span> */}
           </span>
@@ -40,11 +42,11 @@ const Navigation: React.FC<Props> = props => {
         <RoomStatus theme={theme}>
           <StatusBox>
             <FontAwesomeIcon icon={["fas", "thermometer-three-quarters"]} />
-            <StatusText>{room ? room.ambient.temp.toFixed(1) : "--"}<span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>℃</span></StatusText>
+            <StatusText>{roomResult?.room ? roomResult?.room.ambient.temp.toFixed(1) : "--.-"}<span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>℃</span></StatusText>
           </StatusBox>
           <StatusBox>
             <FontAwesomeIcon icon={["fas", "tint"]} />
-            <StatusText>{room ? room.ambient.humid.toFixed(0) : "--"}<span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>%</span></StatusText>
+            <StatusText>{roomResult?.room ? roomResult?.room.ambient.humid.toFixed(0) : "--"}<span style={{ marginLeft: "0.2rem", fontSize: "1rem" }}>%</span></StatusText>
           </StatusBox>
         </RoomStatus>
       </div>
@@ -62,6 +64,9 @@ const Navigation: React.FC<Props> = props => {
           <Button onClick={() => { props.menuHandler() }}>
             <FontAwesomeIcon icon={["fas", "ellipsis-v"]} style={{ marginRight: "1rem" }} />
             <span>MENU</span>
+          </Button>
+          <Button onClick={() => { roomContext.fetchRoom() }} disabled={roomContext.roomResult?.status !== SUCCESS}>
+            <FontAwesomeIcon icon={["fas", "sync"]} />
           </Button>
         </Nav>
       </Navbar.Collapse>

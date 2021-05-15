@@ -1,34 +1,37 @@
-import * as React from 'react';
+import React from 'react';
 import { useEffect, useState } from 'react';
-import { fetchRoom, RoomResult } from '../../remote-go/Room';
+import { fetchRoom as fetch, RoomResult } from '../../remote-go/Room';
 
 interface Props {
   children: React.ReactNode,
 }
 
-export const RoomContext = React.createContext<RoomResult | undefined>(undefined);
+interface Context {
+  roomResult?: RoomResult,
+  fetchRoom: any,
+}
+
+// export const RoomContext = React.createContext<RoomResult | undefined>(undefined);
+export const RoomContext = React.createContext<Context>({
+  roomResult: undefined,
+  fetchRoom: () => {},
+})
 
 export const RoomProvider: React.FC<Props> = props => {
-  const [roomResult, setRoom] = useState<RoomResult | undefined>(undefined);
-
-  const fetch = React.useCallback(() => {
+  const fetchRoom = () => {
     console.debug(`:: Update room...`);
-    if (!roomResult) {
-      fetchRoom(setRoom);
-    }
-    if (roomResult?.error) {
-      console.error(roomResult.error);
-    }
-  }, [roomResult]);
+    fetch(setRoom);
+  }
 
+  const [roomResult, setRoom] = useState<RoomResult | undefined>(undefined);
   useEffect(() => {
-    fetch();
-  }, [roomResult, fetch]);
+    fetchRoom();
+  }, []);
 
   console.debug(`:: Rendering > RoomProvider...`)
 
   return (
-    <RoomContext.Provider value={roomResult}>
+    <RoomContext.Provider value={{ roomResult, fetchRoom }}>
       {props.children}
     </RoomContext.Provider>
   )
