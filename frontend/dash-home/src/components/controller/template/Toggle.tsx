@@ -47,7 +47,7 @@ class Toggle extends React.Component<Props, State> {
             <Row>
               <Col>
                 <H1>
-                  <Span>{
+                  <Span style={{ whiteSpace: "nowrap" }}>{
                     this.state.value ?
                       this.props.i18nKey ? this.props.t([`${this.props.i18nKey}.on`, '_'], { value: "on" }) : "on"
                       :

@@ -49,7 +49,7 @@ class List extends React.Component<Props, State> {
             <Row>
               <Col>
                 <H1>
-                  <Span>
+                  <Span style={{ whiteSpace: "nowrap" }}>
                     {this.props.title ?
                       this.props.title
                       :

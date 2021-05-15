@@ -55,7 +55,7 @@ class Range extends React.Component<Props, State> {
             <Row>
               <Col>
                 <H1>
-                  <Span>
+                  <Span style={{ whiteSpace: "nowrap" }}>
                     {this.props.title && this.props.title}
                     {this.state.value.toFixed((() => {
                       const e = String(this.props.step).split('.')

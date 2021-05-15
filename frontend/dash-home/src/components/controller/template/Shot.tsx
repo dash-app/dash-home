@@ -35,10 +35,10 @@ class Shot extends React.Component<Props> {
         {!this.props.hideTitle &&
           <>
             <div>
-              <H1>
+              <H1 style={{ whiteSpace: "nowrap" }}>
                 <Span>{this.props.default}</Span>
               </H1>
-              <H1>
+              <H1 style={{ whiteSpace: "nowrap" }}>
                 <Span>{this.props.value}</Span>
               </H1>
             </div>
