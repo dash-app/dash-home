@@ -54,7 +54,7 @@ const Home: React.FC<Props> = props => {
                 <Modal
                   size="xl"
                   show={true}
-                  backdroup="static"
+                  backdrop="static"
                   variant="dark"
                   animation={true}
                   centered

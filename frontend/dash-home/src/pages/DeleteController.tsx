@@ -27,7 +27,7 @@ const DeleteController: React.FC<Props> = (props: Props) => {
       <ThemedModal
         size="lg"
         show={props.visible}
-        backdroup="static"
+        backdrop="static"
         variant="dark"
         centered
         onHide={props.handleClose}
@@ -51,7 +51,7 @@ const DeleteController: React.FC<Props> = (props: Props) => {
     <ThemedModal
       size="lg"
       show={props.visible}
-      backdroup="static"
+      backdrop="static"
       variant="dark"
       centered
       onHide={props.handleClose}
