@@ -65,6 +65,7 @@ export const HorizontalVaneStep = (props: HorizontalVaneProps) => {
     case "4": return (<HorizontalVane54 {...props} />)
     case "5": return (<HorizontalVane55 {...props} />)
     case "swing": return (<HorizontalVaneSwing {...props} />)
+    case "switch": return (<HorizontalVaneSwing {...props} />)
     case "keep": return (<HorizontalVane {...props} />)
     default:
       return (<>{props.default}</>)
@@ -82,6 +83,7 @@ export const VerticalVaneStep = (props: VerticalVaneProps) => {
     case "center_right": return (<VerticalVaneCenterRight {...props} />)
     case "side": return (<VerticalVaneSide {...props} />)
     case "swing": return (<VerticalVaneSwing {...props} />)
+    case "switch": return (<VerticalVaneSwing {...props} />)
     case "keep": return (<VerticalVane {...props} />)
     default:
       return (<>{props.default}</>)
