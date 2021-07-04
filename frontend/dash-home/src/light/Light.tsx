@@ -41,7 +41,7 @@ export const LightPanel: React.FC<ControllerProps> = props => {
           after();
         }
       });
-    }, 500);
+    }, 300);
   }
 
   return (

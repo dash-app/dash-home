@@ -96,7 +96,7 @@ const AirconPanel: React.FC<ControllerProps> = props => {
           after();
         }
       });
-    }, 500);
+    }, 300);
   }
 
   const stateToEntry = (state: AirconState): Aircon => {
