@@ -17,89 +17,71 @@ interface Props {
   suffix?: string,
   onClick?: any,
 }
-interface State {
-  value: number,
-}
 
-class Range extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      value: this.props.value,
+const Range: React.FC<Props> = props => {
+  const onIncrementEvent = () => {
+    if (props.onClick) {
+      props.onClick(props.value + props.step);
     }
   }
 
-  onIncrementEvent = () => {
-    this.setState({
-      value: this.state.value + this.props.step,
-    })
-    if (this.props.onClick) {
-      this.props.onClick(this.state.value + this.props.step);
+  const onDecrementEvent = () => {
+    if (props.onClick) {
+      props.onClick(props.value - props.step);
     }
   }
 
-  onDecrementEvent = () => {
-    this.setState({
-      value: this.state.value - this.props.step,
-    })
-    if (this.props.onClick) {
-      this.props.onClick(this.state.value - this.props.step);
-    }
-  }
-
-  render() {
-    return (
-      <>
-        {!this.props.hideTitle &&
-          <span>
-            <Row>
-              <Col>
-                <H1>
-                  <Span style={{ whiteSpace: "nowrap" }}>
-                    {this.props.title && this.props.title}
-                    {this.state.value.toFixed((() => {
-                      const e = String(this.props.step).split('.')
-                      return e.length !== 1 ? e[e.length - 1].length : 0
-                    })())}
-                    {this.props.suffix && <span style={{ fontSize: "0.5em", fontWeight: 400 }}>{this.props.suffix}</span>}
-                  </Span>
-                </H1>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <P>
-                  <Span>{this.props.description}</Span>
-                </P>
-              </Col>
-            </Row>
-          </span>
-        }
-        <Row>
-          <Col>
-            <ButtonGroup>
-              <Button
-                type="button"
-                size="lg"
-                onClick={this.onDecrementEvent}
-                disabled={this.state.value <= this.props.from}
-              >
-                <Icon icon={["fas", "chevron-down"]} />
-              </Button>
-              <Button
-                type="button"
-                size="lg"
-                onClick={this.onIncrementEvent}
-                disabled={this.state.value >= this.props.to}
-              >
-                <Icon icon={["fas", "chevron-up"]} />
-              </Button>
-            </ButtonGroup>
-          </Col>
-        </Row>
-      </>
-    )
-  }
+  return (
+    <>
+      {!props.hideTitle &&
+        <span>
+          <Row>
+            <Col>
+              <H1>
+                <Span style={{ whiteSpace: "nowrap" }}>
+                  {props.title && props.title}
+                  {props.value.toFixed((() => {
+                    const e = String(props.step).split('.')
+                    return e.length !== 1 ? e[e.length - 1].length : 0
+                  })())}
+                  {props.suffix && <span style={{ fontSize: "0.5em", fontWeight: 400 }}>{props.suffix}</span>}
+                </Span>
+              </H1>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <P>
+                <Span>{props.description}</Span>
+              </P>
+            </Col>
+          </Row>
+        </span>
+      }
+      <Row>
+        <Col>
+          <ButtonGroup>
+            <Button
+              type="button"
+              size="lg"
+              onClick={onDecrementEvent}
+              disabled={props.value <= props.from}
+            >
+              <Icon icon={["fas", "chevron-down"]} />
+            </Button>
+            <Button
+              type="button"
+              size="lg"
+              onClick={onIncrementEvent}
+              disabled={props.value >= props.to}
+            >
+              <Icon icon={["fas", "chevron-up"]} />
+            </Button>
+          </ButtonGroup>
+        </Col>
+      </Row>
+    </>
+  )
 }
 
 const Span = styled.span`
