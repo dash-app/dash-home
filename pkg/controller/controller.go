@@ -8,8 +8,7 @@ import (
 
 	"github.com/dash-app/dash-home/pkg/agent"
 	remotego "github.com/dash-app/remote-go"
-	"github.com/dash-app/remote-go/aircon"
-	"github.com/dash-app/remote-go/light"
+	"github.com/dash-app/remote-go/appliances"
 	"github.com/sirupsen/logrus"
 )
 
@@ -46,7 +45,7 @@ func (c *Controller) RaiseSwitchBot(id string, command string) error {
 		return err
 	}
 
-	if entry.Kind != "SWITCHBOT" && entry.Type != "SWITCHBOT" {
+	if entry.Kind != appliances.SWITCHBOT && entry.Type != "SWITCHBOT" {
 		return errors.New("that controller does not setup for switchbot")
 	}
 
@@ -76,40 +75,26 @@ func (c *Controller) RaiseSwitchBot(id string, command string) error {
 	return nil
 }
 
-func (c *Controller) PushAircon(id string, ac *aircon.Entry) (*aircon.Entry, error) {
+func (c *Controller) Push(id string, es *EntrySet) (*PushResult, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	entry, err := c.Storage.GetByID(id)
+	// Get controller by ID (for check kind / type)
+	ct, err := c.Storage.GetByID(id)
 	if err != nil {
 		return nil, err
 	}
 
-	if entry.Kind != "AIRCON" {
-		return nil, errors.New("that controller does not setup for air conditioner")
-	}
-
-	switch entry.Type {
+	switch ct.Type {
 	case "REMOTE":
-		// Get remote provider
-		acRemote, err := c.Remotes.GetAircon(entry.Remote.Vendor, entry.Remote.Model)
+		// Get remote from vendor/model
+		rmt, err := c.Remotes.Get(ct.Kind, ct.Remote.Vendor, ct.Remote.Model)
 		if err != nil {
 			return nil, err
 		}
 
-		// Validate
-		if err := ac.Validate(acRemote.Template()); err != nil {
-			return nil, err
-		}
-
-		// Generate
-		code, err := acRemote.Generate(ac)
-		if err != nil {
-			return nil, err
-		}
-
-		// Send
-		agentID := entry.AgentID
+		// Agent
+		agentID := ct.AgentID
 		if agentID == "" {
 			agent, err := c.Agent.Storage.GetDefaultAgent()
 			if err != nil {
@@ -118,63 +103,9 @@ func (c *Controller) PushAircon(id string, ac *aircon.Entry) (*aircon.Entry, err
 			agentID = agent.ID
 		}
 
-		if err := c.Agent.SendIR(ctx, agentID, code); err != nil {
-			logrus.WithError(err).Errorf("[Send] Failed Send IR")
-			return nil, err
-		}
-
-		// Update
-		updated, err := entry.Aircon.UpdateFromEntry(ac, acRemote.Template())
+		code, err := rmt.Generate(&es.Remote)
 		if err != nil {
 			return nil, err
-		}
-
-		// Insert
-		entry.Aircon = updated
-		if err := c.Storage.Save(); err != nil {
-			return nil, err
-		}
-
-		return updated.ToEntry(), nil
-	default:
-		return nil, errors.New("unsupported type provided")
-	}
-}
-
-func (c *Controller) PushLight(id string, l *light.Entry) (*light.State, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	entry, err := c.Storage.GetByID(id)
-	if err != nil {
-		return nil, err
-	}
-
-	if entry.Kind != "LIGHT" {
-		return nil, errors.New("that controller does not setup for light")
-	}
-
-	switch entry.Type {
-	case "REMOTE":
-		// Get remote provider
-		r, err := c.Remotes.GetLight(entry.Remote.Vendor, entry.Remote.Model)
-		if err != nil {
-			return nil, err
-		}
-
-		// Generate
-		code, err := r.Generate(l)
-		if err != nil {
-			return nil, err
-		}
-
-		agentID := entry.AgentID
-		if agentID == "" {
-			agent, err := c.Agent.Storage.GetDefaultAgent()
-			if err != nil {
-				return nil, err
-			}
-			agentID = agent.ID
 		}
 
 		// Send
@@ -184,20 +115,28 @@ func (c *Controller) PushLight(id string, l *light.Entry) (*light.State, error) 
 		}
 
 		// Update
-		updated, err := entry.Light.UpdateFromEntry(l, r.Template())
+		updated, err := ct.Appliances.Action().UpdateFromEntry(&es.Remote, rmt.Template())
 		if err != nil {
 			return nil, err
 		}
 
 		// Insert
-		entry.Light = updated
+		ct.Appliances = updated.ToState()
 		if err := c.Storage.Save(); err != nil {
 			return nil, err
 		}
 
-		return updated, nil
+		return &PushResult{}, nil
+		// === end
+	case "SWITCHBOT":
+		if err := c.RaiseSwitchBot(id, es.SwitchBot.Command); err != nil {
+			return nil, err
+		}
+		return &PushResult{
+			Aircon: nil,
+			Light:  nil,
+		}, nil
 	default:
-		return nil, errors.New("unsupported type provided")
+		return nil, ErrUnsupportedType.Error
 	}
-
 }

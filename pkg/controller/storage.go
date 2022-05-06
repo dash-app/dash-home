@@ -7,12 +7,12 @@ import (
 	"unicode/utf8"
 
 	"github.com/dash-app/dash-home/pkg/agent"
+	"github.com/dash-app/dash-home/pkg/remote"
 	"github.com/dash-app/dash-home/pkg/storage"
 	remotego "github.com/dash-app/remote-go"
-	"github.com/dash-app/remote-go/aircon"
-	"github.com/dash-app/remote-go/light"
-	"github.com/dash-app/remote-go/template"
+	"github.com/dash-app/remote-go/appliances"
 	"github.com/google/uuid"
+	"github.com/k0kubun/pp"
 )
 
 type Storage struct {
@@ -33,27 +33,24 @@ type Entry struct {
 	Name string `json:"name" validate:"required" example:"Bedroom Airconditioner"`
 
 	// Kind - AIRCON, LIGHT, SWITCHBOT...
-	Kind string `json:"kind" validate:"required" example:"AIRCON"`
+	Kind appliances.Kind `json:"kind" validate:"required" example:"AIRCON"`
 
 	// Type - type of controller (how to use?) / ex. REMOTE, SWITCHBOT...
 	Type string `json:"type" validate:"required" example:"REMOTE"`
 
 	// Remote - Remote Controller settings (required when type is REMOTE)
-	Remote *Remote `json:"remote,omitempty"`
+	Remote *remote.Remote `json:"remote,omitempty"`
 
 	// SwitchBot - SwitchBot settings (required when type is SWITCHBOT)
 	SwitchBot *agent.SwitchBot `json:"switchbot,omitempty"`
 
-	// Aircon - State of Aircon
-	Aircon *aircon.State `json:"aircon,omitempty"`
-
-	// Light - State of Light
-	Light *light.State `json:"light,omitempty"`
+	// Appliances - State of appliances
+	Appliances *appliances.State `json:"appliances,omitempty"`
 }
 
 type Options struct {
 	// Remote
-	Remote *Remote `json:"remote,omitempty"`
+	Remote *remote.Remote `json:"remote,omitempty"`
 
 	// Switch....
 	SwitchBot *agent.SwitchBot `json:"switchbot,omitempty"`
@@ -113,7 +110,7 @@ func (s *Storage) GetByID(id string) (*Entry, error) {
 }
 
 // Update - Update Controller
-func (s *Storage) Update(id string, name, kind, t string, opts *Options) (*Entry, error) {
+func (s *Storage) Update(id, name string, kind appliances.Kind, t string, opts *Options) (*Entry, error) {
 	// Get By ID
 	oldEntry, err := s.GetByID(id)
 	if err != nil {
@@ -132,8 +129,7 @@ func (s *Storage) Update(id string, name, kind, t string, opts *Options) (*Entry
 		// NOTE: VendorとModelがそれぞれ変更前と同一の場合は各Stateをコピーする。
 		if oldEntry.Remote.Vendor == opts.Remote.Vendor && oldEntry.Remote.Model == opts.Remote.Model {
 			// NOTE: Copy old state
-			entry.Aircon = oldEntry.Aircon
-			entry.Light = oldEntry.Light
+			entry.Appliances = oldEntry.Appliances
 		}
 	}
 
@@ -142,7 +138,7 @@ func (s *Storage) Update(id string, name, kind, t string, opts *Options) (*Entry
 }
 
 // Create - Create new Controller
-func (s *Storage) Create(name, kind, t string, opts *Options) (*Entry, error) {
+func (s *Storage) Create(name string, kind appliances.Kind, t string, opts *Options) (*Entry, error) {
 	if e, err := s.GetByName(name); err != nil && !errors.Is(err, ErrNotFound.Error) {
 		return nil, err
 	} else if e != nil {
@@ -164,6 +160,7 @@ func (s *Storage) Create(name, kind, t string, opts *Options) (*Entry, error) {
 	}
 
 	s.Entries[id.String()] = entry
+	pp.Println(s.Entries[id.String()])
 	return entry, s.Save()
 }
 
@@ -179,17 +176,16 @@ func (s *Storage) Remove(id string) error {
 	return s.Save()
 }
 
-func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, error) {
+func (s *Storage) newEntry(id, name string, kind appliances.Kind, t string, opts *Options) (*Entry, error) {
 	entry := &Entry{
 		ID:   id,
 		Name: name,
 	}
 
 	// Set kind
-	switch kind {
-	case "AIRCON", "LIGHT", "SWITCHBOT":
+	if kind != appliances.UNKNOWN {
 		entry.Kind = kind
-	default:
+	} else {
 		return nil, ErrUnsupportedKind.Error
 	}
 
@@ -211,19 +207,20 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 			return nil, errors.New("remote is null")
 		}
 
-		entry.Remote = &Remote{
+		entry.Remote = &remote.Remote{
 			Vendor: opts.Remote.Vendor,
 			Model:  opts.Remote.Model,
 		}
 
-		template, err := s.Remotes.GetTemplate(entry.Kind, entry.Remote.Vendor, entry.Remote.Model)
+		rs, err := s.Remotes.Get(entry.Kind, entry.Remote.Vendor, entry.Remote.Model)
 		if err != nil {
 			return nil, err
 		}
 
-		if err := entry.initRemote(template); err != nil {
+		if err := entry.initRemote(rs.Template()); err != nil {
 			return nil, err
 		}
+		pp.Println(entry)
 	case "SWITCHBOT":
 		if opts.SwitchBot == nil {
 			return nil, errors.New("switchbot options does not satisfied")
@@ -261,23 +258,11 @@ func (s *Storage) newEntry(id, name, kind, t string, opts *Options) (*Entry, err
 }
 
 // initRemote - Initialize Remote Controller (Inject default state)
-func (e *Entry) initRemote(template *template.Template) error {
-	switch e.Kind {
-	case "AIRCON":
-		if state, err := aircon.DefaultState(template); err == nil {
-			e.Aircon = state
-		} else {
-			return err
-		}
-	case "LIGHT":
-		if state, err := light.DefaultState(template); err == nil {
-			e.Light = state
-		} else {
-			return err
-		}
-	default:
-		return ErrUnsupportedKind.Error
+func (e *Entry) initRemote(template *appliances.Template) error {
+	if rs, err := appliances.NewState(template); err == nil {
+		e.Appliances = rs.ToState()
+	} else {
+		return err
 	}
-
 	return nil
 }

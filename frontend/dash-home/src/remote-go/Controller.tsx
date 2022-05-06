@@ -10,15 +10,20 @@ export interface Controller {
   kind: string, // "AIRCON", "LIGHT"...
   type: string, // "REMOTE"...
   remote?: Remote,
+  appliances?: Appliances,
   switchbot?: SwitchBot,
-  aircon?: AirconState,
-  light?: LightState,
 }
 
 // Remote
 export interface Remote {
   vendor: string,
   model: string,
+}
+
+// Appliances
+export interface Appliances {
+  aircon?: AirconState,
+  light?: LightState,
 }
 
 // SwitchBot
@@ -39,6 +44,12 @@ export interface ControllerResult {
   status: Status,
   controller?: Controller,
   response?: any,
+  error?: AxiosError<ErrorResponse>,
+}
+
+export interface SendResult {
+  status: Status,
+  entry?: Aircon | Light,
   error?: AxiosError<ErrorResponse>,
 }
 
@@ -173,11 +184,23 @@ export function deleteController(id: string, setResult: React.Dispatch<React.Set
 }
 
 // Emitter
-export function sendAircon(id: string, payload: Aircon, callback: any) {
+export function sendAircon(id: string, payload: Aircon, setResult: React.Dispatch<React.SetStateAction<SendResult | null>>) {
+  setResult({
+    status: PENDING,
+  })
+
   axios
     .post<Aircon>(`${API_ADDRESS}/api/v1/controllers/${id}/aircon`, payload)
-    .then(response => callback(response.data))
-    .catch(error => error.response);
+    .then(response => setResult({
+      status: SUCCESS,
+      entry: response.data,
+    }))
+    .catch((error: AxiosError<ErrorResponse>) => {
+      setResult({
+        status: FAILED,
+        error: error,
+      });
+    });
 }
 
 export function sendLight(id: string, payload: Light, callback: any) {

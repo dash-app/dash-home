@@ -15,8 +15,8 @@ export const LightMiniPanel: React.FC<Controller> = controller => {
     <MiniPanelInner
       id={controller.id}
       title={
-        controller.light?.last_action ?
-          t([`controller.light.mode.${controller.light?.last_action}`, '_'], { value: controller.light?.last_action }) : "N/A"}
+        controller.appliances?.light?.last_action ?
+          t([`controller.light.mode.${controller.appliances?.light?.last_action}`, '_'], { value: controller.appliances?.light?.last_action }) : "N/A"}
       note={t("controller.light.mode.name")}
       description={t("controller.light.name")}
     />
@@ -31,7 +31,7 @@ export const LightPanel: React.FC<ControllerProps> = props => {
     }
   }
 
-  const [light, setLight] = React.useState<Light>(stateToEntry(props.controller.light!));
+  const [light, setLight] = React.useState<Light>(stateToEntry(props.controller.appliances?.light!));
   const update = (entry: Light, after?: any) => {
     setLight(entry);
     props.sendTimer(() => {
@@ -52,7 +52,7 @@ export const LightPanel: React.FC<ControllerProps> = props => {
           <SummonByTpl
             description={t("controller.light.mode.name")}
             i18nKey="controller.light.mode"
-            value={props.controller.light?.last_action}
+            value={props.controller.appliances?.light?.last_action}
             setter={(e: any) => light!.action = e}
             sender={(after: any) => update({ ...light! }, after)}
             action={props.template?.light?.mode!}

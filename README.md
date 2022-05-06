@@ -7,7 +7,7 @@ Dashboard for Home, Dash-Home.
 ![Screenshot](https://imgur.com/E3Egzhb.png)
 
 ## Requirements
-* **Go** 1.15+
+* **Go** 1.17+
 * **Node.js** 10.13+
 > Also, Required Pigent for Access Hardware (IR, Sensors etc.) \
 > https://github.com/dash-app/pigent
