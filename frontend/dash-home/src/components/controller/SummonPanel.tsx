@@ -12,14 +12,14 @@ interface Props extends Controller {
 }
 
 export const SummonMiniPanel: React.FC<Props> = props => {
-  if (props.aircon && props.kind === "AIRCON" && props.type === "REMOTE") {
+  if (props.appliances?.aircon! && props.kind === "AIRCON" && props.type === "REMOTE") {
     return (
-      <AirconCard name={props.name} mode={props.aircon!.mode}>
+      <AirconCard name={props.name} mode={props.appliances?.aircon!.mode}>
         <AirconMiniPanel {...props} />
         {props.children}
       </AirconCard>
     )
-  } else if (props.light && props.kind === "LIGHT" && props.type === "REMOTE") {
+  } else if (props.appliances?.light! && props.kind === "LIGHT" && props.type === "REMOTE") {
     return (
       <LightCard name={props.name}>
         <LightMiniPanel {...props} />

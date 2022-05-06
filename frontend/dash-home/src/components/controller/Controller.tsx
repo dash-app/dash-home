@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Controller, ControllerResult, fetchController } from '../../remote-go/Controller';
-import { SUCCESS } from '../../remote-go/Status';
+import { ErrorResponse, SUCCESS } from '../../remote-go/Status';
 import { fetchTemplate, Template, TemplateResult } from '../../remote-go/Template';
 import { Div, P, Span } from '../atoms/Core';
 import { NotifyError } from '../atoms/Notify';
@@ -9,6 +9,7 @@ import { Icon, Spinner } from '../atoms/Themed';
 import { CardBase } from '../cards/CardBase';
 import { SummonPanel } from './SummonPanel';
 import styled from 'styled-components';
+import { AxiosError } from 'axios';
 
 export interface ControllerProps {
   controller: Controller,
@@ -16,6 +17,7 @@ export interface ControllerProps {
   sending: boolean,
   setSending: () => void,
   sendTimer: (f: any, time: number) => void,
+  error?: AxiosError<ErrorResponse> | undefined,
 }
 
 interface Props {
@@ -135,6 +137,7 @@ export const ControllerUI: React.FC<Props> = props => {
           sending={sending}
           setSending={setSending}
           sendTimer={sendTimer}
+          error={controllerResult?.error}
         />
       }
     </span>

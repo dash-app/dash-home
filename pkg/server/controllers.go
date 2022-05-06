@@ -6,8 +6,8 @@ import (
 
 	"github.com/dash-app/dash-home/pkg/agent"
 	"github.com/dash-app/dash-home/pkg/controller"
-	"github.com/dash-app/remote-go/aircon"
-	"github.com/dash-app/remote-go/light"
+	"github.com/dash-app/dash-home/pkg/remote"
+	"github.com/dash-app/remote-go/appliances"
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
 	"github.com/sirupsen/logrus"
@@ -93,7 +93,7 @@ func (h *httpServer) postControllers(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": errors.New("remote options must be satisfied").Error()})
 			return
 		}
-		opts.Remote = &controller.Remote{
+		opts.Remote = &remote.Remote{
 			Vendor: req.Remote.Vendor,
 			Model:  req.Remote.Model,
 		}
@@ -109,7 +109,7 @@ func (h *httpServer) postControllers(c *gin.Context) {
 	}
 
 	// Create Controller base
-	e, err := h.controller.Storage.Create(req.Name, req.Kind, req.Type, &opts)
+	e, err := h.controller.Storage.Create(req.Name, appliances.KindFromString(req.Kind), req.Type, &opts)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -163,13 +163,13 @@ func (h *httpServer) patchControllerByID(c *gin.Context) {
 
 	// Remote
 	if req.Type == "REMOTE" {
-		opts.Remote = &controller.Remote{
+		opts.Remote = &remote.Remote{
 			Vendor: req.Remote.Vendor,
 			Model:  req.Remote.Model,
 		}
 	}
 
-	e, err := h.controller.Storage.Update(id, req.Name, req.Kind, req.Type, &opts)
+	e, err := h.controller.Storage.Update(id, req.Name, appliances.KindFromString(req.Kind), req.Type, &opts)
 	if err != nil {
 		if err == controller.ErrNotFound.Error {
 			c.JSON(http.StatusNotFound, controller.ErrNotFound)
@@ -236,7 +236,7 @@ func (h *httpServer) postSwitchBotByID(c *gin.Context) {
 // @Success 200 {object} aircon.Entry
 // @Produce json
 func (h *httpServer) postAirconByID(c *gin.Context) {
-	var req *aircon.Entry
+	var req *appliances.Aircon
 	id := c.Param("id")
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -244,14 +244,14 @@ func (h *httpServer) postAirconByID(c *gin.Context) {
 	}
 
 	// Try Push
-	if r, err := h.controller.PushAircon(id, req); err != nil {
+	if r, err := h.controller.Push(id, &controller.EntrySet{Remote: *appliances.FromAircon(req)}); err != nil {
 		if err == controller.ErrNotFound.Error {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
 	} else {
-		c.JSON(http.StatusOK, r)
+		c.JSON(http.StatusOK, r.Aircon)
 	}
 }
 
@@ -259,10 +259,10 @@ func (h *httpServer) postAirconByID(c *gin.Context) {
 // @Summary Post Light by ID
 // @Router /api/v1/controllers/:id/light [post]
 // @tags controller
-// @Success 200 {object} light.Entry
+// @Success 200 {object} light.State
 // @Produce json
 func (h *httpServer) postLightByID(c *gin.Context) {
-	var req *light.Entry
+	var req *appliances.Light
 	id := c.Param("id")
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -270,14 +270,14 @@ func (h *httpServer) postLightByID(c *gin.Context) {
 	}
 
 	// Try Push
-	if r, err := h.controller.PushLight(id, req); err != nil {
+	if r, err := h.controller.Push(id, &controller.EntrySet{Remote: *appliances.FromLight(req)}); err != nil {
 		if err == controller.ErrNotFound.Error {
 			c.JSON(http.StatusNotFound, controller.ErrNotFound)
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
 	} else {
-		c.JSON(http.StatusOK, r)
+		c.JSON(http.StatusOK, r.Light)
 	}
 }
 
@@ -285,7 +285,7 @@ func (h *httpServer) postLightByID(c *gin.Context) {
 // @Summary Get controller template by ID
 // @Router /api/v1/controllers/:id/template [get]
 // @tags controller
-// @Success 200 {object} template.Template
+// @Success 200 {object} appliances.Template
 // @Produce json
 func (h *httpServer) getControllerTemplateByID(c *gin.Context) {
 	id := c.Param("id")
@@ -295,11 +295,11 @@ func (h *httpServer) getControllerTemplateByID(c *gin.Context) {
 		return
 	}
 
-	t, err := h.controller.Remotes.GetTemplate(r.Kind, r.Remote.Vendor, r.Remote.Model)
+	rs, err := h.controller.Remotes.Get(r.Kind, r.Remote.Vendor, r.Remote.Model)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, t)
+	c.JSON(http.StatusOK, rs.Template())
 }

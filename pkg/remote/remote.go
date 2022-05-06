@@ -1,4 +1,4 @@
-package controller
+package remote
 
 // Remote - Declare Remote controller
 type Remote struct {
