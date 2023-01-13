@@ -2,7 +2,6 @@ package room
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"os"
 
@@ -48,7 +47,7 @@ func NewStorage(basePath string) (*Storage, error) {
 
 func (s *Storage) Create(name string) (*Entry, error) {
 	if s.Room != nil {
-		return nil, errors.New("room already exists")
+		return nil, ErrAlreadyExists.Error
 	}
 
 	s.Room = &Entry{
@@ -64,10 +63,20 @@ func (s *Storage) Create(name string) (*Entry, error) {
 
 func (s *Storage) Get() (*Entry, error) {
 	if s.Room == nil {
-		return nil, ErrNotFound
+		return nil, ErrNotFound.Error
 	}
 
 	return s.Room, nil
+}
+
+func (s *Storage) Update(name string) (*Entry, error) {
+	if s.Room == nil {
+		return nil, ErrNotFound.Error
+	}
+
+	s.Room.Name = name
+
+	return s.Room, s.Save()
 }
 
 func (s *Storage) Load() error {

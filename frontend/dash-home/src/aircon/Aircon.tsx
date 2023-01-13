@@ -114,6 +114,7 @@ const stateToEntry = (state: AirconState): Aircon => {
   return {
     operation: state.operation,
     mode: state.mode,
+    options: {...state.options, ...state.modes[state.mode].options},
     ...state.modes[state.mode]
   }
 }
@@ -272,6 +273,25 @@ return (
         </Row>
       </Col>
     </Row>
+    {aircon.options &&
+      <Row>
+        {Object.keys(aircon.options).map((key) => {
+          return (
+            <Contents>
+            <HR />
+            <SummonByTpl
+              title={t(`controller.aircon.options.${key}.${aircon.options![key]}`)}
+              description={t(`controller.aircon.options.${key}.name`)}
+              value={aircon.options![key]}
+              setter={(e: any) => aircon.options![key] = e}
+              sender={(after: any) => update({ ...aircon }, after)}
+              action={props.template?.aircon?.options![key]!}
+            />
+          </Contents>
+          )
+        })}
+      </Row>
+    }
   </AirconCard>
 )
 }
