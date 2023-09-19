@@ -7,6 +7,7 @@ import (
 	"reflect"
 
 	"github.com/google/uuid"
+	"github.com/k0kubun/pp"
 	"github.com/sirupsen/logrus"
 )
 
@@ -83,7 +84,7 @@ func (s *Storage) Remove(id string) error {
 }
 
 // Update - Update agent settings
-func (s *Storage) Update(id string, entry *Agent) (*Agent, error) {
+func (s *Storage) Update(id string, entry *Agent, whenUpdated func(Agent)) (*Agent, error) {
 	oldEntry := s.GetByID(id)
 	if oldEntry == nil {
 		return nil, ErrNotFound.Error
@@ -111,17 +112,28 @@ func (s *Storage) Update(id string, entry *Agent) (*Agent, error) {
 		}
 	}
 
+	logrus.Println("[Agent] Update requested")
+
+	// Run Update
 	for i := range s.Agents {
 		if s.Agents[i].ID != id {
 			continue
 		}
 
+		pp.Println(s.Agents[i])
+		pp.Println(entry)
+
 		// Run Update
 		if ok := reflect.DeepEqual(s.Agents[i], entry); !ok {
 			logrus.Debugf("[Agent] Update Agent entry")
 			s.Agents[i] = entry
+			whenUpdated(*entry)
+			return entry, s.save()
+		} else {
+			logrus.Debugf("[Agent] Skipped")
 		}
-		return entry, s.save()
+
+		return entry, nil
 	}
 
 	return entry, nil

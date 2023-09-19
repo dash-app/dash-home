@@ -243,6 +243,7 @@ func (h *httpServer) postAirconByID(c *gin.Context) {
 		return
 	}
 
+	pp.Println(req)
 	// Try Push
 	if r, err := h.controller.Push(id, &controller.EntrySet{Remote: *appliances.FromAircon(req)}); err != nil {
 		if err == controller.ErrNotFound.Error {
@@ -251,6 +252,13 @@ func (h *httpServer) postAirconByID(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
 	} else {
+		if e, err := h.controller.Storage.GetByID(id); err == nil {
+			h.hub.PublishController(e)
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
 		c.JSON(http.StatusOK, r.Aircon)
 	}
 }

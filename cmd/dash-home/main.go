@@ -8,15 +8,17 @@ import (
 	"github.com/dash-app/dash-home/pkg/controller"
 	"github.com/dash-app/dash-home/pkg/room"
 	"github.com/dash-app/dash-home/pkg/server"
+	"github.com/dash-app/dash-home/pkg/stream"
 	"github.com/sirupsen/logrus"
 )
 
-func startHTTPServer(port string, agent *agent.AgentService, room *room.RoomService, controller *controller.Controller) error {
+func startHTTPServer(port string, agent *agent.AgentService, room *room.RoomService, controller *controller.Controller, hub *stream.Hub) error {
 	logrus.Infof("[HTTP] HTTP Listening on %s...", port)
 	return server.NewHTTPServer(&server.Subset{
 		Agent:      agent,
 		Room:       room,
 		Controller: controller,
+		Hub:        hub,
 	}).Run(":" + port)
 }
 
@@ -47,8 +49,12 @@ func main() {
 	// 	return
 	// }
 
+	// Stream
+	hub := stream.NewHub()
+	go hub.Run()
+
 	// Initialize Agent process...
-	agent, err := agent.New(path)
+	agent, err := agent.New(path, hub)
 	if err != nil {
 		panic(err)
 	}
@@ -71,7 +77,7 @@ func main() {
 	if len(httpPort) == 0 {
 		httpPort = "13105"
 	}
-	if err := startHTTPServer(httpPort, agent, room, controller); err != nil {
+	if err := startHTTPServer(httpPort, agent, room, controller, hub); err != nil {
 		panic(err)
 	}
 }

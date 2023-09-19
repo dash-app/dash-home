@@ -124,7 +124,7 @@ func (h *httpServer) patchAgentByID(c *gin.Context) {
 	oldEntry.Address = req.Address
 	oldEntry.Label = req.Label
 	oldEntry.Default = req.Default
-	res, err := h.agent.Storage.Update(id, oldEntry)
+	res, err := h.agent.Storage.Update(id, oldEntry, nil)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

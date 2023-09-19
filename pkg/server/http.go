@@ -8,6 +8,7 @@ import (
 	"github.com/dash-app/dash-home/pkg/agent"
 	"github.com/dash-app/dash-home/pkg/controller"
 	"github.com/dash-app/dash-home/pkg/room"
+	"github.com/dash-app/dash-home/pkg/stream"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -20,12 +21,15 @@ type Subset struct {
 	Agent      *agent.AgentService
 	Room       *room.RoomService
 	Controller *controller.Controller
+	Hub        *stream.Hub
 }
 
 type httpServer struct {
 	agent      *agent.AgentService
 	room       *room.RoomService
 	controller *controller.Controller
+
+	hub *stream.Hub
 }
 
 type statikFileSystem struct {
@@ -54,6 +58,7 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 		agent:      subset.Agent,
 		room:       subset.Room,
 		controller: subset.Controller,
+		hub:        subset.Hub,
 	}
 
 	if len(os.Getenv("DEBUG")) == 0 {
@@ -66,8 +71,12 @@ func NewHTTPServer(subset *Subset) *gin.Engine {
 
 	r.GET("/healthz", h.getHealthz)
 
-	// Agent
 	apiGroup := r.Group("/api/v1")
+
+	// WebSocket
+	apiGroup.GET("ws", h.handleWebSocket)
+
+	// Agent
 	apiGroup.GET("agents", h.getAgents)
 	apiGroup.POST("agents", h.postAgent)
 	apiGroup.GET("agents/:id", h.getAgentByID)

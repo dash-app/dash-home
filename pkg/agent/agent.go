@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dash-app/dash-home/pkg/stream"
 	"github.com/k0kubun/pp"
 	"github.com/sirupsen/logrus"
 )
@@ -21,6 +22,9 @@ const (
 type AgentService struct {
 	Storage *Storage
 	Ambient *Ambient
+
+	// Stream
+	Hub *stream.Hub
 }
 
 // Agent - Store of Agent
@@ -38,11 +42,11 @@ type Agent struct {
 	Label string `json:"label,omitempty" example:"Bedroom"`
 
 	// Online - Check online
-	Online bool `json:"online,omitempty"`
+	Online bool `json:"online"`
 }
 
 // New - Initialize agent service
-func New(basePath string) (*AgentService, error) {
+func New(basePath string, hub *stream.Hub) (*AgentService, error) {
 	store, err := NewStorage(basePath)
 	if err != nil {
 		return nil, err
@@ -50,6 +54,7 @@ func New(basePath string) (*AgentService, error) {
 
 	return &AgentService{
 		Storage: store,
+		Hub:     hub,
 	}, nil
 }
 
@@ -79,7 +84,7 @@ func (as *AgentService) InitPoll() {
 		// First Polling
 		for _, agent := range as.Storage.Agents {
 			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-			if err := as.Poll(ctx, agent); err != nil {
+			if err := as.Poll(ctx, *agent); err != nil {
 				logrus.WithError(err).Errorf("[Poll]")
 			}
 			cancel()
@@ -94,7 +99,7 @@ func (as *AgentService) InitPoll() {
 				for _, agent := range as.Storage.Agents {
 					go func(agent *Agent) {
 						ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-						if err := as.Poll(ctx, agent); err != nil {
+						if err := as.Poll(ctx, *agent); err != nil {
 							logrus.WithError(err).Errorf("[Poll]")
 						}
 						cancel()
@@ -109,7 +114,7 @@ func (as *AgentService) InitPoll() {
 }
 
 // Poll - Execute Poll
-func (as *AgentService) Poll(c context.Context, agent *Agent) error {
+func (as *AgentService) Poll(c context.Context, agent Agent) error {
 	ctx, cancel := context.WithCancel(c)
 	defer cancel()
 	if as.Storage.Agents == nil || len(as.Storage.Agents) == 0 {
@@ -132,16 +137,24 @@ func (as *AgentService) Poll(c context.Context, agent *Agent) error {
 
 	go func() {
 		resp, err := client.Do(req)
+
+		// When failed (ex. OFFLINE)
 		if err != nil {
 			agent.Online = false
-			if _, err := as.Storage.Update(agent.ID, agent); err != nil {
+			if _, err := as.Storage.Update(agent.ID, &agent, func(updated Agent) {
+				var updatedList []Agent
+				// Stream
+				as.Hub.PublishAgent(append(updatedList, updated))
+			}); err != nil {
 				errCh <- err
 				return
 			}
 			errCh <- err
 			return
 		}
+
 		defer resp.Body.Close()
+
 		if agent.Default {
 			b, _ := ioutil.ReadAll(resp.Body)
 			var entry *Ambient
@@ -151,12 +164,17 @@ func (as *AgentService) Poll(c context.Context, agent *Agent) error {
 			}
 			entry.LastFetch = time.Now().UTC()
 			as.Ambient = entry
-			logrus.Debugf("[Poll] Fetched: %v", pp.Sprint(entry))
+			logrus.Debugf("[Poll] Fetched (%s): %v", agent.Address, pp.Sprint(entry))
 		}
 
 		// Update Online status
 		agent.Online = true
-		if _, err := as.Storage.Update(agent.ID, agent); err != nil {
+		if _, err := as.Storage.Update(agent.ID, &agent, func(updated Agent) {
+			// Stream
+			var updatedList []Agent
+			// Stream
+			as.Hub.PublishAgent(append(updatedList, updated))
+		}); err != nil {
 			errCh <- err
 			return
 		}
