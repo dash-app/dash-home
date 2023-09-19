@@ -1,7 +1,0 @@
-export { default as Fan } from './Fan'
-export { default as Fan1 } from './Fan1'
-export { default as Fan2 } from './Fan2'
-export { default as Fan3 } from './Fan3'
-export { default as Fan4 } from './Fan4'
-export { default as Fan5 } from './Fan5'
-export { default as FanSymbol } from './FanSymbol'
