@@ -3,7 +3,7 @@ module github.com/dash-app/dash-home
 go 1.17
 
 // NOTE: For local development only
-replace github.com/dash-app/remote-go => ../remote-go
+// replace github.com/dash-app/remote-go => ../remote-go
 
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
@@ -12,6 +12,7 @@ require (
 	github.com/gin-contrib/static v0.0.0-20200916080430-d45d9a37d28e
 	github.com/gin-gonic/gin v1.6.3
 	github.com/google/uuid v1.3.0
+	github.com/gorilla/websocket v1.5.0
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/rakyll/statik v0.1.7
 	github.com/sirupsen/logrus v1.7.0
@@ -32,7 +33,6 @@ require (
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/golang/protobuf v1.4.3 // indirect
-	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/k0kubun/colorstring v0.0.0-20150214042306-9440f1994b88 // indirect
