@@ -12,22 +12,21 @@ viewdocs: docs
 # Frontend
 #
 clean_frontend:
-	@rm -rfv ./frontend/dash-home/build
+	@rm -rfv ./frontend/dashlet/dist
 	@rm -rfv ./public
 
 frontend: clean_frontend
-	@cd ./frontend/dash-home && \
-	NODE_ENV=production yarn install && \
-	NODE_ENV=production yarn run build && \
-	cp -rv build ../../public
+	@cd ./frontend/dashlet && \
+	pnpm install && \
+	pnpm run build && \
+	cp -rv dist ../../public
 
 #
 # Backend
 #
 statik:
 	@echo ":: Generate bindata from statik..."
-	@go get -u -v github.com/rakyll/statik
-	@statik -f -src ./public -p server -dest ./pkg/
+	@go run github.com/rakyll/statik -f -src ./public -p server -dest ./pkg/
 
 clean: clean_frontend
 	@rm -rfv ./build
