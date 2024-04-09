@@ -14,6 +14,8 @@ github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d/go.mod h1:ma
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/dash-app/remote-go v0.1.0 h1:Aw10f1KxY4jUwS/h3V9DE92ihkfElu8gWxnWjuy0fBA=
 github.com/dash-app/remote-go v0.1.0/go.mod h1:YgefySI1BzDuv1Hw1uCECHeKIVqk6V40hIXvM5pjBCo=
+github.com/dash-app/remote-go v0.1.1 h1:fUR8Qfgbs5dUnZ0SiOiIFSb98n59nTi6hhdGKOniAxo=
+github.com/dash-app/remote-go v0.1.1/go.mod h1:YgefySI1BzDuv1Hw1uCECHeKIVqk6V40hIXvM5pjBCo=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
