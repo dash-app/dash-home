@@ -26,7 +26,7 @@ frontend: clean_frontend
 #
 statik:
 	@echo ":: Generate bindata from statik..."
-	@go get -u -v github.com/rakyll/statik
+	@go install -v github.com/rakyll/statik
 	@statik -f -src ./public -p server -dest ./pkg/
 
 clean: clean_frontend
