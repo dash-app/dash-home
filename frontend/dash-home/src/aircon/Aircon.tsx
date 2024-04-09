@@ -5,7 +5,7 @@ import { AirconCard } from '../components/cards/Aircon';
 import List from '../components/controller/template/List';
 import { Aircon, AirconState, Controller, sendAircon, SendResult } from '../remote-go/Controller';
 import { AirconModes as TplAirconModes } from '../remote-go/Template';
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { HR } from '../components/atoms/Themed';
 import { SummonByTpl } from '../components/controller/Template';
 import { MiniPanelInner } from '../components/cards/MiniPanel';
