@@ -114,7 +114,7 @@ const stateToEntry = (state: AirconState): Aircon => {
   return {
     operation: state.operation,
     mode: state.mode,
-    options: {...state.options, ...state.modes[state.mode].options},
+    // options: {...state.options, ...state.modes[state.mode].options},
     ...state.modes[state.mode]
   }
 }
@@ -273,7 +273,7 @@ return (
         </Row>
       </Col>
     </Row>
-    {aircon.options &&
+    {/* {aircon.options &&
       <Row>
         {Object.keys(aircon.options).map((key) => {
           return (
@@ -291,7 +291,7 @@ return (
           )
         })}
       </Row>
-    }
+    } */}
   </AirconCard>
 )
 }

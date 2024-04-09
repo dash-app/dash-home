@@ -42,7 +42,7 @@ export const ControllerUI: React.FC<Props> = props => {
 
   // Task
   const useTask = () => {
-    const [taskId, setTaskId] = React.useState(-1);
+    const [taskId, setTaskId] = React.useState<any>(-1);
     const callTimer = (f: any, time: number) => {
       const t = setTimeout(() => {
         f();
@@ -70,7 +70,7 @@ export const ControllerUI: React.FC<Props> = props => {
 
   // Sending Icon
   const useSendingIcon = () => {
-    const [taskId, setTaskId] = React.useState<number>(-1);
+    const [taskId, setTaskId] = React.useState<any>(-1);
     const [sending, updateSending] = React.useState(false);
     React.useEffect(() => {
       setTaskId(setTimeout(() => {

@@ -72,7 +72,7 @@ const RemoteChooser: React.FC<Props> = (props: Props) => {
         <Modal.Title>{t("controller.remote.chooser", { kind: props.kind })}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Tabs variant={"tabs"} defaultActiveKey={remotes[0]} id="tabs">
+        <Tabs variant={"tabs"} id="tabs">
           {/* Generate kind of vendor/models array... */}
           {Object.keys(remotes).map((vendor: string) => {
             return (

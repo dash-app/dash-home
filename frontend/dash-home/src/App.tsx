@@ -49,7 +49,7 @@ const App: React.FC = () => {
               <Route exact path="/controllers/:id" component={Controller} />
               <Route exact path="/controllers/:id/edit" component={EditController} />
 
-              <Route status={404} component={NotFound} />
+              <Route path='*' component={NotFound} />
             </Switch>
           </Router>
         </RoomProvider>
