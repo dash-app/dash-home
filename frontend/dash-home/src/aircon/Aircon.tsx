@@ -120,7 +120,7 @@ const stateToEntry = (state: AirconState): Aircon => {
 }
 
 return (
-  <AirconCard name={props.controller.name} mode={aircon.mode} send={props.sending}>
+  <AirconCard name={props.controller.name} state={aircon} send={props.sending}>
     {result?.error && <NotifyError message={result.error.response?.data.error} />}
     <Row>
       {/* Operation */}
