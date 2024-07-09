@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, ButtonGroup, Col, Dropdown, DropdownButton, Row } from 'react-bootstrap';
+import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 import { H1, P } from '../../atoms/Core';
 import { ValueSet } from './TplBase';
 
